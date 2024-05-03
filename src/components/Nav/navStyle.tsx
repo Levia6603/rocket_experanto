@@ -72,3 +72,14 @@ export const SearchBar = styled.div`
     background-color: transparent;
   }
 `;
+
+export const NavLogo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  img {
+    width: 60px;
+    height: 60px;
+  }
+`;

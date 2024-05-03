@@ -4,6 +4,7 @@ import {
   NavList,
   NavListItem,
   NavBtn,
+  NavLogo,
   SearchBar,
 } from "./navStyle";
 
@@ -12,6 +13,9 @@ export function Nav() {
     <>
       <NavSection>
         <NavContainer>
+          <NavLogo>
+            <img src="/nav-logo.png" alt="experanto logo" />
+          </NavLogo>
           <SearchBar>
             <input
               type="text"
