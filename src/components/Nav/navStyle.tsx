@@ -3,8 +3,6 @@ import { NavLink } from "react-router-dom";
 
 export const NavSection = styled.nav``;
 
-export const Wrapper = styled.div``;
-
 export const NavContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
