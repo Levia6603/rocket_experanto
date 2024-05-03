@@ -68,9 +68,6 @@ export function Nav() {
                 </NavListItem>
               </li>
               <li>
-                <NavListItem to={"/signin"}>
-                  <NavBtn>Log in</NavBtn>
-                </NavListItem>{" "}
                 <NavListItem to={"/signout"}>
                   <NavBtn>Log out</NavBtn>
                 </NavListItem>{" "}
