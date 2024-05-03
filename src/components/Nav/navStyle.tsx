@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { NavLink } from "react-router-dom";
+import Button from "../Button";
 
 export const NavSection = styled.nav``;
 
@@ -40,16 +41,9 @@ export const NavListItem = styled(NavLink)`
   }
 `;
 
-export const NavBtn = styled.button`
-  cursor: pointer;
-
-  background-color: ${(props) => props.$backgroundColor || "black"};
+export const NavBtn = styled(Button)`
   border-radius: 4px;
   border: 0;
-  padding: 8px 16px;
-
-  color: ${(props) => props.$fontColor || "white"};
-  font-size: 16px;
 `;
 
 export const SearchBar = styled.div`
