@@ -8,6 +8,8 @@ import {
   SearchBar,
 } from "./navStyle";
 
+import Button from "../Button";
+
 export function Nav() {
   return (
     <>
@@ -51,7 +53,7 @@ export function Nav() {
               </NavListItem>
             </li>
             <li>
-              <button type="button" className="nav-item">
+              <Button type="button">
                 <svg
                   width="19"
                   height="18"
@@ -66,15 +68,19 @@ export function Nav() {
                     fill="#1C2026"
                   />
                 </svg>
-                <p>English</p>
-              </button>
+                <p>EN</p>
+              </Button>
             </li>
 
             <li>
               <NavListItem to={"/signout"}>
                 <NavBtn>Log out</NavBtn>
               </NavListItem>{" "}
-              <NavListItem to={"/profile"}>profile</NavListItem>
+              <NavListItem to={"/profile"}>
+                <div>
+                  <img src="/nav-profile.png" alt="profile" />
+                </div>
+              </NavListItem>
             </li>
           </NavList>
         </NavContainer>
