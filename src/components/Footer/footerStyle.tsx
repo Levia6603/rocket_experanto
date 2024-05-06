@@ -4,7 +4,6 @@ export const Wrapper = styled.section`
   padding: 36px 0;
 `;
 export const Container = styled.div`
-  font-family: sans-serif;
   max-width: 1320px;
   margin: 0 auto;
   padding: 0 12.5px;
