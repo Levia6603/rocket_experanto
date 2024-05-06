@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-// import Login from "../pages/Login";
+import Login from "../pages/Login";
 import Fluent from "../pages/Fluent";
 // import Wanted from "../pages/Wanted";
 
@@ -10,10 +10,10 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <div>Error</div>,
   },
-  //   {
-  //     path: "/login",
-  //     element: <Login />,
-  //   },
+  {
+    path: "/login",
+    element: <Login />,
+  },
   {
     path: "/signup/fluent",
     element: <Fluent />,
