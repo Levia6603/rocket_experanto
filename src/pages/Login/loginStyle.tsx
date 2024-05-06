@@ -38,6 +38,7 @@ export const LoginBox = styled(ProcessBox)`
     & > p {
       font-size: 1.5rem;
       font-weight: bold;
+      margin-top: 0;
       margin-bottom: 1.5rem;
     }
     & > div {
