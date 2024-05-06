@@ -1,3 +1,3 @@
-import { Button } from "./buttonStyle.tsx";
+import { Button } from "./ButtonStyle.tsx";
 
 export default Button;
