@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   SignUpSection,
   SignUpContainer,
@@ -14,6 +15,7 @@ function Fluent() {
   function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
     setSelectLanguage(e.target.value);
   }
+  const navigate = useNavigate();
 
   return (
     <>
@@ -21,7 +23,7 @@ function Fluent() {
         <SignUpContainer>
           <FluentBox>
             <div>
-              <BackButton>
+              <BackButton onClick={() => navigate("/login")}>
                 <img src="/back-vector.png" alt="back" />
               </BackButton>
             </div>
@@ -57,7 +59,12 @@ function Fluent() {
                 <p>Add</p>
               </AddButton>
             </label>
-            <ContinueButton type="button">Continue</ContinueButton>
+            <ContinueButton
+              type="button"
+              onClick={() => navigate("/signup/wanted")}
+            >
+              Continue
+            </ContinueButton>
           </FluentBox>
         </SignUpContainer>
       </SignUpSection>
