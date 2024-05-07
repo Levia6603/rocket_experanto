@@ -9,24 +9,25 @@ import {
   User,
   Button,
   Box,
-  Select,
-  Option,
 } from "./profileStyle";
+import Selector from "../../components/Selector";
 import avatar from "/nav-profile.png";
-import arrowDown from "/chevron-down.png";
 
 function Profile() {
-  const [languageList, setLanguageList] = useState([
-    "Chinese",
-    "English",
-    "Japanese",
-    "Korean",
-  ]);
-  const [currentValue, setCurrentValue] = useState("Chinese");
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => {
-    setIsOpen(!isOpen);
-    console.log(isOpen);
+  const languageList = ["Chinese", "English", "Japanese", "Korean"];
+  const [currentValue, setCurrentValue] = useState({
+    goal: "Select Language",
+    plan: "Select Fluent Language",
+  });
+  const setGoal = (language: string) => {
+    setCurrentValue((prev) => {
+      return { ...prev, goal: language };
+    });
+  };
+  const setPlan = (language: string) => {
+    setCurrentValue((prev) => {
+      return { ...prev, plan: language };
+    });
   };
   return (
     <>
@@ -68,28 +69,11 @@ function Profile() {
             <Box>
               <h2>Goal</h2>
               <hr />
-              <Select onClick={toggle}>
-                <p>{currentValue}</p>
-                <img src={arrowDown} alt="" />
-                <Option
-                  $index={languageList.length}
-                  $isOpen={isOpen}
-                  onClick={toggle}
-                >
-                  <ul>
-                    {languageList.map((el) => (
-                      <li
-                        key={el}
-                        onClick={() => {
-                          setCurrentValue(el);
-                        }}
-                      >
-                        {el}
-                      </li>
-                    ))}
-                  </ul>
-                </Option>
-              </Select>
+              <Selector
+                languageList={languageList}
+                currentValue={currentValue.goal}
+                setValue={setGoal}
+              />
             </Box>
             <Box>
               <h2>Fluent Language</h2>
@@ -106,6 +90,11 @@ function Profile() {
             <Box>
               <h2>Fluent skill teaching plan</h2>
               <hr />
+              <Selector
+                languageList={languageList}
+                currentValue={currentValue.plan}
+                setValue={setPlan}
+              />
             </Box>
           </Dashboard>
           <ProfileMenu />

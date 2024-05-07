@@ -1,10 +1,4 @@
 import styled from "styled-components";
-import { keyframes, css } from "styled-components";
-
-interface OptionProps {
-  readonly $index: number;
-  readonly $isOpen: boolean;
-}
 
 export const Wrapper = styled.section`
   padding: 40px 0;
@@ -75,52 +69,7 @@ export const Box = styled.div`
     font-weight: 900;
   }
   hr {
+    margin-top: 20px;
     border: 0.5px solid #9e9e9e;
   }
-`;
-export const Select = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 227px;
-  padding: 14px 12px;
-  border: 1px solid #bdbdbd;
-  border-radius: 4px;
-  color: #888484;
-  cursor: pointer;
-`;
-
-export const Option = styled.div<OptionProps>`
-  ${({ $isOpen }) =>
-    $isOpen === false &&
-    css`
-      display: none;
-    `}
-  position: absolute;
-  overflow: hidden;
-  top: 55px;
-  left: -1px;
-  width: 227px;
-  border: 1px solid #848484;
-  border-radius: 4px;
-  background-color: #fff;
-  animation: ${({ $index }) => showOption($index)} 0.3s ease-in;
-  li {
-    display: flex;
-    align-items: center;
-    height: 50px;
-    padding: 0 12px;
-    &:hover {
-      background-color: #cecece;
-    }
-  }
-`;
-const showOption = (index: number) => keyframes`
-    from{
-        height: 0;
-    }
-    to{
-        height: ${index * 50}px;
-    }
 `;
