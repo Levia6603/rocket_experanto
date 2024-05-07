@@ -5,14 +5,21 @@ import {
   LoginBox,
   LoginWithGoogleButton,
 } from "./loginStyle";
+import BackButton from "../../components/BackButton";
 
 function Login() {
   const navigate = useNavigate();
+
   return (
     <>
       <LoginSection>
         <LoginContainer>
           <LoginBox>
+            <div>
+              <BackButton onClick={() => navigate("/")}>
+                <img src="/back-vector.png" alt="back" />
+              </BackButton>
+            </div>
             <img src="/logo-large.png" alt="experanto logo" />
             <div>
               <p>SIGN IN</p>
