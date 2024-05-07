@@ -9,9 +9,13 @@ import {
   User,
   Button,
   Box,
+  Board,
+  Achiev,
+  ProcessBar,
 } from "./profileStyle";
 import Selector from "../../components/Selector";
 import avatar from "/nav-profile.png";
+import badge from "/badge.png";
 
 function Profile() {
   const languageList = ["Chinese", "English", "Japanese", "Korean"];
@@ -65,6 +69,53 @@ function Profile() {
             <Box>
               <h2>Achievements</h2>
               <hr />
+              <Board>
+                <Achiev>
+                  <div>
+                    <ul>
+                      <li>
+                        <h4>Complete</h4>
+                        <p>Unranked</p>
+                      </li>
+                      <li>
+                        <p>Lv.0</p>
+                      </li>
+                    </ul>
+                    <ProcessBar $percent={10}></ProcessBar>
+                  </div>
+                  <img src={badge} alt="" />
+                </Achiev>
+                <Achiev>
+                  <div>
+                    <ul>
+                      <li>
+                        <h4>5 Star Review</h4>
+                        <p>Unranked</p>
+                      </li>
+                      <li>
+                        <p>Lv.0</p>
+                      </li>
+                    </ul>
+                    <ProcessBar $percent={44}></ProcessBar>
+                  </div>
+                  <img src={badge} alt="" />
+                </Achiev>
+                <Achiev>
+                  <div>
+                    <ul>
+                      <li>
+                        <h4>Post</h4>
+                        <p>Unranked</p>
+                      </li>
+                      <li>
+                        <p>Lv.0</p>
+                      </li>
+                    </ul>
+                    <ProcessBar $percent={20}></ProcessBar>
+                  </div>
+                  <img src={badge} alt="" />
+                </Achiev>
+              </Board>
             </Box>
             <Box>
               <h2>Goal</h2>
