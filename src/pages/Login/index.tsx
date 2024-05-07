@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   LoginSection,
   LoginContainer,
@@ -6,6 +7,7 @@ import {
 } from "./loginStyle";
 
 function Login() {
+  const navigate = useNavigate();
   return (
     <>
       <LoginSection>
@@ -16,7 +18,10 @@ function Login() {
               <p>SIGN IN</p>
               <hr />
               <div>
-                <LoginWithGoogleButton type="button">
+                <LoginWithGoogleButton
+                  type="button"
+                  onClick={() => navigate("/signup/fluent")}
+                >
                   <img src="/google-icon-button.png" alt="google" />
                   <p>Continue with Google</p>
                 </LoginWithGoogleButton>
