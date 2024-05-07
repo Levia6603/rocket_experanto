@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   WantedSection,
@@ -30,18 +30,34 @@ export default function Wanted() {
   }
 
   //* 選擇熟練度
-  const defaultProficiency = "Beginner";
+  const defaultProficiency = "Select a level";
   const [proficiency, setProficiency] = useState(defaultProficiency);
+  const [wantedLanguage, setWantedLanguage] = useState("");
   const proficiencyList = [
-    { value: "Beginner", label: "Beginner" },
-    { value: "Elementary", label: "Elementary" },
-    { value: "Intermediate", label: "Intermediate" },
-    { value: "Up Intermediate", label: "Up Intermediate" },
-    { value: "Advanced", label: "Advanced" },
+    { value: "Beginner", label: `${wantedLanguage} - Beginner` },
+    { value: "Elementary", label: `${wantedLanguage} - Elementary` },
+    { value: "Intermediate", label: `${wantedLanguage} - Intermediate` },
+    { value: "Up Intermediate", label: `${wantedLanguage} - Up Intermediate` },
+    { value: "Advanced", label: `${wantedLanguage} - Advanced` },
+  ];
+  const proficiencyListNoDash = [
+    { value: "Beginner", label: `Beginner` },
+    { value: "Elementary", label: `Elementary` },
+    { value: "Intermediate", label: `Intermediate` },
+    { value: "Up Intermediate", label: `Up Intermediate` },
+    { value: "Advanced", label: `Advanced` },
   ];
   function handleProficiency(item: Option) {
     setProficiency(item.value);
   }
+
+  useEffect(() => {
+    //*若選擇語言則更新熟練度
+    if (selectLanguage !== defaultValue) {
+      setWantedLanguage(selectLanguage);
+      setProficiency(`${wantedLanguage} - Beginner`);
+    }
+  }, [selectLanguage, wantedLanguage]);
 
   return (
     <>
@@ -89,8 +105,16 @@ export default function Wanted() {
                   <CustomSelect
                     name="proficiency"
                     id="proficiency"
-                    options={proficiencyList}
-                    placeholder={proficiency}
+                    options={
+                      selectLanguage !== defaultValue
+                        ? proficiencyList
+                        : proficiencyListNoDash
+                    }
+                    placeholder={
+                      selectLanguage !== defaultValue
+                        ? proficiency
+                        : defaultProficiency
+                    }
                     onChange={handleProficiency}
                   ></CustomSelect>
                 </label>
