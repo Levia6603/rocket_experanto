@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { WantedSection, WantedContainer, WantedBox } from "./wantedStyle";
 import { ContinueButton } from "../Fluent/fluentStyle";
 import BackButton from "../../components/BackButton";
@@ -11,13 +12,15 @@ export default function Wanted() {
     setSelectLanguage(e.target.value);
   }
 
+  const navigate = useNavigate();
+
   return (
     <>
       <WantedSection>
         <WantedContainer>
           <WantedBox>
             <div>
-              <BackButton>
+              <BackButton onClick={() => navigate("/signup/fluent")}>
                 <img src="/back-vector.png" alt="back" />
               </BackButton>
             </div>
@@ -89,7 +92,9 @@ export default function Wanted() {
               </div>
             </div>
 
-            <ContinueButton type="button">Continue</ContinueButton>
+            <ContinueButton type="button" onClick={() => navigate("/profile")}>
+              Finish
+            </ContinueButton>
           </WantedBox>
         </WantedContainer>
       </WantedSection>
