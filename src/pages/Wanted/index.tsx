@@ -1,18 +1,47 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { WantedSection, WantedContainer, WantedBox } from "./wantedStyle";
+import {
+  WantedSection,
+  WantedContainer,
+  WantedBox,
+  CustomSelect,
+} from "./wantedStyle";
 import { ContinueButton } from "../Fluent/fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
 
 export default function Wanted() {
+  const navigate = useNavigate();
+  type Option = {
+    value: string;
+    label: string;
+  };
+
+  //* 選擇語言
   const defaultValue = "Select a language";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectLanguage(e.target.value);
+  const options = [
+    { value: "English", label: "English" },
+    { value: "Mandarin", label: "Mandarin" },
+    { value: "Japanese", label: "Japanese" },
+  ];
+  function handleSelect(item: Option) {
+    setSelectLanguage(item.value);
   }
 
-  const navigate = useNavigate();
+  //* 選擇熟練度
+  const defaultProficiency = "Beginner";
+  const [proficiency, setProficiency] = useState(defaultProficiency);
+  const proficiencyList = [
+    { value: "Beginner", label: "Beginner" },
+    { value: "Elementary", label: "Elementary" },
+    { value: "Intermediate", label: "Intermediate" },
+    { value: "Up Intermediate", label: "Up Intermediate" },
+    { value: "Advanced", label: "Advanced" },
+  ];
+  function handleProficiency(item: Option) {
+    setProficiency(item.value);
+  }
 
   return (
     <>
@@ -36,25 +65,13 @@ export default function Wanted() {
                 </p>
                 <label>
                   <p>Wanted Language</p>
-                  <select
+                  <CustomSelect
                     name="wanted"
                     id="wanted"
-                    defaultValue={selectLanguage}
+                    options={options}
+                    placeholder={selectLanguage}
                     onChange={handleSelect}
-                  >
-                    <option disabled>Select a language</option>
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                    <option value="Italian">Italian</option>
-                    <option value="Japanese">Japanese</option>
-                    <option value="Portuguese">Portuguese</option>
-                    <option value="Russian">Russian</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Korean">Korean</option>
-                    <option value="Vietnamese">Vietnamese</option>
-                  </select>
+                  ></CustomSelect>
                   <AddButton type="button">
                     <img src="/plus-circle.svg" alt="" />
                     <p>Add</p>
@@ -69,25 +86,13 @@ export default function Wanted() {
                 </p>
                 <label>
                   <p>Language proficiency</p>
-                  <select
+                  <CustomSelect
                     name="proficiency"
                     id="proficiency"
-                    defaultValue={selectLanguage}
-                    onChange={handleSelect}
-                  >
-                    <option disabled>Select a language</option>
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                    <option value="Italian">Italian</option>
-                    <option value="Japanese">Japanese</option>
-                    <option value="Portuguese">Portuguese</option>
-                    <option value="Russian">Russian</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Korean">Korean</option>
-                    <option value="Vietnamese">Vietnamese</option>
-                  </select>
+                    options={proficiencyList}
+                    placeholder={proficiency}
+                    onChange={handleProficiency}
+                  ></CustomSelect>
                 </label>
               </div>
             </div>
