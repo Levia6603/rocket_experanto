@@ -1,21 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   SignUpSection,
   SignUpContainer,
   FluentBox,
   ContinueButton,
+  CustomSelect,
 } from "./fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
 
 function Fluent() {
+  const navigate = useNavigate();
+  const optioins = [
+    { value: "English", label: "English" },
+    { value: "Spanish", label: "Spanish" },
+    { value: "French", label: "French" },
+    { value: "German", label: "German" },
+    { value: "Italian", label: "Italian" },
+    { value: "Japanese", label: "Japanese" },
+    { value: "Portuguese", label: "Portuguese" },
+    { value: "Russian", label: "Russian" },
+    { value: "Mandarin", label: "Mandarin" },
+    { value: "Korean", label: "Korean" },
+    { value: "Vietnamese", label: "Vietnamese" },
+  ];
+  type Option = {
+    value: string;
+    label: string;
+  };
   const defaultValue = "Select a language";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectLanguage(e.target.value);
+  function handleSelect(item: Option) {
+    setSelectLanguage(item.value);
   }
-  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(selectLanguage);
+  }, [selectLanguage]);
 
   return (
     <>
@@ -35,25 +56,13 @@ function Fluent() {
             </p>
             <label>
               <p>Fluent Language</p>
-              <select
+              <CustomSelect
                 name="fluent"
                 id="fluent"
-                defaultValue={selectLanguage}
+                options={optioins}
+                placeholder={selectLanguage}
                 onChange={handleSelect}
-              >
-                <option disabled>Select a language</option>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-                <option value="French">French</option>
-                <option value="German">German</option>
-                <option value="Italian">Italian</option>
-                <option value="Japanese">Japanese</option>
-                <option value="Portuguese">Portuguese</option>
-                <option value="Russian">Russian</option>
-                <option value="Chinese">Chinese</option>
-                <option value="Korean">Korean</option>
-                <option value="Vietnamese">Vietnamese</option>
-              </select>
+              ></CustomSelect>
               <AddButton type="button">
                 <img src="/plus-circle.svg" alt="" />
                 <p>Add</p>

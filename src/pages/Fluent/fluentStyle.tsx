@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import Select from "react-select";
 import ProcessBox from "../../components/ProcessBox";
 import Button from "../../components/Button";
 
@@ -70,4 +71,20 @@ export const ContinueButton = styled(Button)`
   padding: 0.5rem 1rem;
   font-size: 1rem;
   cursor: pointer;
+`;
+
+export const CustomSelect = styled(Select)`
+  width: 596px;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  background-color: balck;
+  cursor: pointer;
+  & > div {
+    & > div:nth-child(1) {
+      & > div {
+        & > input {
+        }
+      }
+    }
+  }
 `;
