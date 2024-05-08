@@ -19,7 +19,12 @@ function Selector({ size, languageList, currentValue, setValue }: props) {
       <Select $size={size} $isOpen={isOpen} onClick={toggle}>
         <p>{currentValue}</p>
         <img src={arrowDown} alt="" />
-        <Option $index={languageList.length} $isOpen={isOpen} onClick={toggle}>
+        <Option
+          $size={size}
+          $index={languageList.length}
+          $isOpen={isOpen}
+          onClick={toggle}
+        >
           <ul>
             {languageList.map((el) => (
               <li
