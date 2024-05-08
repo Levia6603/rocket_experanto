@@ -1,32 +1,20 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  WantedSection,
-  WantedContainer,
-  WantedBox,
-  CustomSelect,
-} from "./wantedStyle";
+import { WantedSection, WantedContainer, WantedBox } from "./wantedStyle";
 import { ContinueButton } from "../Fluent/fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
+import Selector from "../../components/Selector";
 
 export default function Wanted() {
   const navigate = useNavigate();
-  type Option = {
-    value: string;
-    label: string;
-  };
 
   //* 選擇語言
   const defaultValue = "Select a language";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
-  const options = [
-    { value: "English", label: "English" },
-    { value: "Mandarin", label: "Mandarin" },
-    { value: "Japanese", label: "Japanese" },
-  ];
-  function handleSelect(item: Option) {
-    setSelectLanguage(item.value);
+  const languageList = ["English", "Spanish", "French", "German", "Italian"];
+  function handleSelect(el: string) {
+    setSelectLanguage(el);
   }
 
   //* 選擇熟練度
@@ -34,12 +22,13 @@ export default function Wanted() {
   const [proficiency, setProficiency] = useState(defaultProficiency);
   const [wantedLanguage, setWantedLanguage] = useState("");
   const proficiencyList = [
-    { value: "Beginner", label: `${wantedLanguage} - Beginner` },
-    { value: "Elementary", label: `${wantedLanguage} - Elementary` },
-    { value: "Intermediate", label: `${wantedLanguage} - Intermediate` },
-    { value: "Up Intermediate", label: `${wantedLanguage} - Up Intermediate` },
-    { value: "Advanced", label: `${wantedLanguage} - Advanced` },
+    `${wantedLanguage} - Beginner`,
+    `${wantedLanguage} - Elementary`,
+    `${wantedLanguage} - Intermediate`,
+    `${wantedLanguage} - Up Intermediate`,
+    `${wantedLanguage} - Advanced`,
   ];
+
   const proficiencyListNoDash = [
     { value: "Beginner", label: `Beginner` },
     { value: "Elementary", label: `Elementary` },
@@ -47,8 +36,8 @@ export default function Wanted() {
     { value: "Up Intermediate", label: `Up Intermediate` },
     { value: "Advanced", label: `Advanced` },
   ];
-  function handleProficiency(item: Option) {
-    setProficiency(item.value);
+  function handleProficiency(el: string) {
+    setProficiency(el);
   }
 
   useEffect(() => {
@@ -81,13 +70,12 @@ export default function Wanted() {
                 </p>
                 <label>
                   <p>Wanted Language</p>
-                  <CustomSelect
-                    name="wanted"
-                    id="wanted"
-                    options={options}
-                    placeholder={selectLanguage}
-                    onChange={handleSelect}
-                  ></CustomSelect>
+                  <Selector
+                    size="middle"
+                    languageList={languageList}
+                    currentValue={selectLanguage}
+                    setValue={handleSelect}
+                  ></Selector>
                   <AddButton type="button">
                     <img src="/plus-circle.svg" alt="" />
                     <p>Add</p>
@@ -102,21 +90,16 @@ export default function Wanted() {
                 </p>
                 <label>
                   <p>Language proficiency</p>
-                  <CustomSelect
-                    name="proficiency"
-                    id="proficiency"
-                    options={
-                      selectLanguage !== defaultValue
+                  <Selector
+                    size="middle"
+                    languageList={
+                      proficiency === defaultProficiency && wantedLanguage
                         ? proficiencyList
-                        : proficiencyListNoDash
+                        : proficiencyList
                     }
-                    placeholder={
-                      selectLanguage !== defaultValue
-                        ? proficiency
-                        : defaultProficiency
-                    }
-                    onChange={handleProficiency}
-                  ></CustomSelect>
+                    currentValue={proficiency}
+                    setValue={handleProficiency}
+                  ></Selector>
                 </label>
               </div>
             </div>

@@ -3,6 +3,7 @@ import App from "../App";
 import Login from "../pages/Login";
 import Fluent from "../pages/Fluent";
 import Wanted from "../pages/Wanted";
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -19,4 +20,5 @@ export const router = createBrowserRouter([
     element: <Fluent />,
   },
   { path: "/signup/wanted", element: <Wanted /> },
+  { path: "/profile", element: <Profile /> },
 ]);
