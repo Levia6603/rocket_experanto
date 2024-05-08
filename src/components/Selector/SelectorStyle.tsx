@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { keyframes, css } from "styled-components";
 
 interface SelectProps {
+  readonly $size: string;
   readonly $isOpen: boolean;
 }
 
@@ -15,7 +16,8 @@ export const Select = styled.div<SelectProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 227px;
+  width: ${({ $size }) =>
+    $size === "short" ? "227px" : $size === "middle" ? "596px" : "706px"};
   padding: 14px 12px;
   border: 1px solid #bdbdbd;
   border-radius: 4px;
