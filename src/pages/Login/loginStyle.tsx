@@ -27,11 +27,7 @@ export const LoginWithGoogleButton = styled(Button)`
 `;
 
 export const LoginBox = styled(ProcessBox)`
-  width: 636px;
-  & > div:nth-child(1) {
-    width: 100%;
-  }
-  & > div:nth-child(3) {
+  & > div {
     width: 475px;
     border: 1px solid #9e9e9e;
     border-radius: 4px;
