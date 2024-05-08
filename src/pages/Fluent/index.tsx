@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   SignUpSection,
   SignUpContainer,
@@ -7,13 +8,22 @@ import {
 } from "./fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
+import Selector from "../../components/Selector";
 
 function Fluent() {
+  const navigate = useNavigate();
+
+  const languageList = ["Chinese", "English", "Japanese", "Korean"];
+
   const defaultValue = "Select a language";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
-  function handleSelect(e: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectLanguage(e.target.value);
+  function handleSelect(el: string) {
+    setSelectLanguage(el);
   }
+
+  useEffect(() => {
+    console.log(selectLanguage);
+  }, [selectLanguage]);
 
   return (
     <>
@@ -21,7 +31,7 @@ function Fluent() {
         <SignUpContainer>
           <FluentBox>
             <div>
-              <BackButton>
+              <BackButton onClick={() => navigate("/login")}>
                 <img src="/back-vector.png" alt="back" />
               </BackButton>
             </div>
@@ -33,31 +43,24 @@ function Fluent() {
             </p>
             <label>
               <p>Fluent Language</p>
-              <select
-                name="fluent"
-                id="fluent"
-                defaultValue={selectLanguage}
-                onChange={handleSelect}
-              >
-                <option disabled>Select a language</option>
-                <option value="English">English</option>
-                <option value="Spanish">Spanish</option>
-                <option value="French">French</option>
-                <option value="German">German</option>
-                <option value="Italian">Italian</option>
-                <option value="Japanese">Japanese</option>
-                <option value="Portuguese">Portuguese</option>
-                <option value="Russian">Russian</option>
-                <option value="Chinese">Chinese</option>
-                <option value="Korean">Korean</option>
-                <option value="Vietnamese">Vietnamese</option>
-              </select>
+
+              <Selector
+                size="middle"
+                languageList={languageList}
+                currentValue={selectLanguage}
+                setValue={handleSelect}
+              ></Selector>
               <AddButton type="button">
                 <img src="/plus-circle.svg" alt="" />
                 <p>Add</p>
               </AddButton>
             </label>
-            <ContinueButton type="button">Continue</ContinueButton>
+            <ContinueButton
+              type="button"
+              onClick={() => navigate("/signup/wanted")}
+            >
+              Continue
+            </ContinueButton>
           </FluentBox>
         </SignUpContainer>
       </SignUpSection>
