@@ -29,13 +29,6 @@ export default function Wanted() {
     `${wantedLanguage} - Advanced`,
   ];
 
-  const proficiencyListNoDash = [
-    { value: "Beginner", label: `Beginner` },
-    { value: "Elementary", label: `Elementary` },
-    { value: "Intermediate", label: `Intermediate` },
-    { value: "Up Intermediate", label: `Up Intermediate` },
-    { value: "Advanced", label: `Advanced` },
-  ];
   function handleProficiency(el: string) {
     setProficiency(el);
   }
