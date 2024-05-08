@@ -12,11 +12,10 @@ function Selector({ languageList, currentValue, setValue }: props) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => {
     setIsOpen(!isOpen);
-    console.log(isOpen);
   };
   return (
     <>
-      <Select $isOpen={isOpen} onClick={toggle}>
+      <Select $size={"short"} $isOpen={isOpen} onClick={toggle}>
         <p>{currentValue}</p>
         <img src={arrowDown} alt="" />
         <Option $index={languageList.length} $isOpen={isOpen} onClick={toggle}>
