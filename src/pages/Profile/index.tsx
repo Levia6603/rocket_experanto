@@ -121,6 +121,7 @@ function Profile() {
               <h2>Goal</h2>
               <hr />
               <Selector
+                size={"short"}
                 languageList={languageList}
                 currentValue={currentValue.goal}
                 setValue={setGoal}
@@ -142,6 +143,7 @@ function Profile() {
               <h2>Fluent skill teaching plan</h2>
               <hr />
               <Selector
+                size={"short"}
                 languageList={languageList}
                 currentValue={currentValue.plan}
                 setValue={setPlan}
