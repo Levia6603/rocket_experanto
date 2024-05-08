@@ -5,35 +5,22 @@ import {
   SignUpContainer,
   FluentBox,
   ContinueButton,
-  CustomSelect,
 } from "./fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
+import Selector from "../../components/Selector";
 
 function Fluent() {
   const navigate = useNavigate();
-  const optioins = [
-    { value: "English", label: "English" },
-    { value: "Spanish", label: "Spanish" },
-    { value: "French", label: "French" },
-    { value: "German", label: "German" },
-    { value: "Italian", label: "Italian" },
-    { value: "Japanese", label: "Japanese" },
-    { value: "Portuguese", label: "Portuguese" },
-    { value: "Russian", label: "Russian" },
-    { value: "Mandarin", label: "Mandarin" },
-    { value: "Korean", label: "Korean" },
-    { value: "Vietnamese", label: "Vietnamese" },
-  ];
-  type Option = {
-    value: string;
-    label: string;
-  };
+
+  const languageList = ["Chinese", "English", "Japanese", "Korean"];
+
   const defaultValue = "Select a language";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
-  function handleSelect(item: Option) {
-    setSelectLanguage(item.value);
+  function handleSelect(el: string) {
+    setSelectLanguage(el);
   }
+
   useEffect(() => {
     console.log(selectLanguage);
   }, [selectLanguage]);
@@ -56,13 +43,13 @@ function Fluent() {
             </p>
             <label>
               <p>Fluent Language</p>
-              <CustomSelect
-                name="fluent"
-                id="fluent"
-                options={optioins}
-                placeholder={selectLanguage}
-                onChange={handleSelect}
-              ></CustomSelect>
+
+              <Selector
+                size="middle"
+                languageList={languageList}
+                currentValue={selectLanguage}
+                setValue={handleSelect}
+              ></Selector>
               <AddButton type="button">
                 <img src="/plus-circle.svg" alt="" />
                 <p>Add</p>
