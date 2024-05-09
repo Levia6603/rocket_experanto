@@ -9,7 +9,6 @@ import {
 } from "./fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
-import Selector from "../../components/Selector";
 
 function Fluent() {
   const navigate = useNavigate();
