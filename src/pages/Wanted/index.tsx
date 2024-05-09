@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { WantedSection, WantedContainer, WantedBox } from "./wantedStyle";
+import {
+  WantedSection,
+  WantedContainer,
+  WantedBox,
+  CustomSelect,
+} from "./wantedStyle";
 import { ContinueButton } from "../Fluent/fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
-import Selector from "../../components/Selector";
 
 export default function Wanted() {
   const navigate = useNavigate();
@@ -27,6 +31,13 @@ export default function Wanted() {
     `${wantedLanguage} - Intermediate`,
     `${wantedLanguage} - Up Intermediate`,
     `${wantedLanguage} - Advanced`,
+  ];
+  const proficiencyListNoDash = [
+    `Beginner`,
+    `Elementary`,
+    `Intermediate`,
+    `Up Intermediate`,
+    `Advanced`,
   ];
 
   function handleProficiency(el: string) {
@@ -63,12 +74,12 @@ export default function Wanted() {
                 </p>
                 <label>
                   <p>Wanted Language</p>
-                  <Selector
+                  <CustomSelect
                     size="middle"
                     languageList={languageList}
                     currentValue={selectLanguage}
                     setValue={handleSelect}
-                  ></Selector>
+                  ></CustomSelect>
                   <AddButton type="button">
                     <img src="/plus-circle.svg" alt="" />
                     <p>Add</p>
@@ -83,16 +94,16 @@ export default function Wanted() {
                 </p>
                 <label>
                   <p>Language proficiency</p>
-                  <Selector
+                  <CustomSelect
                     size="middle"
                     languageList={
-                      proficiency === defaultProficiency && wantedLanguage
+                      proficiency !== defaultProficiency && wantedLanguage
                         ? proficiencyList
-                        : proficiencyList
+                        : proficiencyListNoDash
                     }
                     currentValue={proficiency}
                     setValue={handleProficiency}
-                  ></Selector>
+                  ></CustomSelect>
                 </label>
               </div>
             </div>
