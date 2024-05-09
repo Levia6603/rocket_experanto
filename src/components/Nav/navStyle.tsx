@@ -2,12 +2,16 @@ import { styled } from "styled-components";
 import { NavLink } from "react-router-dom";
 import Button from "../Button";
 
-export const NavSection = styled.nav``;
+export const NavSection = styled.nav`
+  display: flex;
+  justify-content: center;
+`;
 
 export const NavContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
-  padding: 1rem;
+  width: 1320px;
+  padding: 15px 0.75rem;
 `;
 
 export const NavList = styled.ul`
@@ -17,8 +21,8 @@ export const NavList = styled.ul`
   gap: 2rem;
 
   & li:first-child {
+    padding-left: 225px;
     padding-right: 130px;
-    padding-left: 280px;
   }
 
   & li:nth-child(2) {
@@ -60,7 +64,8 @@ export const NavBtn = styled(Button)`
 `;
 
 export const SearchBar = styled.div`
-  min-width: 720px;
+  width: 472px;
+
   border-radius: 4px;
   border: 1px solid #bdbdbd;
   display: flex;
