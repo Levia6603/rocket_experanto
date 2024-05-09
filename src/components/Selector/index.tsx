@@ -7,16 +7,28 @@ interface props {
   languageList: string[];
   currentValue: string;
   setValue: (parms: string) => void;
+  className?: string;
 }
 
-function Selector({ size, languageList, currentValue, setValue }: props) {
+function Selector({
+  size,
+  languageList,
+  currentValue,
+  setValue,
+  className,
+}: props) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => {
     setIsOpen(!isOpen);
   };
   return (
     <>
-      <Select $size={size} $isOpen={isOpen} onClick={toggle}>
+      <Select
+        $size={size}
+        $isOpen={isOpen}
+        onClick={toggle}
+        className={className}
+      >
         <p>{currentValue}</p>
         <img src={arrowDown} alt="" />
         <Option $index={languageList.length} $isOpen={isOpen} onClick={toggle}>
