@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import ProcessBox from "../../components/ProcessBox";
-import Select from "react-select";
+import Selector from "../../components/Selector";
 
 export const WantedSection = styled.section`
   display: flex;
@@ -59,10 +59,11 @@ export const WantedBox = styled(ProcessBox)`
   }
 `;
 
-export const CustomSelect = styled(Select)`
+export const CustomSelect = styled(Selector)`
   width: 596px;
   height: 52px;
-  font-size: 1rem;
   margin-top: 0.5rem;
-  cursor: pointer;
+  & > div {
+    width: 596px;
+  }
 `;
