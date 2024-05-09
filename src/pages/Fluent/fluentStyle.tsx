@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import Select from "react-select";
 import ProcessBox from "../../components/ProcessBox";
 import Button from "../../components/Button";
+import Selector from "../../components/Selector";
 
 export const SignUpSection = styled.section`
   display: flex;
@@ -73,18 +73,10 @@ export const ContinueButton = styled(Button)`
   cursor: pointer;
 `;
 
-export const CustomSelect = styled(Select)`
+export const CustomSelect = styled(Selector)`
   width: 596px;
-  font-size: 1rem;
   margin-top: 0.5rem;
-  background-color: balck;
-  cursor: pointer;
   & > div {
-    & > div:nth-child(1) {
-      & > div {
-        & > input {
-        }
-      }
-    }
+    width: 596px;
   }
 `;

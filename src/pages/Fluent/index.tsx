@@ -5,6 +5,7 @@ import {
   SignUpContainer,
   FluentBox,
   ContinueButton,
+  CustomSelect,
 } from "./fluentStyle";
 import BackButton from "../../components/BackButton";
 import AddButton from "../../components/AddButton";
@@ -44,12 +45,12 @@ function Fluent() {
             <label>
               <p>Fluent Language</p>
 
-              <Selector
+              <CustomSelect
                 size="middle"
                 languageList={languageList}
                 currentValue={selectLanguage}
                 setValue={handleSelect}
-              ></Selector>
+              ></CustomSelect>
               <AddButton type="button">
                 <img src="/plus-circle.svg" alt="" />
                 <p>Add</p>
