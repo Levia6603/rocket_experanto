@@ -1,2 +1,9 @@
-import { styled } from "styled-components";
-import Nav from "../../components/Nav";
+function ProfileEdit() {
+  return (
+    <>
+      <div>ProfileEdit</div>
+    </>
+  );
+}
+
+export default ProfileEdit;

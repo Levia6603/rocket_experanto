@@ -4,6 +4,8 @@ import Login from "../pages/Login";
 import Fluent from "../pages/Fluent";
 import Wanted from "../pages/Wanted";
 import Profile from "../pages/Profile";
+import ProfileEdit from "../pages/ProfileEdit";
+import ProfileIndex from "../pages/ProfileIndex";
 
 export const router = createBrowserRouter([
   {
@@ -20,5 +22,19 @@ export const router = createBrowserRouter([
     element: <Fluent />,
   },
   { path: "/signup/wanted", element: <Wanted /> },
-  { path: "/profile", element: <Profile /> },
+  {
+    path: "/user",
+    element: <Profile />,
+    children: [
+      {
+        path: "profile",
+        element: <ProfileIndex />,
+      },
+      {
+        path: "profile/edit",
+        element: <ProfileEdit />,
+      },
+    ],
+  },
+  { path: "/profile/edit", element: <ProfileEdit /> },
 ]);
