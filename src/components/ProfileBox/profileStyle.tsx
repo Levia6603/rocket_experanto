@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 
-export const ProfileBox = styled.div`
+export const Styled = styled.div`
   width: 306px;
   height: 100%;
   display: flex;
