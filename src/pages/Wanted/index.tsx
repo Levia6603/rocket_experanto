@@ -7,8 +7,8 @@ import {
   CustomSelect,
 } from "./wantedStyle";
 import { ContinueButton } from "../Fluent/fluentStyle";
-import BackButton from "../../components/BackButton";
-import AddButton from "../../components/AddButton";
+import BackButton from "../../styles/BackButton";
+import AddButton from "../../styles/AddButton";
 
 export default function Wanted() {
   const navigate = useNavigate();

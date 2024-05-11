@@ -7,7 +7,7 @@ import {
   PersonalInfoSelect,
   Fluent,
 } from "./profileEditStyle";
-import FluentLanguageBtn from "../../components/FluentLanguageButton";
+import FluentLanguageBtn from "../../styles/FluentLanguageButton";
 import avatar from "/nav-profile.png";
 const ProfileEdit = () => {
   return (
