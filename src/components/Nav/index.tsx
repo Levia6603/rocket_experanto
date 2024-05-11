@@ -10,7 +10,7 @@ import {
 
 import Button from "../Button";
 
-export function Nav() {
+function Nav() {
   return (
     <>
       <NavSection>
@@ -88,3 +88,5 @@ export function Nav() {
     </>
   );
 }
+
+export default Nav;
