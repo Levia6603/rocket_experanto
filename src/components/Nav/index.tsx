@@ -8,7 +8,7 @@ import {
   SearchBar,
 } from "./navStyle";
 
-import Button from "../Button";
+import Button from "../../styles/Button";
 
 function Nav() {
   return (

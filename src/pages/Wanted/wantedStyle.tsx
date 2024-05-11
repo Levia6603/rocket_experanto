@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import ProcessBox from "../../components/ProcessBox";
+import ProcessBox from "../../styles/ProcessBox";
 import Selector from "../../components/Selector";
 
 export const WantedSection = styled.section`

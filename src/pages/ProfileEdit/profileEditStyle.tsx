@@ -1,5 +1,5 @@
 import { styled } from "styled-components";
-import Button from "../../components/Button";
+import Button from "../../styles/Button";
 import Selector from "../../components/Selector";
 
 export const ProfileEditSection = styled.section`
