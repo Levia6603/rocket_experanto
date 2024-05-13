@@ -1,8 +1,9 @@
+import { Outlet } from "react-router-dom";
 import { Wrapper, Container, Dashboard } from "./styles";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import ProfileBox from "../../components/ProfileBox";
-import PostCard from "../../components/PostCard";
+
 function Home() {
   return (
     <>
@@ -10,12 +11,7 @@ function Home() {
       <Wrapper>
         <Container>
           <Dashboard>
-            <PostCard />
-            <PostCard />
-            <PostCard />
-            <PostCard />
-            <PostCard />
-            <PostCard />
+            <Outlet />
           </Dashboard>
           <ProfileBox />
         </Container>

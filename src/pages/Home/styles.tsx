@@ -18,3 +18,5 @@ export const Dashboard = styled.div`
   align-items: center;
   gap: 32px;
 `;
+
+export const PostCards = styled.div``;

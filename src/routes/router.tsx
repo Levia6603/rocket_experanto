@@ -7,6 +7,7 @@ import Profile from "../pages/Profile";
 import ProfileEdit from "../pages/ProfileEdit";
 import ProfileIndex from "../pages/ProfileIndex";
 import Home from "../pages/Home";
+import HomeIndex from "../pages/HomeIndex";
 
 export const router = createBrowserRouter([
   {
@@ -37,5 +38,9 @@ export const router = createBrowserRouter([
       },
     ],
   },
-  { path: "/home", element: <Home /> },
+  {
+    path: "/home",
+    element: <Home />,
+    children: [{ path: "index", element: <HomeIndex /> }],
+  },
 ]);
