@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   User,
   Button,
@@ -7,26 +6,10 @@ import {
   Achiev,
   ProcessBar,
 } from "../Profile/profileStyle";
-import Selector from "../../components/Selector";
 
 import avatar from "/nav-profile.png";
 import badge from "/badge.png";
 const ProfileIndex = () => {
-  const languageList = ["Chinese", "English", "Japanese", "Korean"];
-  const [currentValue, setCurrentValue] = useState({
-    goal: "Select Language",
-    plan: "Select Fluent Language",
-  });
-  const setGoal = (language: string) => {
-    setCurrentValue((prev) => {
-      return { ...prev, goal: language };
-    });
-  };
-  const setPlan = (language: string) => {
-    setCurrentValue((prev) => {
-      return { ...prev, plan: language };
-    });
-  };
   return (
     <>
       <User>
@@ -106,38 +89,6 @@ const ProfileIndex = () => {
             <img src={badge} alt="" />
           </Achiev>
         </Board>
-      </Box>
-      <Box>
-        <h2>Goal</h2>
-        <hr />
-        <Selector
-          size={"short"}
-          languageList={languageList}
-          currentValue={currentValue.goal}
-          setValue={setGoal}
-        />
-      </Box>
-      <Box>
-        <h2>Fluent Language</h2>
-        <hr />
-      </Box>
-      <Box>
-        <h2>Learning Language</h2>
-        <hr />
-      </Box>
-      <Box>
-        <h2>Certified documents</h2>
-        <hr />
-      </Box>
-      <Box>
-        <h2>Fluent skill teaching plan</h2>
-        <hr />
-        <Selector
-          size={"short"}
-          languageList={languageList}
-          currentValue={currentValue.plan}
-          setValue={setPlan}
-        />
       </Box>
     </>
   );
