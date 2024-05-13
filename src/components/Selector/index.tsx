@@ -31,7 +31,12 @@ function Selector({
       >
         <p>{currentValue}</p>
         <img src={arrowDown} alt="" />
-        <Option $index={languageList.length} $isOpen={isOpen} onClick={toggle}>
+        <Option
+          $size={size}
+          $index={languageList.length}
+          $isOpen={isOpen}
+          onClick={toggle}
+        >
           <ul>
             {languageList.map((el) => (
               <li

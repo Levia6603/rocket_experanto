@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   User,
   Button,
@@ -7,26 +7,22 @@ import {
   Achiev,
   ProcessBar,
 } from "../Profile/profileStyle";
-import Selector from "../../components/Selector";
+import {
+  Title,
+  Cards,
+  Card,
+  CardItem,
+  CertificationsSection,
+  CertificationCard,
+} from "../ProfileIndex/profileIndexStyle";
 
 import avatar from "/nav-profile.png";
 import badge from "/badge.png";
+import noCertification_sm from "/no-certification-sm.svg";
+
 const ProfileIndex = () => {
-  const languageList = ["Chinese", "English", "Japanese", "Korean"];
-  const [currentValue, setCurrentValue] = useState({
-    goal: "Select Language",
-    plan: "Select Fluent Language",
-  });
-  const setGoal = (language: string) => {
-    setCurrentValue((prev) => {
-      return { ...prev, goal: language };
-    });
-  };
-  const setPlan = (language: string) => {
-    setCurrentValue((prev) => {
-      return { ...prev, plan: language };
-    });
-  };
+  const navigate = useNavigate();
+
   return (
     <>
       <User>
@@ -37,7 +33,9 @@ const ProfileIndex = () => {
               <h1>Jane Doe</h1>
             </li>
             <li>
-              <Button>Edit my detail</Button>
+              <Button type="button" onClick={() => navigate("edit")}>
+                Edit my detail
+              </Button>
             </li>
           </ul>
           <ul>
@@ -108,36 +106,87 @@ const ProfileIndex = () => {
         </Board>
       </Box>
       <Box>
-        <h2>Goal</h2>
-        <hr />
-        <Selector
-          size={"short"}
-          languageList={languageList}
-          currentValue={currentValue.goal}
-          setValue={setGoal}
-        />
+        <Title>
+          <h4>Fluent Language</h4>
+        </Title>
+        <Cards>
+          <ul>
+            <li>
+              <Card>
+                <div>
+                  <h5>English</h5>
+                </div>
+                <div>
+                  <CardItem>
+                    <p>1. </p>
+                    <h6>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Distinctio, at.
+                    </h6>
+                  </CardItem>
+                  <CardItem>
+                    <p>2. </p>
+                    <h6>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Alias, doloribus?
+                    </h6>
+                  </CardItem>
+                </div>
+              </Card>
+            </li>
+            <li>
+              <Card>
+                <div>
+                  <h5>English</h5>
+                </div>
+                <div>
+                  <CardItem>
+                    <p>1. </p>
+                    <h6>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Distinctio, at.
+                    </h6>
+                  </CardItem>
+                  <CardItem>
+                    <p>2. </p>
+                    <h6>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Alias, doloribus?
+                    </h6>
+                  </CardItem>
+                </div>
+              </Card>
+            </li>
+          </ul>
+        </Cards>
       </Box>
+
       <Box>
-        <h2>Fluent Language</h2>
-        <hr />
-      </Box>
-      <Box>
-        <h2>Learning Language</h2>
-        <hr />
-      </Box>
-      <Box>
-        <h2>Certified documents</h2>
-        <hr />
-      </Box>
-      <Box>
-        <h2>Fluent skill teaching plan</h2>
-        <hr />
-        <Selector
-          size={"short"}
-          languageList={languageList}
-          currentValue={currentValue.plan}
-          setValue={setPlan}
-        />
+        <CertificationsSection>
+          <h4>Certifications</h4>
+          <ul>
+            <li>
+              <CertificationCard>
+                <div>
+                  <img src={noCertification_sm} alt="no certification" />
+                </div>
+                <div>
+                  <h6>TOEFL</h6>
+                </div>
+              </CertificationCard>
+            </li>
+            <li>
+              <CertificationCard>
+                <div>
+                  <img src={noCertification_sm} alt="no certification" />
+                </div>
+                <div>
+                  <h6>TOEFL</h6>
+                </div>
+              </CertificationCard>
+            </li>
+          </ul>
+        </CertificationsSection>
       </Box>
     </>
   );

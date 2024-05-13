@@ -7,6 +7,7 @@ interface SelectProps {
 }
 
 interface OptionProps {
+  readonly $size: string;
   readonly $index: number;
   readonly $isOpen: boolean;
 }
@@ -43,7 +44,8 @@ export const Option = styled.div<OptionProps>`
   overflow: hidden;
   top: 55px;
   left: -1px;
-  width: 227px;
+  width: ${({ $size }) =>
+    $size === "short" ? "227px" : $size === "middle" ? "596px" : "706px"};
   border: 1px solid #848484;
   border-radius: 4px;
   background-color: #fff;
