@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
-import ProcessBox from "../../components/ProcessBox";
-import Button from "../../components/Button";
+import ProcessBox from "../../styles/ProcessBox";
+import Button from "../../styles/Button";
 import Selector from "../../components/Selector";
 
 export const SignUpSection = styled.section`

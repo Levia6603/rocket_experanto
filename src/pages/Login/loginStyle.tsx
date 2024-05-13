@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
-import ProcessBox from "../../components/ProcessBox";
-import Button from "../../components/Button";
+import ProcessBox from "../../styles/ProcessBox";
+import Button from "../../styles/Button";
 export const LoginSection = styled.section``;
 
 export const LoginContainer = styled.div`

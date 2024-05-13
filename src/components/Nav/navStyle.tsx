@@ -1,6 +1,6 @@
 import { styled } from "styled-components";
 import { NavLink } from "react-router-dom";
-import Button from "../Button";
+import Button from "../../styles/Button";
 
 export const NavSection = styled.nav`
   display: flex;

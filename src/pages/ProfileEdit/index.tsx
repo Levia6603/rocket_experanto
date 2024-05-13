@@ -5,21 +5,41 @@ import {
   Form,
   PersonalInfo,
   PersonalInfoSelect,
-  Fluent,
-} from "./profileEditStyle";
-import FluentLanguageBtn from "../../components/FluentLanguageButton";
+  LanguageSection,
+  LanguageBtn,
+  Card,
+  CardItem,
+  AddItemBtn,
+  DeleteItemBtn,
+  AddCardBtn,
+  CertificationsSection,
+  CertificationCard,
+  CancelBtn,
+  SaveBtn,
+} from "./styles";
+import closeIcon from "/close-lg.svg";
+import deleteCircle from "/delete-circle.svg";
 import avatar from "/nav-profile.png";
+import addSquare from "/add-square.svg";
+import addCircle from "/add-circle-lg.svg";
+import noCertification_sm from "/no-certification-sm.svg";
+import saveBlack from "/save-black.svg";
+import saveWhite from "/save-white.svg";
+
 const ProfileEdit = () => {
   return (
     <>
       <ProfileEditSection title="個人資料編輯區主外框">
-        <Photo title="照片編輯區">
-          <div>
-            <img src={avatar} alt="" />
-          </div>
-          <PhotoChangeButton>change photo</PhotoChangeButton>
-        </Photo>
         <Form title="個人資料編輯區" action="submit">
+          <Photo title="照片編輯區">
+            <div>
+              <img src={avatar} alt="" />
+            </div>
+            <PhotoChangeButton>
+              <img src={saveBlack} alt="" />
+              <p>Change Photo</p>
+            </PhotoChangeButton>
+          </Photo>
           <div title="主要編輯表單區">
             <h4>Edit Profile</h4>
             <PersonalInfo title="編輯姓別地區">
@@ -38,89 +58,81 @@ const ProfileEdit = () => {
                 <p>Location</p>
                 <PersonalInfoSelect
                   size="small"
-                  currentValue="Male"
+                  currentValue="New York"
                   setValue={() => {
                     console.log("set");
                   }}
-                  languageList={["Male", "Female"]}
+                  languageList={["New York", "Los Angeles"]}
                 ></PersonalInfoSelect>
               </label>
             </PersonalInfo>
-            <Fluent title="流利語言編輯區">
-              <p>Edit Language</p>
-              <div>
-                <p>Fluent Language</p>
-                <ul>
-                  <li>
-                    <FluentLanguageBtn title="English"></FluentLanguageBtn>
-                  </li>
-                  <li>
-                    <div>
-                      <FluentLanguageBtn title="French"></FluentLanguageBtn>
-                    </div>
-                  </li>
-                </ul>
-                <div title="新增語言區，沒用到的時候隱藏" hidden>
-                  <div title="新增語言">
-                    <p>New Fluent Language</p>
-                    <select name="" id=""></select>
-                  </div>
-                  <div title="新增goal，新增一個就增加一個">
-                    <p>Your teaching goals</p>
-                    <div>
-                      <input type="text" />
-                      <button>Add</button>
-                      <button>delete</button>
-                    </div>
-                  </div>
-                  <div title="按鈕區">
-                    <button type="button">Cancel</button>
-                    <button type="submit">Save</button>
-                  </div>
-                </div>
-                <button type="button">Add</button>
-              </div>
-            </Fluent>
-            <div title="想要學習的語言編輯區">
-              <h5>Wanted Language</h5>
-              <ul title="語言選擇區">
-                <li>
-                  <button>Japanese</button>
-                </li>
-                <li>
-                  <button>Korean</button>
-                </li>
-              </ul>
-              <div title="新增想要語言編輯區，沒用到的時候隱藏" hidden>
-                <label htmlFor="">
-                  <p>New Wanted Language</p>
-                  <select name="" id=""></select>
-                </label>
-                <label htmlFor="">
-                  <p>Select language proficiency</p>
-                  <select name="" id=""></select>
-                </label>
-                <label htmlFor="">
-                  <p>your teaching goals</p>
-                  <input type="text" />
-                </label>
-                <div title="按鈕區">
-                  <button type="button">Cancel</button>
-                  <button type="submit">Save</button>
-                </div>
-              </div>
-            </div>
-            <div title="上傳證書區">
-              <h6>Upload Certificates</h6>
-              <div>
-                <p>Upload files</p>
-                <input type="file" />
-              </div>
-            </div>
           </div>
+          <LanguageSection title="編輯語言區">
+            <h4>Language</h4>
+            <p>Create language (最多 5 個)</p>
+            <div>
+              <Card>
+                <div>
+                  <img src={closeIcon} alt="" />
+                </div>
+                <label>
+                  <LanguageBtn>English</LanguageBtn>
+                </label>
+                <div>
+                  <CardItem>
+                    <p>1. </p>
+                    <textarea placeholder="請輸入您的學習目標"></textarea>
+                    <DeleteItemBtn>
+                      <img src={deleteCircle} alt="" />
+                    </DeleteItemBtn>
+                  </CardItem>
+                  <CardItem>
+                    <p>2. </p>
+                    <textarea placeholder="請輸入您的學習目標"></textarea>
+                    <DeleteItemBtn>
+                      <img src={deleteCircle} alt="" />
+                    </DeleteItemBtn>
+                  </CardItem>
+                </div>
+                <div>
+                  <AddItemBtn>
+                    <img src={addSquare} alt="" />
+                  </AddItemBtn>
+                </div>
+              </Card>
+              <div className="addCard">
+                <AddCardBtn>
+                  <img src={addCircle} alt="" />
+                </AddCardBtn>
+              </div>
+            </div>
+          </LanguageSection>
+          <CertificationsSection>
+            <h4>Certifications</h4>
+            <div>
+              <CertificationCard>
+                <div>
+                  <img src={noCertification_sm} alt="" />
+                </div>
+                <div>
+                  <input type="text" placeholder="請輸入圖檔標題" />
+                </div>
+              </CertificationCard>
+            </div>
+            <div>
+              <AddCardBtn>
+                <img src={addCircle} alt="" />
+              </AddCardBtn>
+            </div>
+          </CertificationsSection>
           <div title="整張表單按鈕區">
-            <button>Cancel</button>
-            <button>Save</button>
+            <CancelBtn>
+              <p>Cancel</p>
+            </CancelBtn>
+            <SaveBtn>
+              <img src={saveWhite} alt="" />
+              <p>Save</p>
+            </SaveBtn>
           </div>
         </Form>
       </ProfileEditSection>
