@@ -17,5 +17,4 @@ export const Dashboard = styled.div`
   flex-grow: 1;
   align-items: center;
   gap: 32px;
-  padding: 32px;
 `;
