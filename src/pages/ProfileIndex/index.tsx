@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   User,
   Button,
@@ -6,10 +7,22 @@ import {
   Achiev,
   ProcessBar,
 } from "../Profile/profileStyle";
+import {
+  Title,
+  Cards,
+  Card,
+  CardItem,
+  CertificationsSection,
+  CertificationCard,
+} from "../ProfileIndex/profileIndexStyle";
 
 import avatar from "/nav-profile.png";
 import badge from "/badge.png";
+import noCertification_sm from "/no-certification-sm.svg";
+
 const ProfileIndex = () => {
+  const navigate = useNavigate();
+
   return (
     <>
       <User>
@@ -20,7 +33,9 @@ const ProfileIndex = () => {
               <h1>Jane Doe</h1>
             </li>
             <li>
-              <Button>Edit my detail</Button>
+              <Button type="button" onClick={() => navigate("edit")}>
+                Edit my detail
+              </Button>
             </li>
           </ul>
           <ul>
@@ -89,6 +104,89 @@ const ProfileIndex = () => {
             <img src={badge} alt="" />
           </Achiev>
         </Board>
+      </Box>
+      <Box>
+        <Title>
+          <h4>Fluent Language</h4>
+        </Title>
+        <Cards>
+          <ul>
+            <li>
+              <Card>
+                <div>
+                  <h5>English</h5>
+                </div>
+                <div>
+                  <CardItem>
+                    <p>1. </p>
+                    <h6>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Distinctio, at.
+                    </h6>
+                  </CardItem>
+                  <CardItem>
+                    <p>2. </p>
+                    <h6>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Alias, doloribus?
+                    </h6>
+                  </CardItem>
+                </div>
+              </Card>
+            </li>
+            <li>
+              <Card>
+                <div>
+                  <h5>English</h5>
+                </div>
+                <div>
+                  <CardItem>
+                    <p>1. </p>
+                    <h6>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Distinctio, at.
+                    </h6>
+                  </CardItem>
+                  <CardItem>
+                    <p>2. </p>
+                    <h6>
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Alias, doloribus?
+                    </h6>
+                  </CardItem>
+                </div>
+              </Card>
+            </li>
+          </ul>
+        </Cards>
+      </Box>
+
+      <Box>
+        <CertificationsSection>
+          <h4>Certifications</h4>
+          <ul>
+            <li>
+              <CertificationCard>
+                <div>
+                  <img src={noCertification_sm} alt="no certification" />
+                </div>
+                <div>
+                  <h6>TOEFL</h6>
+                </div>
+              </CertificationCard>
+            </li>
+            <li>
+              <CertificationCard>
+                <div>
+                  <img src={noCertification_sm} alt="no certification" />
+                </div>
+                <div>
+                  <h6>TOEFL</h6>
+                </div>
+              </CertificationCard>
+            </li>
+          </ul>
+        </CertificationsSection>
       </Box>
     </>
   );
