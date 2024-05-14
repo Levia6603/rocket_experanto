@@ -1,6 +1,10 @@
 import { styled } from "styled-components";
 import Button from "../../styles/Button";
 
+export const Wrapper = styled.section`
+  width: 100%;
+  padding-bottom: 6rem;
+`;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
