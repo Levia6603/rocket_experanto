@@ -165,3 +165,45 @@ export const Plans = styled.div`
     }
   }
 `;
+
+export const Certifications = styled.div`
+  width: 100%;
+  //* 標題
+  & > div:nth-child(1) {
+    border-bottom: 1px solid #616161;
+    padding-bottom: 0.5rem;
+    & > h6 {
+      font-weight: bold;
+    }
+  }
+  //* 證書區
+  & > div:nth-child(2) {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+`;
+
+export const Certification = styled.div`
+  width: 204px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  //* 圖片
+  & > div {
+    border-radius: 4px;
+    overflow: hidden;
+    & > img {
+      width: 204px;
+      height: 204px;
+    }
+  }
+  //* 文字
+  & > h6 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 12px;
+  }
+`;

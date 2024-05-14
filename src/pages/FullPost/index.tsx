@@ -1,8 +1,18 @@
-import { Header, Container, Info, Calendar, Needs, Plans } from "./styles";
+import {
+  Header,
+  Container,
+  Info,
+  Calendar,
+  Needs,
+  Plans,
+  Certifications,
+  Certification,
+} from "./styles";
 import Schedule from "../../components/Schedule";
 import avatar from "/avatar-80.svg";
 import star from "/profile_box_icons/star-black.png";
 import like from "/profile_box_icons/heart.svg";
+import noCertification from "/no-certification-lg.svg";
 
 function FullPost() {
   return (
@@ -116,6 +126,33 @@ function FullPost() {
             </div>
           </div>
         </Plans>
+        <Certifications>
+          <div>
+            <h6>證書</h6>
+          </div>
+          <div>
+            <Certification>
+              <img src={noCertification} alt="no certification" />
+              <h6>托福</h6>
+            </Certification>
+            <Certification>
+              <img src={noCertification} alt="no certification" />
+              <h6>托福</h6>
+            </Certification>
+            <Certification>
+              <img src={noCertification} alt="no certification" />
+              <h6>托福</h6>
+            </Certification>
+            <Certification>
+              <img src={noCertification} alt="no certification" />
+              <h6>托福</h6>
+            </Certification>
+            <Certification>
+              <img src={noCertification} alt="no certification" />
+              <h6>托福</h6>
+            </Certification>
+          </div>
+        </Certifications>
       </Container>
     </>
   );
