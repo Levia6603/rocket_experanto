@@ -137,3 +137,31 @@ export const Needs = styled.div`
     }
   }
 `;
+
+export const Plans = styled.div`
+  width: 100%;
+  //* 標題
+  & > div:nth-child(1) {
+    border-bottom: 1px solid #616161;
+    padding-bottom: 0.5rem;
+    & > h6 {
+      font-weight: bold;
+    }
+  }
+  //* 內容
+  & > div:nth-child(2) {
+    display: flex;
+    padding-top: 0.75rem;
+    //* 教學計畫
+    & > p:nth-child(1) {
+      display: flex;
+      min-width: 111px;
+    }
+    //* 教學計畫內容
+    & > div:nth-child(2) {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+`;
