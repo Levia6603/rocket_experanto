@@ -1,4 +1,5 @@
 import { Header, Container, Info, Calendar } from "./styles";
+import Schedule from "../../components/Schedule";
 import avatar from "/avatar-80.svg";
 import star from "/profile_box_icons/star-black.png";
 import like from "/profile_box_icons/heart.svg";
@@ -58,7 +59,9 @@ function FullPost() {
           <div>
             <h6>Available Time</h6>
           </div>
-          <div></div>
+          <div>
+            <Schedule />
+          </div>
         </Calendar>
       </Container>
     </>
