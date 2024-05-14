@@ -7,6 +7,8 @@ import {
   Plans,
   Certifications,
   Certification,
+  Tags,
+  Tag,
 } from "./styles";
 import Schedule from "../../components/Schedule";
 import avatar from "/avatar-80.svg";
@@ -98,7 +100,7 @@ function FullPost() {
         </Needs>
         <Plans>
           <div>
-            <h6>我的可以教你</h6>
+            <h6>你可以學到：</h6>
           </div>
           <div>
             <p>教學計畫：</p>
@@ -153,6 +155,18 @@ function FullPost() {
             </Certification>
           </div>
         </Certifications>
+        <Tags>
+          <div>
+            <h6># Tags</h6>
+          </div>
+          <div>
+            <Tag>#English</Tag>
+            <Tag>#English</Tag>
+            <Tag>#English</Tag>
+            <Tag>#English</Tag>
+            <Tag>#English</Tag>
+          </div>
+        </Tags>
       </Container>
     </>
   );

@@ -207,3 +207,30 @@ export const Certification = styled.div`
     padding-top: 12px;
   }
 `;
+
+export const Tags = styled.div`
+  width: 100%;
+  //* 標題
+  & > div:nth-child(1) {
+    border-bottom: 1px solid #616161;
+    padding-bottom: 0.5rem;
+    & > h6 {
+      font-weight: bold;
+    }
+  }
+  //* 標籤區
+  & > div:nth-child(2) {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+`;
+
+export const Tag = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #616161;
+  border-radius: 4px;
+`;
