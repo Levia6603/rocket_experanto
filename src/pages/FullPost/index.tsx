@@ -9,6 +9,8 @@ import {
   Certification,
   Tags,
   Tag,
+  Buttons,
+  PostButton,
 } from "./styles";
 import Schedule from "../../components/Schedule";
 import avatar from "/avatar-80.svg";
@@ -167,6 +169,10 @@ function FullPost() {
             <Tag>#English</Tag>
           </div>
         </Tags>
+        <Buttons>
+          <PostButton>回到上一頁</PostButton>
+          <PostButton>申請</PostButton>
+        </Buttons>
       </Container>
     </>
   );

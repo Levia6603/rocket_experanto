@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import Button from "../../styles/Button";
 
 export const Container = styled.div`
   display: flex;
@@ -233,4 +234,26 @@ export const Tag = styled.div`
   padding: 0.25rem 0.5rem;
   border: 1px solid #616161;
   border-radius: 4px;
+`;
+
+export const PostButton = styled(Button)`
+  min-width: 83px;
+  min-height: 40px;
+  border-radius: 4px;
+`;
+
+export const Buttons = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  gap: 1.5rem;
+  & > ${PostButton}:nth-child(1) {
+    background-color: transparent;
+    border: 1px solid #616161;
+  }
+  & > ${PostButton}:nth-child(2) {
+    background-color: #616161;
+    border: 1px solid #616161;
+    color: #fff;
+  }
 `;
