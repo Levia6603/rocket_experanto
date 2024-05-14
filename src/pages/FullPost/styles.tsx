@@ -94,4 +94,46 @@ export const Calendar = styled.div`
       font-weight: bold;
     }
   }
+  & > div:nth-child(2) {
+    padding-top: 0.75rem;
+  }
+`;
+
+export const Needs = styled.div`
+  width: 100%;
+  //* 標題
+  & > div:nth-child(1) {
+    border-bottom: 1px solid #616161;
+    padding-bottom: 0.5rem;
+    & > h6 {
+      font-weight: bold;
+    }
+  }
+  //* 詳細資訊
+  & > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding-top: 0.75rem;
+    & > div {
+      display: flex;
+      gap: 0.5rem;
+      //* 項目
+      & > h6 {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        max-width: 112px;
+        max-height: 32px;
+        min-width: 112px;
+        min-height: 32px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+      }
+      & > p {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
 `;

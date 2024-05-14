@@ -1,4 +1,4 @@
-import { Header, Container, Info, Calendar } from "./styles";
+import { Header, Container, Info, Calendar, Needs } from "./styles";
 import Schedule from "../../components/Schedule";
 import avatar from "/avatar-80.svg";
 import star from "/profile_box_icons/star-black.png";
@@ -63,6 +63,29 @@ function FullPost() {
             <Schedule />
           </div>
         </Calendar>
+        <Needs>
+          <div>
+            <h6>Needs</h6>
+          </div>
+          <div>
+            <div>
+              <h6>我會說：</h6>
+              <p>English</p>
+            </div>
+            <div>
+              <h6>我想學：</h6>
+              <p>English</p>
+            </div>
+            <div>
+              <h6>我希望可以：</h6>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
+                non exercitationem voluptate tempore distinctio delectus rerum
+                commodi, magni eveniet laboriosam?
+              </p>
+            </div>
+          </div>
+        </Needs>
       </Container>
     </>
   );
