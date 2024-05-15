@@ -1,5 +1,6 @@
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
+import PageBar from "../../components/PageBar";
 
 function HomeIndex() {
   return (
@@ -16,6 +17,7 @@ function HomeIndex() {
         <PostCard />
         <PostCard />
       </PostCards>
+      <PageBar />
     </>
   );
 }
