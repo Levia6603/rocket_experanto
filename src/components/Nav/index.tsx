@@ -1,23 +1,32 @@
+import { useState } from "react";
 import {
-  NavSection,
-  NavContainer,
-  NavList,
-  NavListItem,
+  Section,
+  Container,
+  Navbar,
+  LinkItem,
   NavBtn,
-  NavLogo,
+  Logo,
   SearchBar,
+  LanguageSelector,
 } from "./navStyle";
 
-import Button from "../../styles/Button";
+import bell from "/profile_box_icons/bell.svg";
+import global from "/global.svg";
 
 function Nav() {
+  const languages = ["English", "中文"];
+  const defaultValue = "中文";
+  const [selectLanguage, setSelectLanguage] = useState(defaultValue);
+  function handleSelect(el: string) {
+    setSelectLanguage(el);
+  }
   return (
     <>
-      <NavSection>
-        <NavContainer>
-          <NavLogo>
+      <Section>
+        <Container>
+          <Logo>
             <img src="/nav-logo.png" alt="experanto logo" />
-          </NavLogo>
+          </Logo>
           <SearchBar>
             <input
               type="text"
@@ -46,45 +55,33 @@ function Nav() {
             </button>
           </SearchBar>
 
-          <NavList>
+          <Navbar>
             <li>
-              <NavListItem to={"/post"}>
+              <LinkItem to={"/post"}>
                 <NavBtn>Post</NavBtn>
-              </NavListItem>
+              </LinkItem>
             </li>
             <li>
-              <Button type="button">
-                <svg
-                  width="19"
-                  height="18"
-                  viewBox="0 0 19 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M9.50001 1.49986C7.17201 1.49986 5.09001 2.56036 3.71451 4.22686C3.65309 4.30647 3.57629 4.37292 3.48867 4.42225C3.40106 4.47158 3.30442 4.50279 3.2045 4.51403C3.10458 4.52526 3.00342 4.51629 2.90703 4.48764C2.81065 4.459 2.72101 4.41127 2.64345 4.34728C2.56588 4.2833 2.50198 4.20437 2.45553 4.11519C2.40908 4.02602 2.38103 3.92841 2.37306 3.82817C2.36509 3.72794 2.37736 3.62713 2.40913 3.53173C2.4409 3.43633 2.49153 3.3483 2.55801 3.27286C3.6563 1.94315 5.1134 0.956877 6.75601 0.431344C8.39862 -0.0941888 10.1576 -0.136864 11.8238 0.308394C13.4899 0.753653 14.9932 1.66811 16.1546 2.94299C17.3161 4.21788 18.087 5.79954 18.3755 7.49986H16.85C16.5037 5.80607 15.5831 4.28385 14.2438 3.19058C12.9046 2.09731 11.2288 1.50007 9.50001 1.49986ZM2.15001 10.4999C2.43398 11.8868 3.10454 13.1651 4.08423 14.1871C5.06392 15.209 6.31275 15.933 7.68646 16.2753C9.06016 16.6176 10.5027 16.5642 11.8473 16.1214C13.192 15.6786 14.384 14.8644 15.2855 13.7729C15.3469 13.6933 15.4237 13.6268 15.5113 13.5775C15.599 13.5281 15.6956 13.4969 15.7955 13.4857C15.8954 13.4745 15.9966 13.4834 16.093 13.5121C16.1894 13.5407 16.279 13.5885 16.3566 13.6524C16.4341 13.7164 16.498 13.7954 16.5445 13.8845C16.5909 13.9737 16.619 14.0713 16.627 14.1715C16.6349 14.2718 16.6227 14.3726 16.5909 14.468C16.5591 14.5634 16.5085 14.6514 16.442 14.7269C15.3437 16.0566 13.8866 17.0428 12.244 17.5684C10.6014 18.0939 8.84241 18.1366 7.17625 17.6913C5.51009 17.2461 4.00687 16.3316 2.8454 15.0567C1.68392 13.7818 0.913064 12.2002 0.624512 10.4999H2.15001Z"
-                    fill="#1C2026"
-                  />
-                </svg>
-                <p>EN</p>
-              </Button>
-            </li>
-
-            <li>
-              <NavListItem to={"/signout"}>
-                <NavBtn>Log out</NavBtn>
-              </NavListItem>{" "}
-              <NavListItem to={"/profile"}>
+              <LinkItem to={"/notification"}>
                 <div>
-                  <img src="/nav-profile.png" alt="profile" />
+                  <img src={bell} alt="notification" />
                 </div>
-              </NavListItem>
+              </LinkItem>
             </li>
-          </NavList>
-        </NavContainer>
-      </NavSection>
+            <li>
+              <div>
+                <img src={global} alt="language" />
+              </div>
+              <LanguageSelector
+                size="short"
+                languageList={languages}
+                currentValue={selectLanguage}
+                setValue={handleSelect}
+              />
+            </li>
+          </Navbar>
+        </Container>
+      </Section>
     </>
   );
 }
