@@ -19,4 +19,8 @@ export const Dashboard = styled.div`
   gap: 32px;
 `;
 
-export const PostCards = styled.div``;
+export const PostCards = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
