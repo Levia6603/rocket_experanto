@@ -69,6 +69,11 @@ export const PeriodContainer = styled.label`
       padding-left: 0.5rem;
     }
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 export const Period = styled(Selector)`
   min-width: 347px;
@@ -83,9 +88,9 @@ export const Period = styled(Selector)`
   & > div:nth-of-type(1) {
     width: 347px;
     & > ul {
-      width: fit-content;
+      width: 100%;
       & > li {
-        width: fit-content;
+        width: 100%;
         padding: 1rem;
       }
     }
@@ -112,6 +117,11 @@ export const ScheduleContainer = styled.div`
     display: flex;
     justify-content: center;
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 
 export const Fluent = styled.label`
@@ -129,6 +139,11 @@ export const Fluent = styled.label`
       padding-left: 0.5rem;
     }
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 export const FluentList = styled(Selector)`
   min-width: 347px;
@@ -142,10 +157,11 @@ export const FluentList = styled(Selector)`
   }
   & > div:nth-of-type(1) {
     width: 347px;
+    z-index: 9999;
     & > ul {
-      width: fit-content;
+      width: 100%;
       & > li {
-        width: fit-content;
+        width: 100%;
         padding: 1rem;
       }
     }
@@ -167,6 +183,11 @@ export const Wanted = styled.label`
       padding-left: 0.5rem;
     }
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 export const WantedList = styled(Selector)`
   min-width: 347px;
@@ -181,9 +202,9 @@ export const WantedList = styled(Selector)`
   & > div:nth-of-type(1) {
     width: 347px;
     & > ul {
-      width: fit-content;
+      width: 100%;
       & > li {
-        width: fit-content;
+        width: 100%;
         padding: 1rem;
       }
     }
@@ -213,6 +234,11 @@ export const Motivation = styled.label`
     border-radius: 4px;
     font-size: 1rem;
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 
 export const Tag = styled.label`
@@ -230,8 +256,14 @@ export const Tag = styled.label`
       padding-left: 0.5rem;
     }
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 
+//* 輸入框
 export const InputTag = styled.div`
   display: flex;
   width: 100%;

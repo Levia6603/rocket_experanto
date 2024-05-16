@@ -42,7 +42,7 @@ function Posting() {
   //* 選擇文章有效期間
   const defaultValue = "選擇有效期間";
   const periodList = ["一週", "二週", "三週", "一個月", "兩個月", "三個月"];
-  const [peoriod, setPeriod] = useState(defaultValue);
+  const [period, setPeriod] = useState(defaultValue);
   function handleSelect(el: string) {
     setPeriod(el);
   }
@@ -88,7 +88,7 @@ function Posting() {
 
   const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
 
-  console.log(watch("period"));
+  console.log(watch("fluent"));
 
   return (
     <>
@@ -113,12 +113,12 @@ function Posting() {
               <h6>有效期間</h6>
               <Period
                 size="middle"
-                currentValue={peoriod}
+                currentValue={period}
                 languageList={periodList}
-                setValue={handleSelect}
+                setValue={(period) => handleSelect(period)}
                 {...register("period", { required: "請選擇有效期間" })}
               />
-              {errors.period && <span>請輸入文章標題</span>}
+              {errors.period && <span>請選擇有效期間</span>}
             </PeriodContainer>
             <ScheduleContainer>
               <h6>可用時段</h6>
@@ -131,7 +131,9 @@ function Posting() {
                 currentValue={fluent}
                 languageList={fluentList}
                 setValue={handleFluent}
+                {...register("fluent", { required: "請選擇流利語言" })}
               />
+              {errors.fluent && <span>請選擇流利語言</span>}
             </Fluent>
             <Wanted>
               <h6>想學的語言</h6>
@@ -140,11 +142,20 @@ function Posting() {
                 currentValue={wanted}
                 languageList={wantedList}
                 setValue={handleWanted}
+                {...register("wanted", { required: "請選擇想學的語言" })}
               />
+              {errors.period && <span>請選擇選擇語言</span>}
             </Wanted>
             <Motivation>
               <h6>學習目標</h6>
-              <textarea />
+              <textarea
+                placeholder="請輸入學習目標"
+                {...register("motivation", {
+                  required: "請輸入學習目標",
+                  minLength: 10,
+                })}
+              />
+              {errors.motivation && <span>請輸入學習目標</span>}
             </Motivation>
             <Tag>
               <h6>標籤 (最多 10 個)</h6>
@@ -152,7 +163,7 @@ function Posting() {
                 <input type="text" />
                 <TagButton type="button">新增</TagButton>
               </InputTag>
-              <p></p>
+              <p {...register("tag", { required: "請輸入標籤" })}></p>
             </Tag>
             <Certification>
               <h6>證照</h6>
