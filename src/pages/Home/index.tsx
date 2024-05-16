@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
-import { Wrapper, Container, Dashboard } from "./styles";
+import { Wrapper, Container, Dashboard, RightSection } from "./styles";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import ProfileBox from "../../components/ProfileBox";
+import LanguageFilter from "../../components/LanguageFilter";
 
 function Home() {
   return (
@@ -13,7 +14,10 @@ function Home() {
           <Dashboard>
             <Outlet />
           </Dashboard>
-          <ProfileBox />
+          <RightSection>
+            <ProfileBox />
+            <LanguageFilter />
+          </RightSection>
         </Container>
       </Wrapper>
       <Footer />
