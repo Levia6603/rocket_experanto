@@ -48,6 +48,11 @@ export const Subject = styled.label`
     border-radius: 4px;
     font-size: 1rem;
   }
+  & > span {
+    width: 100%;
+    color: red;
+    padding: 0.5rem 0.5rem;
+  }
 `;
 
 export const PeriodContainer = styled.label`

@@ -5,7 +5,7 @@ interface Props {
   right: string;
   backgroundColorRight: string;
   backgroundColorLeft: string;
-  className: string;
+  className?: string;
 }
 
 function ButtonPair({

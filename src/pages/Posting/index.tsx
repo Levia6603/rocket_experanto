@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
   Wrapper,
   Container,
@@ -27,6 +28,15 @@ import ButtonPair from "../../components/ButtonPair";
 
 import noCertification from "/no-certification-sm.svg";
 import deleteImg from "/close-lg.svg";
+
+type Formvalues = {
+  subject: string;
+  period: string;
+  fluent: string;
+  wanted: string;
+  motivation: string;
+  tag: string;
+};
 
 function Posting() {
   //* 選擇文章有效期間
@@ -69,16 +79,35 @@ function Posting() {
     setWanted(el);
   }
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Formvalues>();
+
+  const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
+
+  console.log(watch("period"));
+
   return (
     <>
       <Nav />
       <Wrapper>
         <Container>
           <Title>開始一個全新的學習</Title>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <Subject>
               <h6>貼文標題</h6>
-              <input type="text" />
+              <input
+                type="text"
+                placeholder="請輸入貼文標題"
+                {...register("subject", {
+                  required: "請輸入文章標題",
+                  minLength: 5,
+                })}
+              />
+              {errors.subject && <span>請輸入文章標題</span>}
             </Subject>
             <PeriodContainer>
               <h6>有效期間</h6>
@@ -87,7 +116,9 @@ function Posting() {
                 currentValue={peoriod}
                 languageList={periodList}
                 setValue={handleSelect}
+                {...register("period", { required: "請選擇有效期間" })}
               />
+              {errors.period && <span>請輸入文章標題</span>}
             </PeriodContainer>
             <ScheduleContainer>
               <h6>可用時段</h6>
