@@ -1,17 +1,28 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootStateType } from "../../../redux";
+import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import { Wrapper, Container, Header, Info, Certifications } from "./styles";
 import { Calendar, Needs, Plans, Tags, Tag } from "../../pages/FullPost/styles";
 import Schedule from "../Schedule";
 
 function SlidingPost() {
-  const [isVisible, setIsVisible] = useState(false);
-  const handleClick = () => {
-    setIsVisible(!isVisible);
-  };
+  // const [isVisible, setIsVisible] = useState(false);
+  // const handleClick = () => {
+  //   setIsVisible(!isVisible);
+  // };
+  const dispatch = useDispatch();
+  const isVisible = useSelector(
+    (state: RootStateType) => state.sliding.slidingPostState
+  );
 
   return (
     <>
-      <Wrapper $isVisible={isVisible} onClick={handleClick}>
+      <Wrapper
+        $isVisible={isVisible}
+        onClick={() => {
+          dispatch(setSlidingPostState());
+        }}
+      >
         <Container>
           <Header></Header>
           <Info>

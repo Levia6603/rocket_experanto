@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import avatar from "/nav-profile.png";
 import liked from "/profile_box_icons/heart.svg";
 function PostCard() {
-  const [isVisible, setIsVisible] = useState(false);
-  const handleClick = () => {
-    setIsVisible(!isVisible);
-  };
-  console.log(isVisible);
+  const dispatch = useDispatch();
   return (
-    <Wrapper onClick={handleClick}>
+    <Wrapper
+      onClick={() => {
+        dispatch(setSlidingPostState());
+      }}
+    >
       <Header>
         <div>
           <div>
