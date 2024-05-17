@@ -4,6 +4,7 @@ import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import ProfileBox from "../../components/ProfileBox";
 import LanguageFilter from "../../components/LanguageFilter";
+import SlidingPost from "../../components/SlidingPost";
 
 function Home() {
   return (
@@ -19,6 +20,7 @@ function Home() {
             <LanguageFilter />
           </RightSection>
         </Container>
+        <SlidingPost />
       </Wrapper>
       <Footer />
     </>
