@@ -1,9 +1,12 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+interface WrapperProps {
+  $isVisible: boolean;
+}
+export const Wrapper = styled.div<WrapperProps>`
   position: absolute;
   top: 0;
-  right: -100%;
+  right: ${({ $isVisible }) => ($isVisible ? "0" : "-100%")};
   transition: right 0.5s ease-in-out;
 `;
 

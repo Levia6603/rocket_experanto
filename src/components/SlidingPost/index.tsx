@@ -1,17 +1,17 @@
-import {
-  Wrapper,
-  Container,
-  Header,
-  Info,
-  Certifications,
-} from "../../pages/FullPost/styles";
+import { useState } from "react";
+import { Wrapper, Container, Header, Info, Certifications } from "./styles";
 import { Calendar, Needs, Plans, Tags, Tag } from "../../pages/FullPost/styles";
 import Schedule from "../Schedule";
 
 function SlidingPost() {
+  const [isVisible, setIsVisible] = useState(false);
+  const handleClick = () => {
+    setIsVisible(!isVisible);
+  };
+
   return (
     <>
-      <Wrapper>
+      <Wrapper $isVisible={isVisible} onClick={handleClick}>
         <Container>
           <Header></Header>
           <Info>

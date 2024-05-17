@@ -1,9 +1,15 @@
+import { useState } from "react";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import avatar from "/nav-profile.png";
 import liked from "/profile_box_icons/heart.svg";
 function PostCard() {
+  const [isVisible, setIsVisible] = useState(false);
+  const handleClick = () => {
+    setIsVisible(!isVisible);
+  };
+  console.log(isVisible);
   return (
-    <Wrapper>
+    <Wrapper onClick={handleClick}>
       <Header>
         <div>
           <div>
