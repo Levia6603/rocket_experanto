@@ -19,8 +19,8 @@ function Home() {
             <ProfileBox />
             <LanguageFilter />
           </RightSection>
-          <SlidingPost />
         </Container>
+        <SlidingPost />
       </Wrapper>
       <Footer />
     </>
