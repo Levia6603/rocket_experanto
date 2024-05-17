@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 
 export const Wrapper = styled.section`
   padding: 40px 0;
+  overflow: hidden;
 `;
 export const Container = styled.div`
   display: flex;
@@ -9,6 +10,7 @@ export const Container = styled.div`
   max-width: 1320px;
   padding: 0 12px;
   margin: 0 auto;
+  position: relative;
 `;
 
 export const Dashboard = styled.div`

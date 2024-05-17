@@ -1,9 +1,16 @@
+import { useDispatch } from "react-redux";
+import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import avatar from "/nav-profile.png";
 import liked from "/profile_box_icons/heart.svg";
 function PostCard() {
+  const dispatch = useDispatch();
   return (
-    <Wrapper>
+    <Wrapper
+      onClick={() => {
+        dispatch(setSlidingPostState());
+      }}
+    >
       <Header>
         <div>
           <div>
