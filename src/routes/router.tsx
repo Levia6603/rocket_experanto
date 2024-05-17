@@ -9,6 +9,7 @@ import ProfileIndex from "../pages/ProfileIndex";
 import Home from "../pages/Home";
 import HomeIndex from "../pages/HomeIndex";
 import FullPost from "../pages/FullPost";
+import Posting from "../pages/Posting";
 
 export const router = createBrowserRouter([
   {
@@ -47,4 +48,5 @@ export const router = createBrowserRouter([
       { path: "post", element: <FullPost /> },
     ],
   },
+  { path: "posting", element: <Posting /> },
 ]);
