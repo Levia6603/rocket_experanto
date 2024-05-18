@@ -1,15 +1,27 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootStateType } from "../../../redux";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
-import { Wrapper, Container, Header, Info, Certifications } from "./styles";
+import {
+  Wrapper,
+  Container,
+  Header,
+  Certifications,
+  CloseBtn,
+  OpenBtn,
+  ControlBar,
+} from "./styles";
 import { Calendar, Needs, Plans, Tags, Tag } from "../../pages/FullPost/styles";
 import Schedule from "../Schedule";
+import close from "/close-lg.svg";
+import newPage from "/box-arrow-up-right.svg";
+import avatar from "/avatar-80.svg";
+import location from "/map-pin.svg";
+import commments from "/message.svg";
+import liked from "/profile_box_icons/heart.svg";
 
 function SlidingPost() {
-  // const [isVisible, setIsVisible] = useState(false);
-  // const handleClick = () => {
-  //   setIsVisible(!isVisible);
-  // };
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isVisible = useSelector(
     (state: RootStateType) => state.sliding.slidingPostState
@@ -23,27 +35,46 @@ function SlidingPost() {
           dispatch(setSlidingPostState());
         }}
       >
+        <ControlBar>
+          <CloseBtn>
+            <img src={close} alt="close" />
+          </CloseBtn>
+          <OpenBtn onClick={() => navigate("/home/post")}>
+            <p>觀看完整貼文</p>
+            <img src={newPage} alt="Direct to full post" />
+          </OpenBtn>
+        </ControlBar>
+
         <Container>
-          <Header></Header>
-          <Info>
+          <Header>
             <div>
-              <h4>你好</h4>
+              <img src={avatar} alt="Avatar" />
             </div>
+
             <div>
               <div>
-                <p>posted time</p>
-                <p>2024/05/01</p>
+                <h2>Ella Dowson</h2>
+                <div>
+                  <img src={liked} alt="liked" />
+                </div>
               </div>
               <div>
-                <p>Duration</p>
-                <p>2024/05/01 - 2024/05/01</p>
+                <div>
+                  <img src={location} alt="Location" />
+                </div>
+                <p>Kaohsiung</p>
               </div>
               <div>
-                <p>Location</p>
-                <p>Taipei</p>
+                <div>
+                  <img src={commments} alt="Comments" />
+                </div>
+                <p>
+                  <span> 5 </span>
+                  則留言
+                </p>
               </div>
             </div>
-          </Info>
+          </Header>
           <Calendar>
             <div>
               <h6>Available Time</h6>
@@ -58,12 +89,8 @@ function SlidingPost() {
             </div>
             <div>
               <div>
-                <h6>我會說：</h6>
-                <p>English</p>
-              </div>
-              <div>
                 <h6>我想學：</h6>
-                <p>English</p>
+                <p>Mandarin</p>
               </div>
               <div>
                 <h6>我希望可以：</h6>
@@ -80,7 +107,11 @@ function SlidingPost() {
               <h6>你可以學到：</h6>
             </div>
             <div>
-              <p>教學計畫：</p>
+              <div>
+                <h6>教學語言：</h6>
+                <p>English</p>
+              </div>
+
               <div>
                 <p>
                   <span>1. </span>Lorem ipsum dolor sit amet consectetur
