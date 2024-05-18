@@ -20,9 +20,9 @@ export const Dashboard = styled.div`
   flex-grow: 1;
   align-items: center;
   gap: 32px;
-  padding: 32px;
-  border: 1px solid #616161;
-  border-radius: 4px;
+  /* padding: 32px; */
+  /* border: 1px solid #616161;
+  border-radius: 4px; */
 `;
 export const ProfileMenu = styled.div`
   width: 306px;
