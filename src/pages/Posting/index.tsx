@@ -25,9 +25,6 @@ import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import ButtonPair from "../../components/ButtonPair";
 
-import noCertification from "/no-certification-sm.svg";
-import deleteImg from "/close-lg.svg";
-
 type Formvalues = {
   subject: string;
   period: string;
