@@ -86,12 +86,8 @@ function FullPost() {
             </div>
             <div>
               <div>
-                <h6>我會說：</h6>
-                <p>English</p>
-              </div>
-              <div>
                 <h6>我想學：</h6>
-                <p>English</p>
+                <p>Mandarin</p>
               </div>
               <div>
                 <h6>我希望可以：</h6>
@@ -108,7 +104,11 @@ function FullPost() {
               <h6>你可以學到：</h6>
             </div>
             <div>
-              <p>教學計畫：</p>
+              <div>
+                <h6>教學語言：</h6>
+                <p>English</p>
+              </div>
+
               <div>
                 <p>
                   <span>1. </span>Lorem ipsum dolor sit amet consectetur

@@ -155,10 +155,26 @@ export const Plans = styled.div`
   }
   //* 內容
   & > div:nth-child(2) {
-    display: flex;
     padding-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     //* 教學計畫
-    & > p:nth-child(1) {
+    & > div:nth-child(1) {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      & > h6 {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        max-width: 112px;
+        max-height: 32px;
+        min-width: 112px;
+        min-height: 32px;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+      }
       display: flex;
       min-width: 111px;
     }
