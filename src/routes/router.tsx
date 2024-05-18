@@ -11,6 +11,7 @@ import HomeIndex from "../pages/HomeIndex";
 import FullPost from "../pages/FullPost";
 import Posting from "../pages/Posting";
 import Apply from "../components/Apply";
+import WaitingList from "../pages/WaitingList";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         path: "profile/edit",
         element: <ProfileEdit />,
+      },
+      {
+        path: "waitinglist",
+        element: <WaitingList />,
       },
     ],
   },
