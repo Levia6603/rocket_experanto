@@ -10,6 +10,7 @@ import Home from "../pages/Home";
 import HomeIndex from "../pages/HomeIndex";
 import FullPost from "../pages/FullPost";
 import Posting from "../pages/Posting";
+import Apply from "../components/Apply";
 
 export const router = createBrowserRouter([
   {
@@ -49,4 +50,6 @@ export const router = createBrowserRouter([
     ],
   },
   { path: "posting", element: <Posting /> },
+  { path: "/applying", element: <Apply /> },
+  { path: "*", element: <div>Not Found</div> },
 ]);
