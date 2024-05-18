@@ -17,10 +17,9 @@ import {
   Tag,
   InputTag,
   TagButton,
-  Certification,
-  CertificationCard,
-  DeleteButton,
+  CertificationsWrapper,
 } from "./styles";
+import CertificationsEdit from "../../components/CertificationsEdit";
 import Schedule from "../../components/Schedule";
 import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
@@ -165,19 +164,10 @@ function Posting() {
               </InputTag>
               <p {...register("tag", { required: "請輸入標籤" })}></p>
             </Tag>
-            <Certification>
+            <CertificationsWrapper>
               <h6>證照</h6>
-              <ul>
-                <li>
-                  <CertificationCard>
-                    <DeleteButton type="button">
-                      <img src={deleteImg} alt="" />
-                    </DeleteButton>
-                    <img src={noCertification} alt="noCertification" />
-                  </CertificationCard>
-                </li>
-              </ul>
-            </Certification>
+              <CertificationsEdit />
+            </CertificationsWrapper>
             <ButtonPair
               right="發布"
               left="取消"
