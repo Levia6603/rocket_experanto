@@ -6,11 +6,6 @@ export const Certification = styled.div`
   flex-direction: column;
   width: 100%;
   gap: 12px;
-  & > h6 {
-    font-weight: bold;
-    border-bottom: 1px solid #dbdbdb;
-    padding-bottom: 0.5rem;
-  }
 `;
 export const CertificationCard = styled.div`
   display: flex;
