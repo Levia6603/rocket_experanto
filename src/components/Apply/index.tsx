@@ -8,14 +8,9 @@ import {
   CertificationWrapper,
 } from "./styles";
 import Schedule from "../Schedule";
+import Certification from "../CertificationsEdit";
 import close from "/close-lg.svg";
 import avatar from "/nav-profile.png";
-import {
-  Certification,
-  DeleteButton,
-  CertificationCard,
-} from "../../pages/Posting/styles";
-import noCertification_sm from "/no-certification-sm.svg";
 
 function Apply() {
   return (
@@ -52,16 +47,7 @@ function Apply() {
         </ScheduleWrapper>
         <CertificationWrapper>
           <h6>語言證照</h6>
-          <Certification>
-            <CertificationCard>
-              <DeleteButton>
-                <img src={close} alt="close" />
-              </DeleteButton>
-              <div>
-                <img src={noCertification_sm} alt="no certification" />
-              </div>
-            </CertificationCard>
-          </Certification>
+          <Certification />
         </CertificationWrapper>
       </Container>
     </Wrapper>

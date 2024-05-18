@@ -6,9 +6,12 @@ function CertificationsEdit() {
     <>
       <Certification>
         <CertificationCard>
-          <DeleteButton>
-            <img src={close} alt="close" />
-          </DeleteButton>
+          <div>
+            <DeleteButton>
+              <img src={close} alt="close" />
+            </DeleteButton>
+          </div>
+
           <div>
             <img src={noCertification_sm} alt="no certification" />
           </div>
