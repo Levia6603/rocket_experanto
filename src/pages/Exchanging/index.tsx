@@ -14,12 +14,8 @@ import {
 } from "./styles";
 import ButtonPair from "../../components/ButtonPair";
 
-interface Props {
-  isAllCompleted: boolean;
-  className?: string;
-}
-function Exchanging({ isAllCompleted }: Props) {
-  const [isCompleted, setIsCompleted] = useState(isAllCompleted);
+function Exchanging() {
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const toggle = () => {
     setIsCompleted((isCompleted) => (isCompleted = !isCompleted));
   };
