@@ -19,7 +19,7 @@ interface Props {
   className?: string;
 }
 function Exchanging({ isAllCompleted }: Props) {
-  const [isCompleted, setIsCompleted] = useState(isAllCompleted);
+  const [isCompleted, setIsCompleted] = useState<boolean>(isAllCompleted);
   const toggle = () => {
     setIsCompleted((isCompleted) => (isCompleted = !isCompleted));
   };
