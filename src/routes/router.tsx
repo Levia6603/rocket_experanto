@@ -13,6 +13,7 @@ import Posting from "../pages/Posting";
 import Apply from "../components/Apply";
 import WaitingList from "../pages/WaitingList";
 import Notifications from "../pages/Notifications";
+import Exchanging from "../pages/Exchanging";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "notifications",
         element: <Notifications />,
+      },
+      {
+        path: "exchanging/:exchangingId",
+        element: <Exchanging />,
       },
     ],
   },
