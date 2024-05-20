@@ -14,7 +14,7 @@ import Apply from "../components/Apply";
 import WaitingList from "../pages/WaitingList";
 import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
-
+import Commenting from "../pages/Commenting";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +53,10 @@ export const router = createBrowserRouter([
       {
         path: "exchanging/:exchangingId",
         element: <Exchanging />,
+      },
+      {
+        path: "commenting/:commentingId",
+        element: <Commenting />,
       },
     ],
   },
