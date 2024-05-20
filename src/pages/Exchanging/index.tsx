@@ -16,6 +16,7 @@ import ButtonPair from "../../components/ButtonPair";
 
 function Exchanging() {
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
   const toggle = () => {
     setIsCompleted((isCompleted) => (isCompleted = !isCompleted));
   };
