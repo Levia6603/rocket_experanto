@@ -12,6 +12,7 @@ import FullPost from "../pages/FullPost";
 import Posting from "../pages/Posting";
 import Apply from "../components/Apply";
 import WaitingList from "../pages/WaitingList";
+import Notifications from "../pages/Notifications";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ export const router = createBrowserRouter([
       {
         path: "waitinglist",
         element: <WaitingList />,
+      },
+      {
+        path: "notifications",
+        element: <Notifications />,
       },
     ],
   },
