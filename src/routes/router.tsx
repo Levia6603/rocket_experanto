@@ -29,11 +29,6 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/signup/fluent",
-    element: <Fluent />,
-  },
-  { path: "/signup/wanted", element: <Wanted /> },
-  {
     path: "/signup",
     element: <SignUpEdit />,
     children: [{ path: "edit", element: <ProfileEdit /> }],
