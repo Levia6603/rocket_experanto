@@ -16,6 +16,7 @@ import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
 import Commenting from "../pages/Commenting";
 import Matching from "../pages/Matching";
+import SignUpEdit from "../pages/SignUpEdit";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ export const router = createBrowserRouter([
     element: <Fluent />,
   },
   { path: "/signup/wanted", element: <Wanted /> },
+  {
+    path: "/signup",
+    element: <SignUpEdit />,
+    children: [{ path: "edit", element: <ProfileEdit /> }],
+  },
   {
     path: "/user",
     element: <Profile />,
