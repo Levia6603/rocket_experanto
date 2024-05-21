@@ -1,8 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Login from "../pages/Login";
-import Fluent from "../pages/Fluent";
-import Wanted from "../pages/Wanted";
 import Profile from "../pages/Profile";
 import ProfileEdit from "../pages/ProfileEdit";
 import ProfileIndex from "../pages/ProfileIndex";
