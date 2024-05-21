@@ -3,6 +3,7 @@ import Nav from "../../components/Nav";
 import Footer from "../../components/Footer";
 import { Wrapper, Container, Dashboard } from "./profileStyle";
 import ProfileBox from "../../components/ProfileBox";
+import SlidingMatching from "../../components/SlidingMatching";
 
 function Profile() {
   return (
@@ -15,6 +16,7 @@ function Profile() {
           </Dashboard>
           <ProfileBox />
         </Container>
+        <SlidingMatching />
       </Wrapper>
       <Footer />
     </>

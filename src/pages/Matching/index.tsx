@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import {
   Wrapper,
   Container,
@@ -20,6 +22,9 @@ function Matching() {
   const handleShowDetails = () => {
     setShowDetails((showDetails) => !showDetails);
   };
+
+  //* 滑入顯示資訊
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -69,7 +74,10 @@ function Matching() {
                 </div>
               </Card>
               <Candidates $isOpen={!showDetails}>
-                <Candidate title="候選人">
+                <Candidate
+                  title="候選人"
+                  onClick={() => dispatch(setSlidingPostState())}
+                >
                   <div>
                     <div>
                       <img src={avatar} alt="Avatar" />
