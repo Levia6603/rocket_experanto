@@ -15,6 +15,8 @@ import WaitingList from "../pages/WaitingList";
 import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
 import Commenting from "../pages/Commenting";
+import Matching from "../pages/Matching";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -57,6 +59,10 @@ export const router = createBrowserRouter([
       {
         path: "commenting/:commentingId",
         element: <Commenting />,
+      },
+      {
+        path: "matching",
+        element: <Matching />,
       },
     ],
   },
