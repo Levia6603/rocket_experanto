@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
         element: <Commenting />,
       },
       {
-        path: "matching",
+        path: "matching/:id",
         element: <Matching />,
       },
     ],
