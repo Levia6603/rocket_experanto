@@ -76,6 +76,7 @@ export const LanguageSection = styled.div`
 
   & > div:nth-child(3) {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
     padding: 0.5rem 0;
     & > .addCard {
