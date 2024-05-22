@@ -15,6 +15,7 @@ import Exchanging from "../pages/Exchanging";
 import Commenting from "../pages/Commenting";
 import Matching from "../pages/Matching";
 import SignUpEdit from "../pages/SignUpEdit";
+import FullReview from "../pages/FullReview";
 
 export const router = createBrowserRouter([
   {
@@ -62,6 +63,10 @@ export const router = createBrowserRouter([
       {
         path: "matching/:id",
         element: <Matching />,
+      },
+      {
+        path: "fullreview/:id",
+        element: <FullReview />,
       },
     ],
   },
