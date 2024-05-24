@@ -27,7 +27,7 @@ import saveWhite from "/save-white.svg";
 import Select from "../../components/Select";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { GetLanguageList } from "../../Api";
+import apiBase from "../../Api";
 
 type LanguageList = { id: number; Name: string }[];
 type PlanList = { language: string; plans: string[] }[];
@@ -40,7 +40,7 @@ const ProfileEdit = () => {
 
   async function getList() {
     const list: LanguageList = await axios
-      .get(GetLanguageList)
+      .get(apiBase.GET_LANGUAGE_LIST)
       .then((res) => res.data.data);
     setLanguageList(list);
   }
