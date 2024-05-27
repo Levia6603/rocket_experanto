@@ -190,10 +190,23 @@ interface AddCertBtnProps {
   $color?: string;
   $backgroundColor?: string;
 }
-export const AddCertBtn = styled(Button)<AddCertBtnProps>`
+export const AddCertBtn = styled.div<AddCertBtnProps>`
+  width: fit-content;
+  height: fit-content;
   background-color: ${({ $backgroundColor }) =>
     $backgroundColor || "transparent"};
   color: ${({ $color }) => $color || "black"};
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 8px 16px;
+  cursor: pointer;
+`;
+
+export const UploadImgBtn = styled(Button)`
+  border: 0;
+  background-color: transparent;
+  border: 2px solid black;
   border-radius: 0.5rem;
 `;
 
@@ -202,10 +215,17 @@ export const CertificationsSection = styled.div`
     font-weight: bold;
     border-bottom: 1px solid #616161;
   }
-  & > div {
-    display: flex;
-    gap: 0.5rem;
-    padding-top: 10px;
+  & > form {
+    & > div {
+      display: flex;
+      gap: 0.5rem;
+      padding-top: 10px;
+      & > label {
+        & > input {
+          display: none;
+        }
+      }
+    }
   }
 `;
 

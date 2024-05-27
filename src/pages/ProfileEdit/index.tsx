@@ -16,13 +16,13 @@ import {
   CancelBtn,
   SaveBtn,
   AddCertBtn,
+  UploadImgBtn,
 } from "./styles";
 import closeIcon from "/close-lg.svg";
 import deleteCircle from "/delete-circle.svg";
 import avatar from "/nav-profile.png";
 import addSquare from "/add-square.svg";
 import addCircle from "/add-circle-lg.svg";
-import noCertification_sm from "/no-certification-sm.svg";
 import saveBlack from "/save-black.svg";
 import saveWhite from "/save-white.svg";
 import Select from "../../components/Select";
@@ -39,6 +39,8 @@ const ProfileEdit = () => {
     { language: "", plans: [""] },
   ]);
 
+  const [imageURLs, setImageURLs] = useState<string[]>([]);
+
   async function getList() {
     const list: LanguageList = await axios
       .get(apiBase.GET_LANGUAGE_LIST)
@@ -52,6 +54,85 @@ const ProfileEdit = () => {
   useEffect(() => {
     console.log(planList);
   }, [planList]);
+
+  useEffect(() => {
+    console.log(imageURLs);
+  }, [imageURLs]);
+  //* 設定照片，因為它會是一個陣列，所以類別要使用File[]
+  const [images, setImages] = useState<File[] | null>(null);
+  //* 設定照片預覽，同理，它會是一個陣列，所以類別要使用string[]
+  const [imagePreviews, setImagePreviews] = useState<string[] | null>(null);
+  //* 設定是否還在上傳中
+  const [isLoading, setIsLoading] = useState(false);
+  //* 從.env引入upload_preset
+  const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
+  //* 把cloud_name設定成變數
+  const cloud_name = "deqjubczi";
+
+  //* 設定照片
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      setImages(files);
+      setImagePreviews(files.map((file) => URL.createObjectURL(file))); //* 產生預覽照片，比較意外的是這邊的迴圈是要在setImagePreviews裡面，我一開始以為是用回圈包住它。
+    }
+  };
+
+  //* 刪除照片
+  const handleDeleteImage = (index: number) => {
+    if (imagePreviews) {
+      setImagePreviews(imagePreviews.filter((_, i) => i !== index));
+    }
+    if (images) {
+      setImages(images.filter((_, i) => i !== index));
+    }
+  };
+
+  //* 上傳，這邊很重要！！！
+  const uploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); //* 防止表單送出
+    setIsLoading(true); //* 開始上傳，透過改成true，讓按鈕消失，直到上傳完成後才回來
+
+    /* 這邊是雙層的if判斷式，第一個判斷是判斷images裡面是否為空值，若不是空值的話，則進入下一個階段，
+    用 Promise.all 來取得所有圖片的網址，申間上傳的過程和單張一樣，只是因為 Promise.all 的關係，會等到全部完成後才傳回值 */
+    try {
+      if (images) {
+        const imageURLs = await Promise.all(
+          images.map(async (image) => {
+            if (
+              image.type === "image/png" ||
+              image.type === "image/jpeg" ||
+              image.type === "image/jpg" ||
+              image.type === "image/svg+xml"
+            ) {
+              const img = new FormData(); //* 產生一個 FormData 物件，並加入img, cloud_name, upload_preset，接著用 fetch 上傳檔案，再把網址接回來
+              img.append("file", image);
+              img.append("cloud_name", cloud_name);
+              img.append("upload_preset", upload_preset);
+              const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${cloud_name}/upload`,
+                {
+                  method: "post",
+                  body: img,
+                }
+              );
+              const imgData = await response.json();
+              return imgData.secure_url;
+            }
+            return "";
+          })
+        );
+
+        setImageURLs(imageURLs);
+        setImagePreviews([]);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <ProfileEditSection>
@@ -185,21 +266,7 @@ const ProfileEdit = () => {
               </div>
             </div>
           </LanguageSection>
-          <CertificationsSection>
-            <h4>Certifications</h4>
-            <div>
-              <CertificationCard>
-                <div>
-                  <img src={noCertification_sm} alt="" />
-                </div>
-              </CertificationCard>
-            </div>
-            <div>
-              <AddCertBtn type="button" $color="" $backgroundColor="">
-                新增檔案
-              </AddCertBtn>
-            </div>
-          </CertificationsSection>
+
           <div>
             <CancelBtn>
               <p>Cancel</p>
@@ -210,6 +277,49 @@ const ProfileEdit = () => {
             </SaveBtn>
           </div>
         </Form>
+        <CertificationsSection title="證書上傳區">
+          <h4>Certifications</h4>
+          <form onSubmit={uploadImage}>
+            <div>
+              {imagePreviews?.map((preview, index) => (
+                <CertificationCard key={index}>
+                  <div>
+                    <img
+                      src={closeIcon}
+                      alt=""
+                      onClick={() => handleDeleteImage(index)}
+                    />
+                  </div>
+                  <div>
+                    <img src={preview} alt={`image-${index}`} />
+                  </div>
+                </CertificationCard>
+              ))}
+            </div>
+            <div>
+              <label>
+                <AddCertBtn $color="" $backgroundColor="">
+                  新增檔案
+                </AddCertBtn>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  onChange={handleImageChange}
+                  multiple
+                />
+              </label>
+            </div>
+
+            <p>
+              {isLoading ? (
+                "Uploading..."
+              ) : (
+                <UploadImgBtn type="submit">上傳圖片</UploadImgBtn>
+              )}
+            </p>
+          </form>
+        </CertificationsSection>
       </ProfileEditSection>
     </>
   );
