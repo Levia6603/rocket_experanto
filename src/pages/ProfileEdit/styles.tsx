@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Button from "../../styles/Button";
 import Selector from "../../components/Selector";
 
@@ -174,7 +174,7 @@ export const AddItemBtn = styled(Button)`
     height: 2rem;
   }
 `;
-
+//帶圖片版本
 export const AddCardBtn = styled(Button)`
   border: 0;
   background-color: transparent;
@@ -184,6 +184,17 @@ export const AddCardBtn = styled(Button)`
     width: 40px;
     height: 40px;
   }
+`;
+
+interface AddCertBtnProps {
+  $color?: string;
+  $backgroundColor?: string;
+}
+export const AddCertBtn = styled(Button)<AddCertBtnProps>`
+  background-color: ${({ $backgroundColor }) =>
+    $backgroundColor || "transparent"};
+  color: ${({ $color }) => $color || "black"};
+  border-radius: 0.5rem;
 `;
 
 export const CertificationsSection = styled.div`

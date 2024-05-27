@@ -15,6 +15,7 @@ import {
   CertificationCard,
   CancelBtn,
   SaveBtn,
+  AddCertBtn,
 } from "./styles";
 import closeIcon from "/close-lg.svg";
 import deleteCircle from "/delete-circle.svg";
@@ -53,9 +54,9 @@ const ProfileEdit = () => {
   }, [planList]);
   return (
     <>
-      <ProfileEditSection title="個人資料編輯區主外框">
-        <Form title="個人資料編輯區" action="submit">
-          <Photo title="照片編輯區">
+      <ProfileEditSection>
+        <Form action="submit">
+          <Photo>
             <div>
               <img src={avatar} alt="" />
             </div>
@@ -64,9 +65,9 @@ const ProfileEdit = () => {
               <p>Change Photo</p>
             </PhotoChangeButton>
           </Photo>
-          <div title="主要編輯表單區">
+          <div>
             <h4>Edit Profile</h4>
-            <PersonalInfo title="編輯姓別地區">
+            <PersonalInfo>
               <label htmlFor="">
                 <p>Gender</p>
                 <PersonalInfoSelect
@@ -91,7 +92,7 @@ const ProfileEdit = () => {
               </label>
             </PersonalInfo>
           </div>
-          <LanguageSection title="編輯語言區">
+          <LanguageSection>
             <h4>Language</h4>
             <p>Create language (最多 5 個)</p>
             <div>
@@ -191,18 +192,15 @@ const ProfileEdit = () => {
                 <div>
                   <img src={noCertification_sm} alt="" />
                 </div>
-                <div>
-                  <input type="text" placeholder="請輸入圖檔標題" />
-                </div>
               </CertificationCard>
             </div>
             <div>
-              <AddCardBtn>
-                <img src={addCircle} alt="" />
-              </AddCardBtn>
+              <AddCertBtn type="button" $color="" $backgroundColor="">
+                新增檔案
+              </AddCertBtn>
             </div>
           </CertificationsSection>
-          <div title="整張表單按鈕區">
+          <div>
             <CancelBtn>
               <p>Cancel</p>
             </CancelBtn>
