@@ -19,9 +19,13 @@ export const Photo = styled.div`
   align-items: center;
   padding: 2rem 0;
   & > div:nth-child(1) {
+    overflow: hidden;
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
     & > img {
       width: 80px;
-      height: 80px;
+      object-fit: cover;
     }
   }
   & > h5 {

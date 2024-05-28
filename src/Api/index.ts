@@ -1,10 +1,11 @@
-const apiUrl = import.meta.env.VITE_API_URL;
-
 const apiBase = {
   //* 取得語言列表
-  GET_LANGUAGE_LIST: `${apiUrl}/api/languages`,
-  GET_LOCATION_LIST: `${apiUrl}/api/location`,
-  GET_GENDER_LIST: `${apiUrl}/api/gender`,
+  GET_LANGUAGE_LIST: `/api/languages`,
+  GET_LOGIN_URL: `/api/login/google`,
+  GOOGLE_LOGIN: `/api/login`,
+  GET_LOCATION_LIST: `/api/location`,
+  GET_GENDER_LIST: `/api/gender`,
+
 };
 
 export default apiBase;
