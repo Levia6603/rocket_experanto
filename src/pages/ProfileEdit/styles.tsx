@@ -1,4 +1,4 @@
-import { styled } from "styled-components";
+import styled from "styled-components";
 import Button from "../../styles/Button";
 import Selector from "../../components/Selector";
 
@@ -174,7 +174,7 @@ export const AddItemBtn = styled(Button)`
     height: 2rem;
   }
 `;
-
+//帶圖片版本
 export const AddCardBtn = styled(Button)`
   border: 0;
   background-color: transparent;
@@ -186,15 +186,45 @@ export const AddCardBtn = styled(Button)`
   }
 `;
 
+interface AddCertBtnProps {
+  $color?: string;
+  $backgroundColor?: string;
+}
+export const AddCertBtn = styled.div<AddCertBtnProps>`
+  width: fit-content;
+  height: fit-content;
+  background-color: ${({ $backgroundColor }) =>
+    $backgroundColor || "transparent"};
+  color: ${({ $color }) => $color || "black"};
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  padding: 8px 16px;
+  cursor: pointer;
+`;
+
+export const UploadImgBtn = styled(Button)`
+  border: 0;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 0.5rem;
+`;
+
 export const CertificationsSection = styled.div`
   & > h4 {
     font-weight: bold;
     border-bottom: 1px solid #616161;
   }
+
   & > div {
     display: flex;
     gap: 0.5rem;
     padding-top: 10px;
+    & > label {
+      & > input {
+        display: none;
+      }
+    }
   }
 `;
 
