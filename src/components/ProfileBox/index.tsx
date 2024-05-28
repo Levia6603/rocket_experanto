@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Container, Photo, Menu } from "./profileStyle";
 import star from "/profile_box_icons/star-black.png";
 import { useSelector } from "react-redux";
@@ -8,6 +9,7 @@ function ProfileBox() {
   const { avatar, name } = user;
   console.log(user);
 
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -34,42 +36,42 @@ function ProfileBox() {
         </Photo>
         <Menu>
           <ul>
-            <li>
+            <li onClick={() => navigate("profile/index")}>
               <img src="/profile_box_icons/person.svg" alt="" />
-              <p>Profile</p>
+              <p>個人資料</p>
             </li>
-            <li>
+            <li onClick={() => navigate("notifications")}>
               <img src="/profile_box_icons/bell.svg" alt="" />
               <div>
-                <p>Notification</p>
+                <p>訊息通知</p>
                 <div>
                   <p>1</p>
                 </div>
               </div>
             </li>
-            <li>
+            <li onClick={() => navigate("waiting_list")}>
               <img src="/profile_box_icons/list-check.svg" alt="" />
-              <p>Published Post</p>
+              <p>已發申請</p>
             </li>
             <li>
               <img src="/profile_box_icons/heart.svg" alt="" />
-              <p>Liked Post</p>
+              <p>我的收藏</p>
             </li>
-            <li>
+            <li onClick={() => navigate("exchanging/:id")}>
               <img src="/profile_box_icons/friends.svg" alt="" />
-              <p>Proceeding</p>
+              <p>現在進行式</p>
             </li>
-            <li>
+            <li onClick={() => navigate("matching")}>
               <img src="/profile_box_icons/cup-hot.svg" alt="" />
-              <p>Awaiting</p>
+              <p>等待配對</p>
             </li>
-            <li>
+            <li onClick={() => navigate("full_review/:id")}>
               <img src="/profile_box_icons/trophy.svg" alt="" />
-              <p>Completed</p>
+              <p>過去完成式</p>
             </li>
             <li>
               <img src="/profile_box_icons/box-arrow-in-right.svg" alt="" />
-              <p>Log out</p>
+              <p>登出</p>
             </li>
           </ul>
         </Menu>

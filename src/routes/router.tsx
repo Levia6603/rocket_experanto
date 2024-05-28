@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
@@ -33,24 +33,24 @@ export const router = createBrowserRouter([
     element: <PassValue />,
   },
   {
-    path: "/signup",
+    path: "/user/profile",
     element: <SignUpEdit />,
-    children: [{ path: "edit", element: <ProfileEdit /> }],
+    children: [
+      { path: "", element: <Navigate to="index" replace /> },
+      { path: "edit", element: <ProfileEdit /> },
+    ],
   },
   {
     path: "/user",
     element: <Profile />,
     children: [
+      { path: "", element: <Navigate to="profile/index" replace /> },
       {
-        path: "profile",
+        path: "profile/index",
         element: <ProfileIndex />,
       },
       {
-        path: "profile/edit",
-        element: <ProfileEdit />,
-      },
-      {
-        path: "waitinglist",
+        path: "waiting_list",
         element: <WaitingList />,
       },
       {
@@ -58,19 +58,19 @@ export const router = createBrowserRouter([
         element: <Notifications />,
       },
       {
-        path: "exchanging/:exchangingId",
+        path: "exchanging/:id",
         element: <Exchanging />,
       },
       {
-        path: "commenting/:commentingId",
+        path: "commenting/:id",
         element: <Commenting />,
       },
       {
-        path: "matching/:id",
+        path: "matching",
         element: <Matching />,
       },
       {
-        path: "fullreview/:id",
+        path: "full_review/:id",
         element: <FullReview />,
       },
     ],
@@ -79,6 +79,7 @@ export const router = createBrowserRouter([
     path: "/home",
     element: <Home />,
     children: [
+      { path: "", element: <Navigate to="index" replace /> },
       { path: "index", element: <HomeIndex /> },
       { path: "post", element: <FullPost /> },
     ],
