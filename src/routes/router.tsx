@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/passValue",
+    path: "/auth/verify",
     element: <PassValue />,
   },
   {
