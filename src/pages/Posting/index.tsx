@@ -21,8 +21,6 @@ import {
 } from "./styles";
 import CertificationsEdit from "../../components/CertificationsEdit";
 import Schedule from "../../components/Schedule";
-import Nav from "../../components/Nav";
-import Footer from "../../components/Footer";
 import ButtonPair from "../../components/ButtonPair";
 
 type Formvalues = {
@@ -88,7 +86,6 @@ function Posting() {
 
   return (
     <>
-      <Nav />
       <Wrapper>
         <Container>
           <Title>開始一個全新的學習</Title>
@@ -174,7 +171,6 @@ function Posting() {
           </Form>
         </Container>
       </Wrapper>
-      <Footer />
     </>
   );
 }
