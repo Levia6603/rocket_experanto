@@ -215,15 +215,14 @@ export const CertificationsSection = styled.div`
     font-weight: bold;
     border-bottom: 1px solid #616161;
   }
-  & > form {
-    & > div {
-      display: flex;
-      gap: 0.5rem;
-      padding-top: 10px;
-      & > label {
-        & > input {
-          display: none;
-        }
+
+  & > div {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 10px;
+    & > label {
+      & > input {
+        display: none;
       }
     }
   }

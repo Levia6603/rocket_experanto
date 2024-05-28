@@ -27,6 +27,7 @@ import saveBlack from "/save-black.svg";
 import saveWhite from "/save-white.svg";
 import Select from "../../components/Select";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
 
@@ -38,8 +39,9 @@ const ProfileEdit = () => {
   const [planList, setPlanList] = useState<PlanList>([
     { language: "", plans: [""] },
   ]);
-
-  const [imageURLs, setImageURLs] = useState<string[]>([]);
+  const [imageURLs, setImageURLs] = useState<string[] | null | void>([]); //* 設定照片網址
+  const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   async function getList() {
     const list: LanguageList = await axios
@@ -55,10 +57,7 @@ const ProfileEdit = () => {
     console.log(planList);
   }, [planList]);
 
-  useEffect(() => {
-    console.log(imageURLs);
-  }, [imageURLs]);
-  //* 設定照片，因為它會是一個陣列，所以類別要使用File[]
+  //* 設定照片，因為它會是一個陣列，所以類別要使用File[]，單張照片則是File
   const [images, setImages] = useState<File[] | null>(null);
   //* 設定照片預覽，同理，它會是一個陣列，所以類別要使用string[]
   const [imagePreviews, setImagePreviews] = useState<string[] | null>(null);
@@ -69,16 +68,16 @@ const ProfileEdit = () => {
   //* 把cloud_name設定成變數
   const cloud_name = "deqjubczi";
 
-  //* 設定照片
+  //* 設定照片產生預覽
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       setImages(files);
-      setImagePreviews(files.map((file) => URL.createObjectURL(file))); //* 產生預覽照片，比較意外的是這邊的迴圈是要在setImagePreviews裡面，我一開始以為是用回圈包住它。
+      setImagePreviews(files.map((file) => URL.createObjectURL(file))); //* 產生預覽照片，比較意外的是這邊的迴圈是要在setImagePreviews裡面，我一開始以為是用迴圈包住它。
     }
   };
 
-  //* 刪除照片
+  //* 刪除照片，第一個是刪除預覽，第二個是刪除照片
   const handleDeleteImage = (index: number) => {
     if (imagePreviews) {
       setImagePreviews(imagePreviews.filter((_, i) => i !== index));
@@ -91,10 +90,10 @@ const ProfileEdit = () => {
   //* 上傳，這邊很重要！！！
   const uploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //* 防止表單送出
-    setIsLoading(true); //* 開始上傳，透過改成true，讓按鈕消失，直到上傳完成後才回來
+    setIsLoading(true); //* 開始上傳的提示，透過改成true，讓按鈕消失，直到上傳完成後按鈕才回來
 
     /* 這邊是雙層的if判斷式，第一個判斷是判斷images裡面是否為空值，若不是空值的話，則進入下一個階段，
-    用 Promise.all 來取得所有圖片的網址，申間上傳的過程和單張一樣，只是因為 Promise.all 的關係，會等到全部完成後才傳回值 */
+    用 Promise.all 來取得所有圖片的網址，申間上傳的過程和單張一樣，只是因為 Promise.all 的關係，使用迴圈讓每張圖片都會上傳，會等到全部完成後才傳回值 */
     try {
       if (images) {
         const imageURLs = await Promise.all(
@@ -123,20 +122,44 @@ const ProfileEdit = () => {
           })
         );
 
-        setImageURLs(imageURLs);
+        setImageURLs(imageURLs); //* 使用useState把接回來的網址存起來，這樣即使是在外部也可以取用
         setImagePreviews([]);
         setIsLoading(false);
+
+        const formData = {
+          gender: "Male", // 根據實際表單數據替換
+          location: "New York", // 根據實際表單數據替換
+          languages: planList,
+          imageURLs: imageURLs || [],
+        };
+
+        try {
+          // await axios.post(apiBase.SAVE_PROFILE, formData); // 替換成實際的 API
+          setFormData({ ...formData, imageURLs: imageURLs || [] });
+          console.log("Profile saved successfully");
+          console.log(formData);
+        } catch (error) {
+          console.error("Error saving profile:", error);
+        }
       }
+      console.log(imageURLs);
+      console.log(formData);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
   };
 
+  //* 送出整張表單
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await uploadImage(e);
+  };
+
   return (
     <>
       <ProfileEditSection>
-        <Form action="submit">
+        <Form onSubmit={handleSubmit}>
           <Photo>
             <div>
               <img src={avatar} alt="" />
@@ -266,20 +289,9 @@ const ProfileEdit = () => {
               </div>
             </div>
           </LanguageSection>
+          <CertificationsSection title="證書上傳區">
+            <h4>Certifications</h4>
 
-          <div>
-            <CancelBtn>
-              <p>Cancel</p>
-            </CancelBtn>
-            <SaveBtn>
-              <img src={saveWhite} alt="" />
-              <p>Save</p>
-            </SaveBtn>
-          </div>
-        </Form>
-        <CertificationsSection title="證書上傳區">
-          <h4>Certifications</h4>
-          <form onSubmit={uploadImage}>
             <div>
               {imagePreviews?.map((preview, index) => (
                 <CertificationCard key={index}>
@@ -315,11 +327,20 @@ const ProfileEdit = () => {
               {isLoading ? (
                 "Uploading..."
               ) : (
-                <UploadImgBtn type="submit">上傳圖片</UploadImgBtn>
+                <UploadImgBtn type="button">上傳圖片</UploadImgBtn>
               )}
             </p>
-          </form>
-        </CertificationsSection>
+          </CertificationsSection>
+          <div>
+            <CancelBtn>
+              <p>Cancel</p>
+            </CancelBtn>
+            <SaveBtn type="submit" onClick={() => navigate("/user/profile")}>
+              <img src={saveWhite} alt="" />
+              <p>Save</p>
+            </SaveBtn>
+          </div>
+        </Form>
       </ProfileEditSection>
     </>
   );
