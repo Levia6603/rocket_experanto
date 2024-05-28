@@ -13,6 +13,7 @@ import WaitingList from "../pages/WaitingList";
 import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
 import Commenting from "../pages/Commenting";
+import PassValue from "../pages/PassValue";
 import Matching from "../pages/Matching";
 import SignUpEdit from "../pages/SignUpEdit";
 import FullReview from "../pages/FullReview";
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/passValue",
+    element: <PassValue />,
   },
   {
     path: "/user/profile",
