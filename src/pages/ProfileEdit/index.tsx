@@ -156,8 +156,8 @@ const ProfileEdit = () => {
         setIsLoading(false);
 
         const formData = {
-          gender: "Male", // 根據實際表單數據替換
-          location: "New York", // 根據實際表單數據替換
+          gender: selectedGender, // 根據實際表單數據替換
+          location: selectedLocation, // 根據實際表單數據替換
           languages: planList,
           imageURLs: imageURLs || [],
         };
@@ -167,6 +167,7 @@ const ProfileEdit = () => {
           setFormData({ ...formData, imageURLs: imageURLs || [] });
           console.log("Profile saved successfully");
           console.log(formData);
+          navigate("/user/profile");
         } catch (error) {
           console.error("Error saving profile:", error);
         }
@@ -182,6 +183,7 @@ const ProfileEdit = () => {
   //* 送出整張表單
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("1");
     await uploadImage(e);
   };
 
@@ -368,7 +370,7 @@ const ProfileEdit = () => {
             <CancelBtn>
               <p>Cancel</p>
             </CancelBtn>
-            <SaveBtn type="submit" onClick={() => navigate("/user/profile")}>
+            <SaveBtn type="submit">
               <img src={saveWhite} alt="" />
               <p>Save</p>
             </SaveBtn>
