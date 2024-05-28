@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
     path: "/user/profile",
     element: <SignUpEdit />,
     children: [
-      { path: "", element: <Navigate to="edit" replace /> },
+      { path: "", element: <Navigate to="index" replace /> },
       { path: "edit", element: <ProfileEdit /> },
     ],
   },
@@ -39,13 +39,13 @@ export const router = createBrowserRouter([
     path: "/user",
     element: <Profile />,
     children: [
-      { path: "", element: <Navigate to="profile" replace /> },
+      { path: "", element: <Navigate to="profile/index" replace /> },
       {
-        path: "profile",
+        path: "profile/index",
         element: <ProfileIndex />,
       },
       {
-        path: "waitinglist",
+        path: "waiting_list",
         element: <WaitingList />,
       },
       {
@@ -53,19 +53,19 @@ export const router = createBrowserRouter([
         element: <Notifications />,
       },
       {
-        path: "exchanging/:exchangingId",
+        path: "exchanging/:id",
         element: <Exchanging />,
       },
       {
-        path: "commenting/:commentingId",
+        path: "commenting/:id",
         element: <Commenting />,
       },
       {
-        path: "matching/:id",
+        path: "matching",
         element: <Matching />,
       },
       {
-        path: "fullreview/:id",
+        path: "full_review/:id",
         element: <FullReview />,
       },
     ],
