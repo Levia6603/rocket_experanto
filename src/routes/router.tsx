@@ -1,8 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Login from "../pages/Login";
-import Fluent from "../pages/Fluent";
-import Wanted from "../pages/Wanted";
 import Profile from "../pages/Profile";
 import ProfileEdit from "../pages/ProfileEdit";
 import ProfileIndex from "../pages/ProfileIndex";
@@ -16,6 +14,10 @@ import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
 import Commenting from "../pages/Commenting";
 import PassValue from "../pages/PassValue";
+import Matching from "../pages/Matching";
+import SignUpEdit from "../pages/SignUpEdit";
+import FullReview from "../pages/FullReview";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -31,10 +33,10 @@ export const router = createBrowserRouter([
     element: <PassValue />,
   },
   {
-    path: "/signup/fluent",
-    element: <Fluent />,
+    path: "/signup",
+    element: <SignUpEdit />,
+    children: [{ path: "edit", element: <ProfileEdit /> }],
   },
-  { path: "/signup/wanted", element: <Wanted /> },
   {
     path: "/user",
     element: <Profile />,
@@ -62,6 +64,14 @@ export const router = createBrowserRouter([
       {
         path: "commenting/:commentingId",
         element: <Commenting />,
+      },
+      {
+        path: "matching/:id",
+        element: <Matching />,
+      },
+      {
+        path: "fullreview/:id",
+        element: <FullReview />,
       },
     ],
   },
