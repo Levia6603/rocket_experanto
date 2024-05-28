@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/signup",
+    path: "/user/profile",
     element: <SignUpEdit />,
     children: [
       { path: "", element: <Navigate to="edit" replace /> },
@@ -43,10 +43,6 @@ export const router = createBrowserRouter([
       {
         path: "profile",
         element: <ProfileIndex />,
-      },
-      {
-        path: "profile/edit",
-        element: <ProfileEdit />,
       },
       {
         path: "waitinglist",
