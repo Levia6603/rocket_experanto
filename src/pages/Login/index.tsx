@@ -1,11 +1,21 @@
+import { useEffect } from "react";
 import {
   LoginSection,
   LoginContainer,
   LoginBox,
   LoginWithGoogleButton,
 } from "./loginStyle";
+import axios from "axios";
+import { GetLoginUrl } from "../../Api";
 
 function Login() {
+  const openNew = async () => {
+    const url = await axios.get(GetLoginUrl).then((res) => res.data.url);
+    location.assign(url);
+  };
+
+  useEffect(() => {}, []);
+
   return (
     <>
       <LoginSection>
@@ -16,7 +26,7 @@ function Login() {
               <p>SIGN IN</p>
               <hr />
               <div>
-                <LoginWithGoogleButton type="button">
+                <LoginWithGoogleButton type="button" onClick={openNew}>
                   <img src="/google-icon-button.png" alt="google" />
                   <p>Continue with Google</p>
                 </LoginWithGoogleButton>

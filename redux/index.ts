@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import slidingSlice from "./slidingState/slidingSlice";
+import userSlice from "./user/userSlice";
 
 const store = configureStore({
   reducer: {
     sliding: slidingSlice,
+    user: userSlice,
   },
 });
 

@@ -15,6 +15,7 @@ import WaitingList from "../pages/WaitingList";
 import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
 import Commenting from "../pages/Commenting";
+import PassValue from "../pages/PassValue";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/passValue",
+    element: <PassValue />,
   },
   {
     path: "/signup/fluent",
