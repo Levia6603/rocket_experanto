@@ -33,14 +33,25 @@ import apiBase from "../../Api";
 
 type LanguageList = { id: number; Name: string }[];
 type PlanList = { language: string; plans: string[] }[];
+type LocationList = { id: number; Name: string }[];
+type GenderList = { id: number; Name: string }[];
 
 const ProfileEdit = () => {
-  const [languageList, setLanguageList] = useState<LanguageList>([]); //* 語言清單
+  //* 語言清單
+  const [languageList, setLanguageList] = useState<LanguageList>([]);
   //* 設定教學計劃列表
   const [planList, setPlanList] = useState<PlanList>([
     { language: "", plans: [""] },
   ]);
-  const [imageURLs, setImageURLs] = useState<string[] | null | void>([]); //* 設定照片網址
+  //* 設定地區
+  const [locationList, setLocationList] = useState<LocationList>([]);
+  const [selectedLocation, setSelectedLocation] = useState("請選擇地區");
+  //* 設定性別
+  const [genderList, setGenderList] = useState<GenderList>([]);
+  const [selectedGender, setSelectedGender] = useState("請選擇性別");
+
+  //* 設定照片
+  const [imageURLs, setImageURLs] = useState<string[] | null | void>([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
@@ -52,12 +63,28 @@ const ProfileEdit = () => {
     setLanguageList(list);
   }
 
+  //* 取得地區列表
+  async function getLocationList() {
+    const list: LanguageList = await axios
+      .get(apiBase.GET_LOCATION_LIST)
+      .then((res) => res.data.data);
+    setLocationList(list);
+  }
+
+  //* 取得性別列表
+  async function getGenderList() {
+    const list: GenderList = await axios
+      .get(apiBase.GET_GENDER_LIST)
+      .then((res) => res.data.data);
+    setGenderList(list);
+  }
+
+  //* 打API
   useEffect(() => {
     getList();
+    getLocationList();
+    getGenderList();
   }, []);
-  useEffect(() => {
-    console.log(planList);
-  }, [planList]);
 
   //* 設定照片，因為它會是一個陣列，所以類別要使用File[]，單張照片則是File
   const [images, setImages] = useState<File[] | null>(null);
@@ -177,23 +204,21 @@ const ProfileEdit = () => {
               <label htmlFor="">
                 <p>Gender</p>
                 <PersonalInfoSelect
-                  size="small"
-                  currentValue="Male"
-                  setValue={() => {
-                    console.log("set");
+                  list={genderList}
+                  currentValue={selectedGender || "請選擇性別"}
+                  setValue={(el: string) => {
+                    setSelectedGender(el);
                   }}
-                  languageList={["Male", "Female"]}
                 ></PersonalInfoSelect>
               </label>
               <label htmlFor="">
                 <p>Location</p>
                 <PersonalInfoSelect
-                  size="small"
-                  currentValue="New York"
-                  setValue={() => {
-                    console.log("set");
+                  list={locationList}
+                  currentValue={selectedLocation || "請選擇地區"}
+                  setValue={(el: string) => {
+                    setSelectedLocation(el); // 更新selectedLocation
                   }}
-                  languageList={["New York", "Los Angeles"]}
                 ></PersonalInfoSelect>
               </label>
             </PersonalInfo>
@@ -222,7 +247,7 @@ const ProfileEdit = () => {
                         list={languageList}
                         currentValue={language || "請選擇語言"}
                         setValue={(el: string) => {
-                          let newList = [...planList];
+                          const newList = [...planList];
                           newList[index].language = el;
                           setPlanList(newList);
                         }}
@@ -236,7 +261,7 @@ const ProfileEdit = () => {
                             placeholder="請輸入您的學習目標"
                             value={el}
                             onChange={(e) => {
-                              let newList = [...planList];
+                              const newList = [...planList];
                               newList[index].plans[i] = e.target.value;
                               setPlanList(newList);
                             }}
@@ -246,7 +271,7 @@ const ProfileEdit = () => {
                               src={deleteCircle}
                               alt=""
                               onClick={() => {
-                                let newList = [...planList];
+                                const newList = [...planList];
                                 newList[index].plans = newList[
                                   index
                                 ].plans.filter(
@@ -269,7 +294,7 @@ const ProfileEdit = () => {
                               alert("最多 6 個目標");
                               return;
                             }
-                            let newList = [...planList];
+                            const newList = [...planList];
                             newList[index].plans.push("");
                             setPlanList(newList);
                           }}
@@ -289,7 +314,7 @@ const ProfileEdit = () => {
                         alert("最多 6 個語言");
                         return;
                       }
-                      let newList = [...planList];
+                      const newList = [...planList];
                       newList.push({ language: "", plans: [""] });
                       setPlanList(newList);
                     }}
