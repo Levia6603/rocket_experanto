@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Button from "../../styles/Button";
-import Selector from "../../components/Selector";
+import Select from "../../components/Select";
 
 export const ProfileEditSection = styled.section`
   width: 100%;
@@ -61,7 +61,7 @@ export const PersonalInfo = styled.div`
   }
 `;
 
-export const PersonalInfoSelect = styled(Selector)`
+export const PersonalInfoSelect = styled(Select)`
   width: 447px;
 `;
 
