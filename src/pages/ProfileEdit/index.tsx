@@ -35,7 +35,8 @@ type LanguageList = { id: number; Name: string }[];
 type PlanList = { language: string; plans: string[] }[];
 
 const ProfileEdit = () => {
-  const [languageList, setLanguageList] = useState<LanguageList>([]);
+  const [languageList, setLanguageList] = useState<LanguageList>([]); //* 語言清單
+  //* 設定教學計劃列表
   const [planList, setPlanList] = useState<PlanList>([
     { language: "", plans: [""] },
   ]);
@@ -43,6 +44,7 @@ const ProfileEdit = () => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
+  //* 取得語言列表
   async function getList() {
     const list: LanguageList = await axios
       .get(apiBase.GET_LANGUAGE_LIST)
@@ -87,7 +89,7 @@ const ProfileEdit = () => {
     }
   };
 
-  //* 上傳，這邊很重要！！！
+  //* 上傳圖片到 Cloudinary、取得網址、建立表單
   const uploadImage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); //* 防止表單送出
     setIsLoading(true); //* 開始上傳的提示，透過改成true，讓按鈕消失，直到上傳完成後按鈕才回來
@@ -198,7 +200,7 @@ const ProfileEdit = () => {
           </div>
           <LanguageSection>
             <h4>Language</h4>
-            <p>Create language (最多 5 個)</p>
+            <p>Create language (最多 6 個)</p>
             <div>
               {planList.map((obj, index) => {
                 const { language, plans } = obj;
@@ -263,6 +265,10 @@ const ProfileEdit = () => {
                           src={addSquare}
                           alt=""
                           onClick={() => {
+                            if (plans.length >= 6) {
+                              alert("最多 6 個目標");
+                              return;
+                            }
                             let newList = [...planList];
                             newList[index].plans.push("");
                             setPlanList(newList);
@@ -279,7 +285,10 @@ const ProfileEdit = () => {
                     src={addCircle}
                     alt=""
                     onClick={() => {
-                      if (planList.length >= 6) return;
+                      if (planList.length >= 6) {
+                        alert("最多 6 個語言");
+                        return;
+                      }
                       let newList = [...planList];
                       newList.push({ language: "", plans: [""] });
                       setPlanList(newList);
@@ -291,7 +300,6 @@ const ProfileEdit = () => {
           </LanguageSection>
           <CertificationsSection title="證書上傳區">
             <h4>Certifications</h4>
-
             <div>
               {imagePreviews?.map((preview, index) => (
                 <CertificationCard key={index}>
