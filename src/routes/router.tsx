@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "../App";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
@@ -30,12 +30,16 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUpEdit />,
-    children: [{ path: "edit", element: <ProfileEdit /> }],
+    children: [
+      { path: "", element: <Navigate to="edit" replace /> },
+      { path: "edit", element: <ProfileEdit /> },
+    ],
   },
   {
     path: "/user",
     element: <Profile />,
     children: [
+      { path: "", element: <Navigate to="profile" replace /> },
       {
         path: "profile",
         element: <ProfileIndex />,
@@ -74,6 +78,7 @@ export const router = createBrowserRouter([
     path: "/home",
     element: <Home />,
     children: [
+      { path: "", element: <Navigate to="index" replace /> },
       { path: "index", element: <HomeIndex /> },
       { path: "post", element: <FullPost /> },
     ],
