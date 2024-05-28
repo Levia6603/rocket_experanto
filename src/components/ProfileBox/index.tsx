@@ -36,11 +36,11 @@ function ProfileBox() {
         </Photo>
         <Menu>
           <ul>
-            <li onClick={() => navigate("profile/index")}>
+            <li onClick={() => navigate("/user/profile/index")}>
               <img src="/profile_box_icons/person.svg" alt="" />
               <p>個人資料</p>
             </li>
-            <li onClick={() => navigate("notifications")}>
+            <li onClick={() => navigate("/user/notifications")}>
               <img src="/profile_box_icons/bell.svg" alt="" />
               <div>
                 <p>訊息通知</p>
@@ -49,7 +49,7 @@ function ProfileBox() {
                 </div>
               </div>
             </li>
-            <li onClick={() => navigate("waiting_list")}>
+            <li onClick={() => navigate("/user/waiting_list")}>
               <img src="/profile_box_icons/list-check.svg" alt="" />
               <p>已發申請</p>
             </li>
@@ -57,15 +57,15 @@ function ProfileBox() {
               <img src="/profile_box_icons/heart.svg" alt="" />
               <p>我的收藏</p>
             </li>
-            <li onClick={() => navigate("exchanging/:id")}>
+            <li onClick={() => navigate("/user/exchanging/:id")}>
               <img src="/profile_box_icons/friends.svg" alt="" />
               <p>現在進行式</p>
             </li>
-            <li onClick={() => navigate("matching")}>
+            <li onClick={() => navigate("/user/matching")}>
               <img src="/profile_box_icons/cup-hot.svg" alt="" />
               <p>等待配對</p>
             </li>
-            <li onClick={() => navigate("full_review/:id")}>
+            <li onClick={() => navigate("/user/full_review/:id")}>
               <img src="/profile_box_icons/trophy.svg" alt="" />
               <p>過去完成式</p>
             </li>
