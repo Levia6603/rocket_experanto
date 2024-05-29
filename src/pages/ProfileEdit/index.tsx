@@ -4,7 +4,6 @@ import {
   PhotoChangeButton,
   Form,
   PersonalInfo,
-  PersonalInfoSelect,
   LanguageSection,
   Card,
   CardItem,
@@ -31,62 +30,59 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
 
-type LanguageList = { id: number; Name: string }[];
-type PlanList = { language: string; plans: string[] }[];
-type LocationList = { id: number; Name: string }[];
-type GenderList = { id: number; Name: string }[];
+type apiList = { Id: number; Name: string }[];
+type PlanList = { languageId: number; plans: string[] }[];
 
 const ProfileEdit = () => {
   //* 語言清單
-  const [languageList, setLanguageList] = useState<LanguageList>([]);
+  const [languageList, setLanguageList] = useState<apiList>([]);
   //* 設定教學計劃列表
   const [planList, setPlanList] = useState<PlanList>([
-    { language: "", plans: [""] },
+    { languageId: 0, plans: [""] },
   ]);
 
   //* 設定地區
-  const [locationList, setLocationList] = useState<LocationList>([]);
-  const [selectedLocation, setSelectedLocation] = useState("請選擇地區");
-  const [selectedLocationId, setSelectedLocationId] = useState(0);
+  const [locationList, setLocationList] = useState<apiList>([]);
+  const [selectedLocation, setSelectedLocation] = useState({ Id: 0, Name: "" });
   //* 設定性別
-  const [genderList, setGenderList] = useState<GenderList>([]);
-  const [selectedGender, setSelectedGender] = useState("請選擇性別");
-  const [selectedGenderId, setSelectedGenderId] = useState(0);
+  const [genderList, setGenderList] = useState<apiList>([]);
+  const [selectedGender, setSelectedGender] = useState({ Id: 0, Name: "" });
 
   //* 設定照片
   const [imageURLs, setImageURLs] = useState<string[] | null | void>([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
-  //* 取得語言列表
-  async function getList() {
-    const list: LanguageList = await axios
-      .get(apiBase.GET_LANGUAGE_LIST)
-      .then((res) => res.data.data);
-    setLanguageList(list);
+  //* 改為使用一支函式套用至所有取得列表的部分
+  async function getList(
+    apiUrl: string,
+    setList: (value: React.SetStateAction<apiList>) => void
+  ) {
+    const list: apiList = await axios.get(apiUrl).then((res) => res.data.data);
+    setList(list);
   }
 
-  //* 取得地區列表
-  async function getLocationList() {
-    const list: LanguageList = await axios
-      .get(apiBase.GET_LOCATION_LIST)
-      .then((res) => res.data.data);
-    setLocationList(list);
-  }
+  // //* 取得地區列表
+  // async function getLocationList() {
+  //   const list: LanguageList = await axios
+  //     .get(apiBase.GET_LOCATION_LIST)
+  //     .then((res) => res.data.data);
+  //   setLocationList(list);
+  // }
 
-  //* 取得性別列表
-  async function getGenderList() {
-    const list: GenderList = await axios
-      .get(apiBase.GET_GENDER_LIST)
-      .then((res) => res.data.data);
-    setGenderList(list);
-  }
+  // //* 取得性別列表
+  // async function getGenderList() {
+  //   const list: GenderList = await axios
+  //     .get(apiBase.GET_GENDER_LIST)
+  //     .then((res) => res.data.data);
+  //   setGenderList(list);
+  // }
 
   //* 打API
   useEffect(() => {
-    getList();
-    getLocationList();
-    getGenderList();
+    getList(apiBase.GET_LANGUAGE_LIST, setLanguageList);
+    getList(apiBase.GET_GENDER_LIST, setGenderList);
+    getList(apiBase.GET_LOCATION_LIST, setLocationList);
   }, []);
 
   //* 設定照片，因為它會是一個陣列，所以類別要使用File[]，單張照片則是File
@@ -159,8 +155,8 @@ const ProfileEdit = () => {
         setIsLoading(false);
 
         const formData = {
-          gender: selectedGenderId, // 根據實際表單數據替換
-          location: selectedLocationId, // 根據實際表單數據替換
+          gender: selectedGender.Id, // 根據實際表單數據替換
+          location: selectedLocation.Id, // 根據實際表單數據替換
           languages: planList,
           imageURLs: imageURLs || [],
         };
@@ -207,29 +203,21 @@ const ProfileEdit = () => {
             <PersonalInfo>
               <label htmlFor="">
                 <p>Gender</p>
-                <PersonalInfoSelect
+                <Select
+                  width={447}
                   list={genderList}
-                  currentValue={selectedGender || "請選擇性別"}
-                  setValue={(el: string) => {
-                    setSelectedGender(el);
-                    setSelectedGenderId(
-                      genderList.findIndex((item) => item.Name === el) + 1
-                    );
-                  }}
-                ></PersonalInfoSelect>
+                  currentValue={selectedGender.Name || "請選擇性別"}
+                  setValue={setSelectedGender}
+                ></Select>
               </label>
               <label htmlFor="">
                 <p>Location</p>
-                <PersonalInfoSelect
+                <Select
+                  width={447}
                   list={locationList}
-                  currentValue={selectedLocation || "請選擇地區"}
-                  setValue={(el: string) => {
-                    setSelectedLocation(el); // 更新selectedLocation
-                    setSelectedLocationId(
-                      locationList.findIndex((item) => item.Name === el) + 1
-                    );
-                  }}
-                ></PersonalInfoSelect>
+                  currentValue={selectedLocation.Name || "請選擇地區"}
+                  setValue={setSelectedLocation}
+                ></Select>
               </label>
             </PersonalInfo>
           </div>
@@ -238,7 +226,7 @@ const ProfileEdit = () => {
             <p>Create language (最多 6 個)</p>
             <div>
               {planList.map((obj, index) => {
-                const { language, plans } = obj;
+                const { languageId, plans } = obj;
                 return (
                   <Card key={index}>
                     <div>
@@ -254,11 +242,16 @@ const ProfileEdit = () => {
                     </div>
                     <label>
                       <Select
+                        width={264}
                         list={languageList}
-                        currentValue={language || "請選擇語言"}
-                        setValue={(el: string) => {
+                        currentValue={
+                          languageId
+                            ? languageList[languageId - 1].Name
+                            : "請選擇語言"
+                        }
+                        setValue={(el: { Id: number; Name: string }) => {
                           const newList = [...planList];
-                          newList[index].language = el; //顯示的語言名稱
+                          newList[index].languageId = el.Id; //顯示的語言名稱
                           setPlanList(newList);
                         }}
                       />
@@ -325,7 +318,7 @@ const ProfileEdit = () => {
                         return;
                       }
                       const newList = [...planList];
-                      newList.push({ language: "", plans: [""] });
+                      newList.push({ languageId: 0, plans: [""] });
                       setPlanList(newList);
                     }}
                   />

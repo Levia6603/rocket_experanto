@@ -24,17 +24,22 @@ export const Label = styled.label<SelectProps>`
     top: 54px;
     display: none;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: scroll;
     width: 100%;
+    max-height: 250px;
     border: 1px solid #bdbdbd;
     border-radius: 4px;
     background-color: #fff;
     animation: ${({ $length }) => showOption($length)} 0.3s ease-in;
   }
+  ul::-webkit-scrollbar {
+    display: none;
+  }
   li {
     user-select: none;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     width: 100%;
     height: 50px;
     padding: 0 12px;
@@ -59,6 +64,6 @@ const showOption = (index: number) => keyframes`
         height: 0;
     }
     to{
-        height: ${index * 50}px;
+        height: ${index <= 5 ? index * 50 : 250}px;
     }
 `;

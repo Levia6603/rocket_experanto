@@ -2,15 +2,16 @@ import { Label } from "./SelectStyle";
 import arrowDown from "/chevron-down.png";
 
 interface Props {
-  list: { id: number; Name: string }[];
+  width: number;
+  list: { Id: number; Name: string }[];
   currentValue: string | number;
-  setValue: (param: string) => void;
+  setValue: (param: { Id: number; Name: string }) => void;
 }
 
-function Select({ list, currentValue, setValue }: Props) {
+function Select({ width, list, currentValue, setValue }: Props) {
   return (
     <>
-      <Label $width={264} $length={list.length}>
+      <Label $width={width} $length={list.length}>
         <p>{currentValue}</p>
         <input type="checkbox" />
         <img src={arrowDown} alt="select-arrow" />
@@ -19,7 +20,7 @@ function Select({ list, currentValue, setValue }: Props) {
             <li
               key={i}
               onClick={() => {
-                setValue(el.Name);
+                setValue(el);
               }}
             >
               {el.Name}
