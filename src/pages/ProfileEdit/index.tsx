@@ -43,12 +43,15 @@ const ProfileEdit = () => {
   const [planList, setPlanList] = useState<PlanList>([
     { language: "", plans: [""] },
   ]);
+
   //* 設定地區
   const [locationList, setLocationList] = useState<LocationList>([]);
   const [selectedLocation, setSelectedLocation] = useState("請選擇地區");
+  const [selectedLocationId, setSelectedLocationId] = useState(0);
   //* 設定性別
   const [genderList, setGenderList] = useState<GenderList>([]);
   const [selectedGender, setSelectedGender] = useState("請選擇性別");
+  const [selectedGenderId, setSelectedGenderId] = useState(0);
 
   //* 設定照片
   const [imageURLs, setImageURLs] = useState<string[] | null | void>([]);
@@ -156,8 +159,8 @@ const ProfileEdit = () => {
         setIsLoading(false);
 
         const formData = {
-          gender: "Male", // 根據實際表單數據替換
-          location: "New York", // 根據實際表單數據替換
+          gender: selectedGenderId, // 根據實際表單數據替換
+          location: selectedLocationId, // 根據實際表單數據替換
           languages: planList,
           imageURLs: imageURLs || [],
         };
@@ -167,6 +170,7 @@ const ProfileEdit = () => {
           setFormData({ ...formData, imageURLs: imageURLs || [] });
           console.log("Profile saved successfully");
           console.log(formData);
+          navigate("/user/profile");
         } catch (error) {
           console.error("Error saving profile:", error);
         }
@@ -208,6 +212,9 @@ const ProfileEdit = () => {
                   currentValue={selectedGender || "請選擇性別"}
                   setValue={(el: string) => {
                     setSelectedGender(el);
+                    setSelectedGenderId(
+                      genderList.findIndex((item) => item.Name === el) + 1
+                    );
                   }}
                 ></PersonalInfoSelect>
               </label>
@@ -218,6 +225,9 @@ const ProfileEdit = () => {
                   currentValue={selectedLocation || "請選擇地區"}
                   setValue={(el: string) => {
                     setSelectedLocation(el); // 更新selectedLocation
+                    setSelectedLocationId(
+                      locationList.findIndex((item) => item.Name === el) + 1
+                    );
                   }}
                 ></PersonalInfoSelect>
               </label>
@@ -248,7 +258,7 @@ const ProfileEdit = () => {
                         currentValue={language || "請選擇語言"}
                         setValue={(el: string) => {
                           const newList = [...planList];
-                          newList[index].language = el;
+                          newList[index].language = el; //顯示的語言名稱
                           setPlanList(newList);
                         }}
                       />
@@ -368,7 +378,7 @@ const ProfileEdit = () => {
             <CancelBtn>
               <p>Cancel</p>
             </CancelBtn>
-            <SaveBtn type="submit" onClick={() => navigate("/user/profile")}>
+            <SaveBtn type="submit">
               <img src={saveWhite} alt="" />
               <p>Save</p>
             </SaveBtn>
