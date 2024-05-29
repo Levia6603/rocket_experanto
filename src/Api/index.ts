@@ -5,7 +5,7 @@ const apiBase = {
   GOOGLE_LOGIN: `/api/login`,
   GET_LOCATION_LIST: `/api/location`,
   GET_GENDER_LIST: `/api/gender`,
-
+  POST_PROFILE: `/api/users`,
 };
 
 export default apiBase;

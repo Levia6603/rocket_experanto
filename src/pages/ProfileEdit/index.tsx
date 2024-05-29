@@ -32,6 +32,12 @@ import apiBase from "../../Api";
 
 type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; plans: string[] }[];
+type FormData = {
+  GendersId: number;
+  LocationsId: number;
+  LanguageGoalList: { languageId: number; plans: string[] }[];
+  Images: string[];
+};
 
 const ProfileEdit = () => {
   //* 語言清單
@@ -60,6 +66,30 @@ const ProfileEdit = () => {
   ) {
     const list: apiList = await axios.get(apiUrl).then((res) => res.data.data);
     setList(list);
+  }
+
+  //* POST資料庫
+  async function postData(formData: FormData) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      await axios({
+        method: "POST",
+        url: apiBase.POST_PROFILE,
+        data: formData,
+        headers: headers,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      console.log("Profile saved successfully");
+      console.log(formData);
+      navigate("/user/profile");
+    } catch (error) {
+      console.error("Error saving profile:", error);
+    }
   }
 
   // //* 取得地區列表
@@ -155,15 +185,15 @@ const ProfileEdit = () => {
         setIsLoading(false);
 
         const formData = {
-          gender: selectedGender.Id, // 根據實際表單數據替換
-          location: selectedLocation.Id, // 根據實際表單數據替換
-          languages: planList,
-          imageURLs: imageURLs || [],
+          GendersId: selectedGender.Id, // 根據實際表單數據替換
+          LocationsId: selectedLocation.Id, // 根據實際表單數據替換
+          LanguageGoalList: planList,
+          Images: imageURLs || [],
         };
 
         try {
-          // await axios.post(apiBase.SAVE_PROFILE, formData); // 替換成實際的 API
           setFormData({ ...formData, imageURLs: imageURLs || [] });
+          postData(formData);
           console.log("Profile saved successfully");
           console.log(formData);
           navigate("/user/profile");
