@@ -155,10 +155,10 @@ const ProfileEdit = () => {
         setIsLoading(false);
 
         const formData = {
-          gender: selectedGender.Id, // 根據實際表單數據替換
-          location: selectedLocation.Id, // 根據實際表單數據替換
-          languages: planList,
-          imageURLs: imageURLs || [],
+          GendersId: selectedGender.Id, // 根據實際表單數據替換
+          LocationsID: selectedLocation.Id, // 根據實際表單數據替換
+          LanguageGoalList: planList,
+          Images: imageURLs || [],
         };
 
         try {
