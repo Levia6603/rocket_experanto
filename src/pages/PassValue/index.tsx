@@ -14,18 +14,20 @@ function PassValue() {
     const urlParams = new URLSearchParams(window.location.search); //得到網址列
     const code = urlParams.get("code"); //得到code參數
 
-    const loginState = await axios
+    const loginData = await axios
       .post(GOOGLE_LOGIN, { Code: code })
       .then((res) => res.data);
-    console.log(loginState);
 
     const {
-      data: { Photos, nickName },
-    } = loginState;
+      token,
+      message,
+      data: { photos, name },
+    } = loginData;
 
-    dispatch(setUser({ name: nickName, avatar: Photos }));
+    dispatch(setUser({ name, avatar: photos }));
+    localStorage.setItem("token", token);
 
-    if (loginState.message === "登入成功") {
+    if (message === "登入成功") {
       navigate("/home/index");
     }
   };
