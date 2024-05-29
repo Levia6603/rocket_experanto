@@ -26,7 +26,7 @@ export const Label = styled.label<SelectProps>`
     flex-direction: column;
     overflow-x: scroll;
     width: 100%;
-    max-width: 250px;
+    max-height: 250px;
     border: 1px solid #bdbdbd;
     border-radius: 4px;
     background-color: #fff;
@@ -39,6 +39,7 @@ export const Label = styled.label<SelectProps>`
     user-select: none;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
     width: 100%;
     height: 50px;
     padding: 0 12px;

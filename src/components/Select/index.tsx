@@ -5,7 +5,7 @@ interface Props {
   width: number;
   list: { Id: number; Name: string }[];
   currentValue: string | number;
-  setValue: (param: number) => void;
+  setValue: (param: { Id: number; Name: string }) => void;
 }
 
 function Select({ width, list, currentValue, setValue }: Props) {
@@ -20,7 +20,7 @@ function Select({ width, list, currentValue, setValue }: Props) {
             <li
               key={i}
               onClick={() => {
-                setValue(el.Id);
+                setValue(el);
               }}
             >
               {el.Name}
