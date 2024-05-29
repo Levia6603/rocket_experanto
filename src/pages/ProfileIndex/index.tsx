@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import {
   User,
   Button,
@@ -16,12 +17,41 @@ import {
   CertificationCard,
 } from "../ProfileIndex/profileIndexStyle";
 
+import axios from "axios";
+import apiBase from "../../Api";
 import avatar from "/nav-profile.png";
 import badge from "/badge.png";
 import noCertification_sm from "/no-certification-sm.svg";
 
 const ProfileIndex = () => {
   const navigate = useNavigate();
+
+  //* 取得個人資料
+  async function getProfile() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    console.log(headers);
+
+    try {
+      await axios({
+        method: "GET",
+        url: apiBase.GET_PROFILE,
+        headers: headers,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      console.log("Profile loaded successfully");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <>
