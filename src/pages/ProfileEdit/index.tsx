@@ -32,6 +32,12 @@ import apiBase from "../../Api";
 
 type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; plans: string[] }[];
+type FormData = {
+  GendersId: number;
+  LocationsId: number;
+  LanguageGoalList: { languageId: number; plans: string[] }[];
+  Images: string[];
+};
 
 const ProfileEdit = () => {
   //* 語言清單
@@ -62,6 +68,30 @@ const ProfileEdit = () => {
     setList(list);
   }
 
+  //* POST資料庫
+  async function postData(formData: FormData) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      await axios({
+        method: "POST",
+        url: apiBase.POST_PROFILE,
+        data: formData,
+        headers: headers,
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+      console.log("Profile saved successfully");
+      console.log(formData);
+      navigate("/user/profile");
+    } catch (error) {
+      console.error("Error saving profile:", error);
+    }
+  }
+
   // //* 取得地區列表
   // async function getLocationList() {
   //   const list: LanguageList = await axios
@@ -83,6 +113,11 @@ const ProfileEdit = () => {
     getList(apiBase.GET_LANGUAGE_LIST, setLanguageList);
     getList(apiBase.GET_GENDER_LIST, setGenderList);
     getList(apiBase.GET_LOCATION_LIST, setLocationList);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log(token);
   }, []);
 
   //* 設定照片，因為它會是一個陣列，所以類別要使用File[]，單張照片則是File
@@ -156,14 +191,14 @@ const ProfileEdit = () => {
 
         const formData = {
           GendersId: selectedGender.Id, // 根據實際表單數據替換
-          LocationsID: selectedLocation.Id, // 根據實際表單數據替換
+          LocationsId: selectedLocation.Id, // 根據實際表單數據替換
           LanguageGoalList: planList,
           Images: imageURLs || [],
         };
 
         try {
-          // await axios.post(apiBase.SAVE_PROFILE, formData); // 替換成實際的 API
           setFormData({ ...formData, imageURLs: imageURLs || [] });
+          await postData(formData);
           console.log("Profile saved successfully");
           console.log(formData);
           navigate("/user/profile");
