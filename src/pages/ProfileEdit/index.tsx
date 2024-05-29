@@ -115,11 +115,6 @@ const ProfileEdit = () => {
     getList(apiBase.GET_LOCATION_LIST, setLocationList);
   }, []);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log(token);
-  }, []);
-
   //* 設定照片，因為它會是一個陣列，所以類別要使用File[]，單張照片則是File
   const [images, setImages] = useState<File[] | null>(null);
   //* 設定照片預覽，同理，它會是一個陣列，所以類別要使用string[]
@@ -198,7 +193,7 @@ const ProfileEdit = () => {
 
         try {
           setFormData({ ...formData, imageURLs: imageURLs || [] });
-          await postData(formData);
+          postData(formData);
           console.log("Profile saved successfully");
           console.log(formData);
           navigate("/user/profile");
