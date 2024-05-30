@@ -6,6 +6,7 @@ const apiBase = {
   GET_LOCATION_LIST: `/api/location`,
   GET_GENDER_LIST: `/api/gender`,
   POST_PROFILE: `/api/users`,
+  GET_PROFILE: `/api/users`,
 };
 
 export default apiBase;
