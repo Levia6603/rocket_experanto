@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import  apiBase  from "../../Api";
+import apiBase from "../../Api";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
@@ -13,12 +13,36 @@ function HomeIndex() {
   function handleSelect(el: string) {
     setSelectArea(el);
   }
+  const [postList, setPostList] = useState([]);
 
   //* 接回 Post List
+  async function getPostList() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      const postList = await axios({
+        method: "GET",
+        url: apiBase.GET_POST_LIST,
+        headers: headers,
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      setPostList(postList);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-aysnc function getPostList() {
-  const list = await axios.get(apiBase.GET_POST_LIST).then((res) => res.data);
-}
+  //*接回 Post List
+  useEffect(() => {
+    getPostList();
+  }, []);
+  useEffect(() => {
+    console.log(postList);
+  }, [postList]);
 
   return (
     <>
