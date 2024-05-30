@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import  apiBase  from "../../Api";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
@@ -11,6 +13,13 @@ function HomeIndex() {
   function handleSelect(el: string) {
     setSelectArea(el);
   }
+
+  //* 接回 Post List
+
+aysnc function getPostList() {
+  const list = await axios.get(apiBase.GET_POST_LIST).then((res) => res.data);
+}
+
   return (
     <>
       <Wrapper>
