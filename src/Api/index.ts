@@ -7,6 +7,7 @@ const apiBase = {
   GET_GENDER_LIST: `/api/gender`,
   POST_PROFILE: `/api/users`,
   GET_PROFILE: `/api/users`,
+  GET_POST_LIST: `/api/post`,
 };
 
 export default apiBase;

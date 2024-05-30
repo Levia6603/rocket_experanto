@@ -11,6 +11,7 @@ function HomeIndex() {
   function handleSelect(el: string) {
     setSelectArea(el);
   }
+
   return (
     <>
       <Wrapper>
