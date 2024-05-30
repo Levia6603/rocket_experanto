@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   User,
   Button,
@@ -25,7 +25,7 @@ import noCertification_sm from "/no-certification-sm.svg";
 
 const ProfileIndex = () => {
   const navigate = useNavigate();
-
+  const [profile, setProfile] = useState({});
   //* 取得個人資料
   async function getProfile() {
     const headers = {
@@ -33,16 +33,18 @@ const ProfileIndex = () => {
       Accept: "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     };
-    console.log(headers);
 
     try {
-      await axios({
+      const profile = await axios({
         method: "GET",
         url: apiBase.GET_PROFILE,
         headers: headers,
       })
-        .then((res) => console.log(res))
+        .then((res) => {
+          return res.data;
+        })
         .catch((err) => console.log(err));
+      setProfile(profile);
       console.log("Profile loaded successfully");
     } catch (error) {
       console.error(error);
@@ -52,6 +54,9 @@ const ProfileIndex = () => {
   useEffect(() => {
     getProfile();
   }, []);
+  useEffect(() => {
+    console.log(profile);
+  }, [profile]);
 
   return (
     <>
