@@ -19,9 +19,7 @@ import {
 
 import axios from "axios";
 import apiBase from "../../Api";
-import avatar from "/nav-profile.png";
 import badge from "/badge.png";
-import noCertification_sm from "/no-certification-sm.svg";
 
 type ProfileType = {
   avatar: string;
