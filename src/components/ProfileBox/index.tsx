@@ -7,7 +7,6 @@ import { RootStateType } from "../../../redux";
 function ProfileBox() {
   const user = useSelector((state: RootStateType) => state.user.user);
   const { avatar, name } = user;
-  console.log(user);
 
   const navigate = useNavigate();
   return (

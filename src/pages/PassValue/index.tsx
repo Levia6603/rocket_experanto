@@ -18,6 +18,8 @@ function PassValue() {
       .post(GOOGLE_LOGIN, { Code: code })
       .then((res) => res.data);
 
+    console.log(loginData);
+
     const {
       token,
       message,
@@ -27,7 +29,9 @@ function PassValue() {
     dispatch(setUser({ name, avatar: photos }));
     localStorage.setItem("token", token);
 
-    if (message === "登入成功") {
+    if (message === "註冊成功") {
+      navigate("/user/profile/edit");
+    } else if (message === "登入成功") {
       navigate("/home/index");
     }
   };
