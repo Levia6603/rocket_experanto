@@ -31,11 +31,11 @@ import axios from "axios";
 import apiBase from "../../Api";
 
 type apiList = { Id: number; Name: string }[];
-type PlanList = { languageId: number; plans: string[] }[];
+type PlanList = { languageId: number; GoalsContent: string[] }[];
 type FormData = {
   GendersId: number;
   LocationsId: number;
-  LanguageGoalList: { languageId: number; plans: string[] }[];
+  LanguageGoalList: { languageId: number; GoalsContent: string[] }[];
   Images: string[];
 };
 
@@ -44,7 +44,7 @@ const ProfileEdit = () => {
   const [languageList, setLanguageList] = useState<apiList>([]);
   //* 設定教學計劃列表
   const [planList, setPlanList] = useState<PlanList>([
-    { languageId: 0, plans: [""] },
+    { languageId: 0, GoalsContent: [""] },
   ]);
 
   //* 設定地區
@@ -256,7 +256,7 @@ const ProfileEdit = () => {
             <p>Create language (最多 6 個)</p>
             <div>
               {planList.map((obj, index) => {
-                const { languageId, plans } = obj;
+                const { languageId, GoalsContent } = obj;
                 return (
                   <Card key={index}>
                     <div>
@@ -287,7 +287,7 @@ const ProfileEdit = () => {
                       />
                     </label>
                     <div>
-                      {plans.map((el, i) => (
+                      {GoalsContent.map((el, i) => (
                         <CardItem key={i}>
                           <p>{i + 1} </p>
                           <textarea
@@ -295,7 +295,7 @@ const ProfileEdit = () => {
                             value={el}
                             onChange={(e) => {
                               const newList = [...planList];
-                              newList[index].plans[i] = e.target.value;
+                              newList[index].GoalsContent[i] = e.target.value;
                               setPlanList(newList);
                             }}
                           ></textarea>
@@ -305,9 +305,9 @@ const ProfileEdit = () => {
                               alt=""
                               onClick={() => {
                                 const newList = [...planList];
-                                newList[index].plans = newList[
+                                newList[index].GoalsContent = newList[
                                   index
-                                ].plans.filter(
+                                ].GoalsContent.filter(
                                   (_, planIndex) => planIndex !== i
                                 );
                                 setPlanList(newList);
@@ -323,12 +323,12 @@ const ProfileEdit = () => {
                           src={addSquare}
                           alt=""
                           onClick={() => {
-                            if (plans.length >= 6) {
+                            if (GoalsContent.length >= 6) {
                               alert("最多 6 個目標");
                               return;
                             }
                             const newList = [...planList];
-                            newList[index].plans.push("");
+                            newList[index].GoalsContent.push("");
                             setPlanList(newList);
                           }}
                         />
@@ -348,7 +348,7 @@ const ProfileEdit = () => {
                         return;
                       }
                       const newList = [...planList];
-                      newList.push({ languageId: 0, plans: [""] });
+                      newList.push({ languageId: 0, GoalsContent: [""] });
                       setPlanList(newList);
                     }}
                   />
