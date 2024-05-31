@@ -22,7 +22,7 @@ function HomeIndex() {
     try {
       const post = await axios({
         method: "GET",
-        url: apiBase.GET_POST,
+        url: apiBase.GET_POST_LIST,
         headers: headers,
       })
         .then((res) => res.data)
