@@ -11,7 +11,7 @@ const apiBase = {
   POST_PROFILE: `/api/users`,
   GET_PROFILE: `/api/users`,
   GET_POST: `/api/post`,
-  GET_POST_LIST: `/api/search?q=&area=&page=&lang[]=&lang[]=&lang[]=&lang[]=`,
+  GET_POST_LIST: `/api/postList`,
   POST_POST: `/api/post`,
   GET_CHECK_POST: `/api/checkPost`,
 };
