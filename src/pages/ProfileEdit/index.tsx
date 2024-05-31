@@ -86,22 +86,6 @@ const ProfileEdit = () => {
     }
   }
 
-  // //* 取得地區列表
-  // async function getLocationList() {
-  //   const list: LanguageList = await axios
-  //     .get(apiBase.GET_LOCATION_LIST)
-  //     .then((res) => res.data.data);
-  //   setLocationList(list);
-  // }
-
-  // //* 取得性別列表
-  // async function getGenderList() {
-  //   const list: GenderList = await axios
-  //     .get(apiBase.GET_GENDER_LIST)
-  //     .then((res) => res.data.data);
-  //   setGenderList(list);
-  // }
-
   //* 打API
   useEffect(() => {
     getList(apiBase.GET_LANGUAGE_LIST, setLanguageList);
