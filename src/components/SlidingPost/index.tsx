@@ -19,8 +19,15 @@ import avatar from "/avatar-80.svg";
 import location from "/map-pin.svg";
 import commments from "/message.svg";
 import liked from "/profile_box_icons/heart.svg";
+import { PostInterface } from "../../pages/FullPost";
+import { Certification } from "../../pages/FullPost/styles";
 
-function SlidingPost() {
+interface Props {
+  post: PostInterface;
+  tags: string;
+  tagAry: string[];
+}
+function SlidingPost({ post, tags, tagAry }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isVisible = useSelector(
@@ -29,14 +36,13 @@ function SlidingPost() {
 
   return (
     <>
-      <Wrapper
-        $isVisible={isVisible}
-        onClick={() => {
-          dispatch(setSlidingPostState());
-        }}
-      >
+      <Wrapper $isVisible={isVisible}>
         <ControlBar>
-          <CloseBtn>
+          <CloseBtn
+            onClick={() => {
+              dispatch(setSlidingPostState());
+            }}
+          >
             <img src={close} alt="close" />
           </CloseBtn>
           <OpenBtn onClick={() => navigate("/home/post")}>
@@ -53,16 +59,20 @@ function SlidingPost() {
 
             <div>
               <div>
-                <h2>Ella Dowson</h2>
+                <h2>{post?.userName}</h2>
                 <div>
-                  <img src={liked} alt="liked" />
+                  {post?.isFavorite ? (
+                    <img src={liked} alt="liked" />
+                  ) : (
+                    <img src={liked} alt="liked" />
+                  )}
                 </div>
               </div>
               <div>
                 <div>
                   <img src={location} alt="Location" />
                 </div>
-                <p>Kaohsiung</p>
+                <p>{post?.userLocations}</p>
               </div>
               <div>
                 <div>
@@ -77,7 +87,7 @@ function SlidingPost() {
           </Header>
           <Calendar>
             <div>
-              <h6>Available Time</h6>
+              <h6>可交換時間</h6>
             </div>
             <div>
               <Schedule />
@@ -85,20 +95,16 @@ function SlidingPost() {
           </Calendar>
           <Needs>
             <div>
-              <h6>Needs</h6>
+              <h6>{"學習需求"}</h6>
             </div>
             <div>
               <div>
                 <h6>我想學：</h6>
-                <p>Mandarin</p>
+                <p>{post?.learn?.[0].Name}</p>
               </div>
               <div>
                 <h6>我希望可以：</h6>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
-                  non exercitationem voluptate tempore distinctio delectus rerum
-                  commodi, magni eveniet laboriosam?
-                </p>
+                <p>{post?.learn?.[0].content}</p>
               </div>
             </div>
           </Needs>
@@ -109,30 +115,16 @@ function SlidingPost() {
             <div>
               <div>
                 <h6>教學語言：</h6>
-                <p>English</p>
+                <p>{post.skills?.[0].language}</p>
               </div>
 
               <div>
-                <p>
-                  <span>1. </span>Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Beatae earum placeat alias quasi a dolores
-                  fugiat optio sint qui ea.
-                </p>
-                <p>
-                  <span>2. </span>Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Beatae earum placeat alias quasi a dolores
-                  fugiat optio sint qui ea.
-                </p>
-                <p>
-                  <span>3. </span>Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Beatae earum placeat alias quasi a dolores
-                  fugiat optio sint qui ea.
-                </p>
-                <p>
-                  <span>4. </span>Lorem ipsum dolor sit amet consectetur
-                  adipisicing elit. Beatae earum placeat alias quasi a dolores
-                  fugiat optio sint qui ea.
-                </p>
+                {post.skills?.[0].goal?.map((goal, index) => (
+                  <p key={index}>
+                    <span>{index + 1}. </span>
+                    {goal}
+                  </p>
+                ))}
               </div>
             </div>
           </Plans>
@@ -140,18 +132,22 @@ function SlidingPost() {
             <div>
               <h6>證書</h6>
             </div>
-            <div></div>
+            <div>
+              {post?.images?.map((image, index) => (
+                <Certification key={index}>
+                  <img src={image} alt="no certification" />
+                  <h6>托福</h6>
+                </Certification>
+              ))}
+            </div>
           </Certifications>
           <Tags>
             <div>
               <h6># Tags</h6>
             </div>
             <div>
-              <Tag>#English</Tag>
-              <Tag>#English</Tag>
-              <Tag>#English</Tag>
-              <Tag>#English</Tag>
-              <Tag>#English</Tag>
+              {tags &&
+                tagAry?.map((tag, index) => <Tag key={index}>{tag}</Tag>)}
             </div>
           </Tags>
         </Container>
