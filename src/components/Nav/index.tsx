@@ -12,14 +12,55 @@ import {
 
 import bell from "/profile_box_icons/bell.svg";
 import global from "/global.svg";
+import apiBase from "../../Api";
+import axios from "axios";
+
+interface ProfileType {
+  Code: number;
+  Status: string;
+  message: string;
+  userName?: string;
+  userAvatar?: string;
+  skills?: { language: string; languageId: number; goal: string[] };
+  img?: string[];
+}
 
 function Nav() {
   const languages = ["English", "中文"];
   const defaultValue = "中文";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
+  const [isCompleted, setIsCompleted] = useState({} as ProfileType);
   function handleSelect(el: string) {
     setSelectLanguage(el);
   }
+
+  //* 發文前確認個人資料是否填寫完成
+  async function checkProfile() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      await axios({
+        method: "GET",
+        url: apiBase.GET_CHECK_POST,
+        headers: headers,
+      })
+        .then((res) => {
+          setIsCompleted(res.data);
+          console.log(isCompleted);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //* 發文
+  function handlePost() {
+    checkProfile();
+  }
+
   return (
     <>
       <Section>
@@ -57,8 +98,12 @@ function Nav() {
 
           <Navbar>
             <li>
-              <LinkItem to={"/post"}>
-                <NavBtn>Post</NavBtn>
+              <LinkItem
+                to={
+                  isCompleted.Code !== 200 ? "/posting" : "/user/profile/edit"
+                }
+              >
+                <NavBtn onClick={handlePost}>Post</NavBtn>
               </LinkItem>
             </li>
             <li>
