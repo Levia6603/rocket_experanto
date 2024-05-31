@@ -22,19 +22,19 @@ import star from "/profile_box_icons/star-black.png";
 import like from "/profile_box_icons/heart.svg";
 import noCertification from "/no-certification-lg.svg";
 
-interface PostInterface {
-  userName: string;
-  userLocations: string;
-  userAvatar: string;
-  title: string;
-  tags: string;
-  skills: { language: string; languageId: number; goal: string[] }[];
-  startDate: string;
-  learn: { Id: number; Name: string; content: string }[];
-  endDate: string;
-  availabaleHours: any;
-  images: string[];
-  isFavorite: boolean;
+export interface PostInterface {
+  userName?: string;
+  userLocations?: string;
+  userAvatar?: string;
+  title?: string;
+  tags?: string;
+  skills?: { language: string; languageId: number; goal: string[] }[];
+  startDate?: string;
+  learn?: { Id: number; Name: string; content: string }[];
+  endDate?: string;
+  availabaleHours?: any;
+  images?: string[];
+  isFavorite?: boolean;
 }
 
 function FullPost() {
@@ -57,7 +57,7 @@ function FullPost() {
         .then((res) => res.data)
         .catch((err) => console.log(err));
       setPost(post);
-      setTags(post.tags);
+      setTags(post.tags || "");
       console.log(post);
     } catch (error) {
       console.error(error);
