@@ -71,6 +71,7 @@ export const Label = styled.div`
   position: absolute;
   top: 30px;
   left: 40px;
+  z-index: 1;
   cursor: pointer;
   p {
     color: #fff;
@@ -78,6 +79,7 @@ export const Label = styled.div`
 `;
 
 const LocalUser = css`
+  z-index: 1;
   width: 300px;
   height: 200px;
   border-radius: 10px;
@@ -92,7 +94,6 @@ const RemoteUser = css`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
   width: 100vw;
   height: 100vh;
 `;
