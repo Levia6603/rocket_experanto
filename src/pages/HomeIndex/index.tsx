@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import apiBase from "../../Api";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
@@ -11,6 +13,29 @@ function HomeIndex() {
   function handleSelect(el: string) {
     setSelectArea(el);
   }
+
+  async function getPost() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    try {
+      const postList = await axios({
+        method: "GET",
+        url: apiBase.GET_POST,
+        headers: headers,
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      console.log(postList);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getPost();
+  }, []);
 
   return (
     <>
