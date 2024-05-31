@@ -20,14 +20,14 @@ function HomeIndex() {
       Accept: "application/json",
     };
     try {
-      const postList = await axios({
+      const post = await axios({
         method: "GET",
         url: apiBase.GET_POST,
         headers: headers,
       })
         .then((res) => res.data)
         .catch((err) => console.log(err));
-      console.log(postList);
+      console.log(post);
     } catch (error) {
       console.error(error);
     }

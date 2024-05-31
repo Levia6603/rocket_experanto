@@ -29,6 +29,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
+import { getList } from "../../Api";
 
 type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; GoalsContent: string[] }[];
@@ -60,13 +61,6 @@ const ProfileEdit = () => {
   const navigate = useNavigate();
 
   //* 改為使用一支函式套用至所有取得列表的部分
-  async function getList(
-    apiUrl: string,
-    setList: (value: React.SetStateAction<apiList>) => void
-  ) {
-    const list: apiList = await axios.get(apiUrl).then((res) => res.data.data);
-    setList(list);
-  }
 
   //* POST資料庫
   async function postData(formData: FormData) {
