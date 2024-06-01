@@ -100,13 +100,10 @@ function Posting() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Formvalues>();
 
   const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
-
-  console.log(watch("fluent"));
 
   return (
     <>
