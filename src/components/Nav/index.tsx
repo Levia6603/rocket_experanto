@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { RootStateType } from "../../../redux";
+import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSlice";
 import {
   Section,
   Container,
@@ -29,10 +32,18 @@ function Nav() {
   const languages = ["English", "中文"];
   const defaultValue = "中文";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
+  //* 發文前確是否已完成個人資料
   const [isCompleted, setIsCompleted] = useState({} as ProfileType);
   function handleSelect(el: string) {
     setSelectLanguage(el);
   }
+
+  //* redux toolkit
+  const dispatch = useDispatch();
+  const checkProfileState = useSelector(
+    (state: RootStateType) => state.checkProfile.checkProfileState
+  );
+  console.log(checkProfileState);
 
   //* 發文前確認個人資料是否填寫完成
   async function checkProfile() {
@@ -49,7 +60,7 @@ function Nav() {
       })
         .then((res) => {
           setIsCompleted(res.data);
-          console.log(isCompleted);
+          dispatch(setCheckProfileState(res.data));
         })
         .catch((err) => console.log(err));
     } catch (error) {
