@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
+
 import {
   Wrapper,
   Container,
@@ -33,6 +36,11 @@ type Formvalues = {
 };
 
 function Posting() {
+  //* 從 redux toolkit 中叫出資料
+  const checkProfileState = useSelector(
+    (state: RootStateType) => state.checkProfile.checkProfileState
+  );
+
   //* 選擇文章有效期間
   const defaultValue = "選擇有效期間";
   const periodList = ["一週", "二週", "三週", "一個月", "兩個月", "三個月"];
@@ -43,7 +51,7 @@ function Posting() {
 
   //*設定流利語言
   const defaultFluent = "請選擇流利語言";
-  const fluentList = [
+  const defaultFluentList = [
     "中文",
     "英文",
     "日文",
@@ -52,6 +60,9 @@ function Posting() {
     "越南文",
     "印尼文",
   ];
+  //* 當fluentList裡面是空的時候顯示預設的DefaultFluentList，避免錯誤
+  const fluentList =
+    checkProfileState?.skills?.map((el) => el?.language) ?? defaultFluentList;
   const [fluent, setFluent] = useState(defaultFluent);
   function handleFluent(el: string) {
     setFluent(el);
@@ -73,6 +84,10 @@ function Posting() {
     setWanted(el);
   }
 
+  //* 設定圖片
+  const image: string[] = checkProfileState?.image ?? [];
+
+  //* react-hook-form 設定
   const {
     register,
     handleSubmit,
@@ -160,7 +175,7 @@ function Posting() {
             </Tag>
             <CertificationsWrapper>
               <h6>證照</h6>
-              <CertificationsEdit />
+              <CertificationsEdit image={image} />
             </CertificationsWrapper>
             <ButtonPair
               right="發布"
