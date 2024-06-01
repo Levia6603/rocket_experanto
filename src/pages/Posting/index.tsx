@@ -38,12 +38,6 @@ type Formvalues = {
 };
 
 function Posting() {
-  //* 取得語言列表
-  const [list, setList] = useState<apiList>([]);
-  useEffect(() => {
-    getList(apiBase.GET_LANGUAGE_LIST, setList);
-  }, []);
-
   //* 從 redux toolkit 中叫出資料
   const checkProfileState = useSelector(
     (state: RootStateType) => state.checkProfile.checkProfileState
@@ -77,9 +71,10 @@ function Posting() {
   }
 
   //*設定想學的語言
-  const defaultWanted = "請選擇想學的語言";
-  const fetchedWantedList = list.map((el) => el.Name);
-  const wantedList = fetchedWantedList ?? [
+
+  const [wanted, setWanted] = useState<apiList>([]);
+  const [selectedWanted, setSelectedWanted] = useState({ Id: 0, Name: "" });
+  const wantedList = wanted ?? [
     "英文",
     "日文",
     "韓文",
@@ -87,12 +82,6 @@ function Posting() {
     "越南文",
     "印尼文",
   ];
-
-  const [wanted, setWanted] = useState(defaultWanted);
-  function handleWanted(el: string) {
-    setWanted(el);
-  }
-
   //* 設定圖片
   const image: string[] = checkProfileState?.image ?? [];
 
@@ -104,6 +93,11 @@ function Posting() {
   } = useForm<Formvalues>();
 
   const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
+
+  //* 取得語言列表
+  useEffect(() => {
+    getList(apiBase.GET_LANGUAGE_LIST, setWanted);
+  }, []);
 
   return (
     <>
@@ -152,10 +146,10 @@ function Posting() {
             <Wanted>
               <h6>想學的語言</h6>
               <WantedList
-                size="middle"
-                currentValue={wanted}
-                languageList={wantedList}
-                setValue={handleWanted}
+                width={347}
+                currentValue={selectedWanted.Name || "請選擇想學的語言"}
+                list={wantedList}
+                setValue={setSelectedWanted}
                 {...register("wanted", { required: "請選擇想學的語言" })}
               />
               {errors.period && <span>請選擇選擇語言</span>}
