@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import Selector from "../../components/Selector";
 import { Button } from "../Profile/profileStyle";
+import Select from "../../components/Select";
 
 export const Wrapper = styled.section`
   padding: 40px 0;
@@ -189,7 +190,7 @@ export const Wanted = styled.label`
     padding: 0.5rem 0.5rem;
   }
 `;
-export const WantedList = styled(Selector)`
+export const WantedList = styled(Select)`
   min-width: 347px;
   max-width: 347px;
   max-height: 52px;
