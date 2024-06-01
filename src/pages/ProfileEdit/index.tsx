@@ -31,7 +31,7 @@ import axios from "axios";
 import apiBase from "../../Api";
 import { getList } from "../../Api";
 
-type apiList = { Id: number; Name: string }[];
+export type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; GoalsContent: string[] }[];
 type FormData = {
   GendersId: number;
