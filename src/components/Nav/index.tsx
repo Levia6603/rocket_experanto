@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootStateType } from "../../../redux";
+import { useDispatch } from "react-redux";
 import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSlice";
 import {
   Section,
@@ -40,10 +39,6 @@ function Nav() {
 
   //* redux toolkit
   const dispatch = useDispatch();
-  const checkProfileState = useSelector(
-    (state: RootStateType) => state.checkProfile.checkProfileState
-  );
-  console.log(checkProfileState);
 
   //* 發文前確認個人資料是否填寫完成
   async function checkProfile() {
