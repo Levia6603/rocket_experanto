@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { RootStateType } from "../../../redux";
+import apiBase, { getList } from "../../Api";
+import { apiList } from "../ProfileEdit";
 
 import {
   Wrapper,
@@ -36,6 +38,12 @@ type Formvalues = {
 };
 
 function Posting() {
+  //* 取得語言列表
+  const [list, setList] = useState<apiList>([]);
+  useEffect(() => {
+    getList(apiBase.GET_LANGUAGE_LIST, setList);
+  }, []);
+
   //* 從 redux toolkit 中叫出資料
   const checkProfileState = useSelector(
     (state: RootStateType) => state.checkProfile.checkProfileState
@@ -70,8 +78,8 @@ function Posting() {
 
   //*設定想學的語言
   const defaultWanted = "請選擇想學的語言";
-  const wantedList = [
-    "中文",
+  const fetchedWantedList = list.map((el) => el.Name);
+  const wantedList = fetchedWantedList ?? [
     "英文",
     "日文",
     "韓文",
@@ -79,6 +87,7 @@ function Posting() {
     "越南文",
     "印尼文",
   ];
+
   const [wanted, setWanted] = useState(defaultWanted);
   function handleWanted(el: string) {
     setWanted(el);
