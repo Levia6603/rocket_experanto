@@ -17,6 +17,7 @@ import PassValue from "../pages/PassValue";
 import Matching from "../pages/Matching";
 import SignUpEdit from "../pages/SignUpEdit";
 import FullReview from "../pages/FullReview";
+import VideoChat from "../pages/VideoChat";
 
 export const router = createBrowserRouter([
   {
@@ -86,5 +87,6 @@ export const router = createBrowserRouter([
   },
   { path: "posting", element: <Posting /> },
   { path: "/applying", element: <Apply /> },
+  { path: "videocall", element: <VideoChat /> },
   { path: "*", element: <div>Not Found</div> },
 ]);

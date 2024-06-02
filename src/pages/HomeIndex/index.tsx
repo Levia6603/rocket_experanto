@@ -1,10 +1,21 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import apiBase from "../../Api";
+import { useEffect, useState } from "react";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
 import { Wrapper, AreaSelector } from "./styles";
+import apiBase from "../../Api";
+import axios from "axios";
+import { SimplifiedPostInterface } from "../../components/PostCard";
+
+export interface PostListInterface {
+  Code?: number;
+  Status?: string;
+  list?: SimplifiedPostInterface[];
+  page?: number;
+  totalPage?: number;
+  totalPost?: number;
+}
+[];
 
 function HomeIndex() {
   const area = ["Taipei", "Taoyuan", "Taichung", "Tainan", "Kaohsiung"];
@@ -13,6 +24,37 @@ function HomeIndex() {
   function handleSelect(el: string) {
     setSelectArea(el);
   }
+  const [postList, setPostList] = useState<PostListInterface | null>(
+    {} as PostListInterface
+  );
+  //*取得 Post List的函式
+  async function getPostList() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    try {
+      const postList = await axios({
+        method: "GET",
+        url: `${apiBase.GET_POST_LIST}`,
+        headers: headers,
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      setPostList(postList);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //* 接回 Post List
+  useEffect(() => {
+    getPostList();
+  }, []);
+
+  useEffect(() => {
+    console.log(postList);
+  }, [postList]);
 
   async function getPost() {
     const headers = {
@@ -49,16 +91,9 @@ function HomeIndex() {
       </Wrapper>
 
       <PostCards>
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        {postList?.list?.map((post) => (
+          <PostCard key={post.PostId} {...post} />
+        ))}
       </PostCards>
       <PageBar />
     </>

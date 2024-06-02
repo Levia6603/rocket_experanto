@@ -8,12 +8,13 @@ const apiBase = {
   GOOGLE_LOGIN: `/api/login`,
   GET_LOCATION_LIST: `/api/location`,
   GET_GENDER_LIST: `/api/gender`,
-  POST_PROFILE: `/api/users`,
   GET_PROFILE: `/api/users`,
+  POST_PROFILE: `/api/users`,
   GET_POST: `/api/post`,
-  GET_POST_LIST: `/api/postList`,
   POST_POST: `/api/post`,
   GET_CHECK_POST: `/api/checkPost`,
+  GET_POST_LIST: `/api/postList`,
+ 
 };
 
 export default apiBase;
