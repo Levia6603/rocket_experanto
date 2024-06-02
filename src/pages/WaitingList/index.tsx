@@ -9,7 +9,7 @@ import {
   Item,
 } from "./styles";
 import ButtonPair from "../../components/ButtonPair";
-import PageBar from "../../components/PageBar";
+// import PageBar from "../../components/PageBar";
 const avatar = "/nav-profile.png";
 
 function WaitingList() {
@@ -127,7 +127,7 @@ function WaitingList() {
               </div>
             </Item>
           </List>
-          <PageBar />
+          {/* <PageBar /> */}
         </Container>
       </Wrapper>
     </>
