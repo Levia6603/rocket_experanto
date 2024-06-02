@@ -5,17 +5,15 @@ import PageBar from "../../components/PageBar";
 import { Wrapper, AreaSelector } from "./styles";
 import apiBase from "../../Api";
 import axios from "axios";
+import { SimplifiedPostInterface } from "../../components/PostCard";
 
-interface PostList {
-  postId?: number;
-  userName?: string;
-  userAvatar?: string;
-  isFavorite?: boolean;
-  title?: string;
-  Learn?: string;
-  skill?: string;
-  content?: string;
-  tags?: string[];
+export interface PostListInterface {
+  Code?: number;
+  Status?: string;
+  list?: SimplifiedPostInterface[];
+  page?: number;
+  totalPage?: number;
+  totalPost?: number;
 }
 [];
 
@@ -26,8 +24,10 @@ function HomeIndex() {
   function handleSelect(el: string) {
     setSelectArea(el);
   }
-  const [postList, setPostList] = useState<PostList | null>({} as PostList);
-
+  const [postList, setPostList] = useState<PostListInterface | null>(
+    {} as PostListInterface
+  );
+  //*取得 Post List的函式
   async function getPostList() {
     const headers = {
       "Content-Type": "application/json",
@@ -68,16 +68,9 @@ function HomeIndex() {
       </Wrapper>
 
       <PostCards>
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        {postList?.list?.map((post) => (
+          <PostCard key={post.PostId} {...post} />
+        ))}
       </PostCards>
       <PageBar />
     </>
