@@ -13,7 +13,7 @@ import {
   List,
   Item,
 } from "./styles";
-import PageBar from "../../components/PageBar";
+// import PageBar from "../../components/PageBar";
 
 const avatar = "/nav-profile.png";
 
@@ -157,7 +157,7 @@ function Notifications() {
                 </Item>
               </li>
             </List>
-            <PageBar />
+            {/* <PageBar /> */}
           </Content>
         </Container>
       </Wrapper>
