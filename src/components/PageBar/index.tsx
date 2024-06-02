@@ -2,7 +2,7 @@ import { Wrapper, Container, PageButton } from "./styles";
 import { useSelector, useDispatch } from "react-redux";
 import { RootStateType } from "../../../redux";
 import { setPage } from "../../../redux/pages/pagesSlice";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function PageBar() {
   const dispatch = useDispatch();
