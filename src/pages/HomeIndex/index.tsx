@@ -56,6 +56,29 @@ function HomeIndex() {
     console.log(postList);
   }, [postList]);
 
+  async function getPost() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    try {
+      const post = await axios({
+        method: "GET",
+        url: apiBase.GET_POST_LIST,
+        headers: headers,
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      console.log(post);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getPost();
+  }, []);
+
   return (
     <>
       <Wrapper>

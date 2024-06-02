@@ -3,7 +3,6 @@ import Button from "../../styles/Button";
 
 export const Certification = styled.div`
   display: flex;
-  flex-direction: column;
   width: 100%;
   gap: 12px;
 `;

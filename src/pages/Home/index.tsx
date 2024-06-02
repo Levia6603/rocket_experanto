@@ -7,6 +7,7 @@ import LanguageFilter from "../../components/LanguageFilter";
 import SlidingPost from "../../components/SlidingPost";
 
 function Home() {
+
   return (
     <>
       <Nav />

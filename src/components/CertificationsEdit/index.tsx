@@ -1,21 +1,27 @@
 import { Certification, CertificationCard, DeleteButton } from "./styles";
-import noCertification_sm from "/no-certification-sm.svg";
+// import noCertification_sm from "/no-certification-sm.svg";
 import close from "/close-lg.svg";
-function CertificationsEdit() {
+
+interface Props {
+  image: string[];
+}
+
+function CertificationsEdit({ image }: Props) {
   return (
     <>
       <Certification>
-        <CertificationCard>
-          <div>
-            <DeleteButton>
-              <img src={close} alt="close" />
-            </DeleteButton>
-          </div>
-
-          <div>
-            <img src={noCertification_sm} alt="no certification" />
-          </div>
-        </CertificationCard>
+        {image.map((el, index) => (
+          <CertificationCard key={index}>
+            <div>
+              <DeleteButton>
+                <img src={close} alt="close" />
+              </DeleteButton>
+            </div>
+            <div>
+              <img src={el} alt="no certification" />
+            </div>
+          </CertificationCard>
+        ))}
       </Certification>
     </>
   );
