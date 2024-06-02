@@ -1,11 +1,12 @@
 import { useDispatch } from "react-redux";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
+import { setPostId } from "../../../redux/postId/postIdSlice";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import liked from "/profile_box_icons/heart.svg";
 
 export interface SimplifiedPostInterface {
   Learn?: string;
-  PostId?: number;
+  PostId: number;
   content?: string;
   isFavorite?: boolean;
   skill?: string;
@@ -17,12 +18,22 @@ export interface SimplifiedPostInterface {
 
 function PostCard({ ...props }: SimplifiedPostInterface) {
   const dispatch = useDispatch();
+
+  const handleClick = (el: any) => {
+    // 找到包含 data-postid 属性的元素
+    let targetElement = el.target;
+    while (targetElement && !targetElement.dataset.postid) {
+      targetElement = targetElement.parentElement;
+    }
+
+    if (targetElement) {
+      const postId = targetElement.dataset.postid;
+      dispatch(setSlidingPostState());
+      dispatch(setPostId(postId));
+    }
+  };
   return (
-    <Wrapper
-      onClick={() => {
-        dispatch(setSlidingPostState());
-      }}
-    >
+    <Wrapper data-postid={props?.PostId || ""} onClickCapture={handleClick}>
       <Header>
         <div>
           <div>
