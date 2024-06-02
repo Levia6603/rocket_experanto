@@ -47,7 +47,7 @@ function Apply() {
         </ScheduleWrapper>
         <CertificationWrapper>
           <h6>語言證照</h6>
-          <Certification />
+          <Certification image={[]} />
         </CertificationWrapper>
       </Container>
     </Wrapper>

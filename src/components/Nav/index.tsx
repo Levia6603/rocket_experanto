@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSlice";
 import {
   Section,
   Container,
@@ -12,14 +14,59 @@ import {
 
 import bell from "/profile_box_icons/bell.svg";
 import global from "/global.svg";
+import apiBase from "../../Api";
+import axios from "axios";
+
+interface ProfileType {
+  Code: number;
+  Status: string;
+  message: string;
+  userName?: string;
+  userAvatar?: string;
+  skills?: { language: string; languageId: number; goal: string[] };
+  img?: string[];
+}
 
 function Nav() {
   const languages = ["English", "中文"];
   const defaultValue = "中文";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
+  //* 發文前確是否已完成個人資料
+  const [isCompleted, setIsCompleted] = useState({} as ProfileType);
   function handleSelect(el: string) {
     setSelectLanguage(el);
   }
+
+  //* redux toolkit
+  const dispatch = useDispatch();
+
+  //* 發文前確認個人資料是否填寫完成
+  async function checkProfile() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      await axios({
+        method: "GET",
+        url: apiBase.GET_CHECK_POST,
+        headers: headers,
+      })
+        .then((res) => {
+          setIsCompleted(res.data);
+          dispatch(setCheckProfileState(res.data));
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //* 發文
+  function handlePost() {
+    checkProfile();
+  }
+
   return (
     <>
       <Section>
@@ -57,8 +104,12 @@ function Nav() {
 
           <Navbar>
             <li>
-              <LinkItem to={"/post"}>
-                <NavBtn>Post</NavBtn>
+              <LinkItem
+                to={
+                  isCompleted.Code !== 200 ? "/posting" : "/user/profile/edit"
+                }
+              >
+                <NavBtn onClick={handlePost}>Post</NavBtn>
               </LinkItem>
             </li>
             <li>

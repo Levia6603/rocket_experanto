@@ -29,8 +29,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
+import { getList } from "../../Api";
 
-type apiList = { Id: number; Name: string }[];
+export type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; GoalsContent: string[] }[];
 type FormData = {
   GendersId: number;
@@ -60,13 +61,6 @@ const ProfileEdit = () => {
   const navigate = useNavigate();
 
   //* 改為使用一支函式套用至所有取得列表的部分
-  async function getList(
-    apiUrl: string,
-    setList: (value: React.SetStateAction<apiList>) => void
-  ) {
-    const list: apiList = await axios.get(apiUrl).then((res) => res.data.data);
-    setList(list);
-  }
 
   //* POST資料庫
   async function postData(formData: FormData) {
@@ -91,22 +85,6 @@ const ProfileEdit = () => {
       console.error("Error saving profile:", error);
     }
   }
-
-  // //* 取得地區列表
-  // async function getLocationList() {
-  //   const list: LanguageList = await axios
-  //     .get(apiBase.GET_LOCATION_LIST)
-  //     .then((res) => res.data.data);
-  //   setLocationList(list);
-  // }
-
-  // //* 取得性別列表
-  // async function getGenderList() {
-  //   const list: GenderList = await axios
-  //     .get(apiBase.GET_GENDER_LIST)
-  //     .then((res) => res.data.data);
-  //   setGenderList(list);
-  // }
 
   //* 打API
   useEffect(() => {

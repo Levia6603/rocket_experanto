@@ -1,3 +1,6 @@
+import axios from "axios";
+type apiList = { Id: number; Name: string }[];
+
 const apiBase = {
   //* 取得語言列表
   GET_LANGUAGE_LIST: `/api/languages`,
@@ -5,10 +8,21 @@ const apiBase = {
   GOOGLE_LOGIN: `/api/login`,
   GET_LOCATION_LIST: `/api/location`,
   GET_GENDER_LIST: `/api/gender`,
-  POST_PROFILE: `/api/users`,
   GET_PROFILE: `/api/users`,
-  GET_POST_LIST: `/api/postList`,
+  POST_PROFILE: `/api/users`,
   GET_POST: `/api/post`,
+  POST_POST: `/api/post`,
+  GET_CHECK_POST: `/api/checkPost`,
+  GET_POST_LIST: `/api/postList`,
+ 
 };
 
 export default apiBase;
+
+export async function getList(
+  apiUrl: string,
+  setList: (value: React.SetStateAction<apiList>) => void
+) {
+  const list: apiList = await axios.get(apiUrl).then((res) => res.data.data);
+  setList(list);
+}
