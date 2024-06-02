@@ -21,11 +21,11 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
   const dispatch = useDispatch();
 
   //* 點擊卡片的一系列動作
-  const handleClick = (el: any) => {
+  const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
     //* 找到包含 data-postid 属性的元素
-    let targetElement = el.target;
+    let targetElement = el.target as HTMLElement;
     while (targetElement && !targetElement.dataset.postid) {
-      targetElement = targetElement.parentElement;
+      targetElement = targetElement.parentElement as HTMLElement;
     }
     //* 如果找到了 PostId 執行以下動作
     if (targetElement) {
