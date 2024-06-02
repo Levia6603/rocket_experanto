@@ -17,15 +17,17 @@ export interface SimplifiedPostInterface {
 }
 
 function PostCard({ ...props }: SimplifiedPostInterface) {
+  //* 設定dispatch
   const dispatch = useDispatch();
 
+  //* 點擊卡片的一系列動作
   const handleClick = (el: any) => {
-    // 找到包含 data-postid 属性的元素
+    //* 找到包含 data-postid 属性的元素
     let targetElement = el.target;
     while (targetElement && !targetElement.dataset.postid) {
       targetElement = targetElement.parentElement;
     }
-
+    //* 如果找到了 PostId 執行以下動作
     if (targetElement) {
       const postId = targetElement.dataset.postid;
       dispatch(setSlidingPostState());
@@ -52,25 +54,25 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
       <Content>
         <div>
           <div>
-            <h6>Title</h6>
+            <h6>文章標題</h6>
           </div>
           <p>{props.title}</p>
         </div>
         <div>
           <div>
-            <h6>Fluent</h6>
+            <h6>擅長語言</h6>
           </div>
-          <p>English</p>
+          <p>{props.skill}</p>
         </div>
         <div>
           <div>
-            <h6>Looking for</h6>
+            <h6>我想學</h6>
           </div>
-          <p>Mandarin</p>
+          <p>{props.Learn}</p>
         </div>
         <div>
           <div>
-            <h6>Goals</h6>
+            <h6>我的目標</h6>
           </div>
           <p>{props.content}</p>
         </div>
