@@ -1,9 +1,21 @@
 import { useDispatch } from "react-redux";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
-import avatar from "/nav-profile.png";
 import liked from "/profile_box_icons/heart.svg";
-function PostCard() {
+
+export interface SimplifiedPostInterface {
+  Learn?: string;
+  PostId?: number;
+  content?: string;
+  isFavorite?: boolean;
+  skill?: string;
+  tags?: string[];
+  title?: string;
+  userAvatar?: string;
+  userName?: string;
+}
+
+function PostCard({ ...props }: SimplifiedPostInterface) {
   const dispatch = useDispatch();
   return (
     <Wrapper
@@ -14,12 +26,16 @@ function PostCard() {
       <Header>
         <div>
           <div>
-            <img src={avatar} alt="avatar" />
+            <img src={props.userAvatar} alt="avatar" />
           </div>
-          <h6>Lorem ipsum dolor sit.</h6>
+          <h6>{props.userName}</h6>
         </div>
         <div>
-          <img src={liked} alt="liked" />
+          {props.isFavorite ? (
+            <img src={liked} alt="isLiked" />
+          ) : (
+            <img src={liked} alt="liked" />
+          )}
         </div>
       </Header>
       <Content>
@@ -27,7 +43,7 @@ function PostCard() {
           <div>
             <h6>Title</h6>
           </div>
-          <p>Looking for someone who's fluent in Mandarin</p>
+          <p>{props.title}</p>
         </div>
         <div>
           <div>
@@ -45,24 +61,15 @@ function PostCard() {
           <div>
             <h6>Goals</h6>
           </div>
-          <p>
-            I want to learn Chinese because I'm interested in Chinese culture
-            and language. By learning Chinese, I hope to better understand
-            China's history, art, and humanities, as well as to communicate with
-            more people....
-          </p>
+          <p>{props.content}</p>
         </div>
       </Content>
       <HashTagSection>
-        <HashTag>
-          <p>#English</p>
-        </HashTag>
-        <HashTag>
-          <p>#Mandarin</p>
-        </HashTag>
-        <HashTag>
-          <p>+1</p>
-        </HashTag>
+        {props.tags?.map((el, index) => (
+          <HashTag key={index}>
+            <p>{el}</p>
+          </HashTag>
+        ))}
       </HashTagSection>
     </Wrapper>
   );
