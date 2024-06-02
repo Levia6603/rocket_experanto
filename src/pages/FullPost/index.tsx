@@ -51,7 +51,7 @@ function FullPost() {
     try {
       const post: PostInterface = await axios({
         method: "GET",
-        url: `${apiBase.GET_POST_LIST}/${id}`,
+        url: `${apiBase.GET_POST}/${id}`,
         headers: headers,
       })
         .then((res) => res.data)
