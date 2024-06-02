@@ -1,5 +1,8 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import apiBase from "../../Api";
 import { RootStateType } from "../../../redux";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import {
@@ -13,29 +16,77 @@ import {
 } from "./styles";
 import { Calendar, Needs, Plans, Tags, Tag } from "../../pages/FullPost/styles";
 import Schedule from "../Schedule";
+import { PostInterface } from "../../pages/FullPost";
+import { Certification } from "../../pages/FullPost/styles";
+//* pictures
 import close from "/close-lg.svg";
 import newPage from "/box-arrow-up-right.svg";
 import avatar from "/avatar-80.svg";
 import location from "/map-pin.svg";
-import commments from "/message.svg";
+import comments from "/message.svg";
 import liked from "/profile_box_icons/heart.svg";
-import { PostInterface } from "../../pages/FullPost";
-import { Certification } from "../../pages/FullPost/styles";
 
-interface Props {
-  post: PostInterface;
-  tags: string;
-  tagAry: string[];
-}
-function SlidingPost({ post, tags, tagAry }: Props) {
+// interface Props {
+//   post: PostInterface;
+//   tags: string;
+//   tagAry: string[];
+// }
+function SlidingPost() {
+  //* 設定 redux toolkit
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isVisible = useSelector(
     (state: RootStateType) => state.sliding.slidingPostState
   );
+  const postId = useSelector((state: RootStateType) => state.postId.postId);
+
+  //* 寫入資料
+  const [post, setPost] = useState({} as PostInterface);
+  const [tags, setTags] = useState(String);
+  const [tagAry, setTagAry] = useState([] as string[]);
+
+  //* loading 狀態
+  const [loading, setLoading] = useState(false);
+
+  //* 接回指定 Post
+  async function getPost(id: number) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    try {
+      setLoading(true); //* 設定 loading 狀態，當取得資料完成後會設定為 false
+      const post: PostInterface = await axios({
+        method: "GET",
+        url: `${apiBase.GET_POST}/${id}`,
+        headers: headers,
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      setPost(post);
+      setTags(post.tags || "");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  //* 監聽是否可見，當可見時取得資料
+  useEffect(() => {
+    if (isVisible === true) {
+      getPost(Number(postId));
+    }
+  }, [isVisible, postId]);
+
+  //* 將 tags 轉成陣列
+  useEffect(() => {
+    const tagList = tags.split(",");
+    setTagAry(tagList);
+  }, [tags]);
 
   return (
     <>
+      {loading && <div style={{ display: "none" }}>Loading...</div>}
       <Wrapper $isVisible={isVisible}>
         <ControlBar>
           <CloseBtn
@@ -76,7 +127,7 @@ function SlidingPost({ post, tags, tagAry }: Props) {
               </div>
               <div>
                 <div>
-                  <img src={commments} alt="Comments" />
+                  <img src={comments} alt="comments" />
                 </div>
                 <p>
                   <span> 5 </span>
