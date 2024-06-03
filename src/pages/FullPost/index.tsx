@@ -16,11 +16,11 @@ import {
   Buttons,
   PostButton,
 } from "./styles";
-import Schedule from "../../components/Schedule";
 import Comments from "../../components/Comments";
 import star from "/profile_box_icons/star-black.png";
 import like from "/profile_box_icons/heart.svg";
 import noCertification from "/no-certification-lg.svg";
+import ApplySchedule from "../../components/ApplySchedule";
 
 export interface PostInterface {
   userName?: string;
@@ -32,13 +32,23 @@ export interface PostInterface {
   startDate?: string;
   learn?: { Id: number; Name: string; content: string }[];
   endDate?: string;
-  availabaleHours?: any;
+  availableHours?: any;
   images?: string[];
   isFavorite?: boolean;
+}
+interface TimeData {
+  Sun?: { start: string; end: string }[];
+  Mon?: { start: string; end: string }[];
+  Tue?: { start: string; end: string }[];
+  Wed?: { start: string; end: string }[];
+  Thu?: { start: string; end: string }[];
+  Fri?: { start: string; end: string }[];
+  Sat?: { start: string; end: string }[];
 }
 
 function FullPost() {
   const [post, setPost] = useState({} as PostInterface);
+  const [timeData, setTimeData] = useState<TimeData>({});
   const [tags, setTags] = useState(String);
   const [tagAry, setTagAry] = useState([] as string[]);
 
@@ -58,7 +68,7 @@ function FullPost() {
         .catch((err) => console.log(err));
       setPost(post);
       setTags(post.tags || "");
-      console.log(post);
+      setTimeData(post.availableHours);
     } catch (error) {
       console.error(error);
     }
@@ -66,7 +76,7 @@ function FullPost() {
 
   //*接回 Post List
   useEffect(() => {
-    getPost(2);
+    getPost(4);
   }, []);
 
   useEffect(() => {
@@ -130,7 +140,7 @@ function FullPost() {
               <h6>可交換時間</h6>
             </div>
             <div>
-              <Schedule />
+              <ApplySchedule timeData={timeData} />
             </div>
           </Calendar>
           <Needs>
