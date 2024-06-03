@@ -1,49 +1,62 @@
 import { styled } from "styled-components";
-import ProcessBox from "../../styles/ProcessBox";
-import Button from "../../styles/Button";
-export const LoginSection = styled.section``;
 
-export const LoginContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: calc(100vh - 7rem);
+export const Wrapper = styled.section`
+  height: 100vh;
 `;
-
-export const LoginWithGoogleButton = styled(Button)`
+export const Container = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-
-  background-color: white;
-  color: black;
-  font-size: 1rem;
-  border: 1px solid black;
-  border-radius: 4px;
-  padding: 6px 12px;
-  margin-top: 1rem;
-  cursor: pointer;
-`;
-
-export const LoginBox = styled(ProcessBox)`
-  & > div {
-    width: 475px;
-    border: 1px solid #9e9e9e;
-    border-radius: 4px;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
+  max-width: 1296px;
+  margin: 0 auto;
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    width: 526px;
+    height: 100vh;
+    padding: 57px 0;
+    border: 1px solid #000;
+    background-color: #fff;
+    h2 {
+      font-size: 32px;
+      font-weight: 700;
+    }
   }
-  & > div {
-    & > p {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-top: 0;
-      margin-bottom: 1.5rem;
-    }
-    & > div {
-      display: flex;
-      justify-content: center;
-    }
+`;
+
+export const Banner = styled.img`
+  width: 770px;
+  object-fit: contain;
+`;
+
+export const Logo = styled.img`
+  width: 315px;
+  margin-bottom: 52px;
+`;
+
+export const Btn = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 4px;
+  cursor: pointer;
+  p {
+    color: #454545;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  img {
+    width: 32px;
+  }
+  &:hover {
+    transition: all 0.3s;
+    box-shadow: 4px 4px 0 #000;
+  }
+  &:active {
+    transition: all 0s;
+    box-shadow: 0 0 0;
   }
 `;

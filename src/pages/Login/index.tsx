@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import {
-  LoginSection,
-  LoginContainer,
-  LoginBox,
-  LoginWithGoogleButton,
-} from "./loginStyle";
 import axios from "axios";
 import apiBase from "../../Api";
+import loginImg from "/login.png";
+import logoFull from "/logo_full.png";
+import googleLogo from "/Google_logo.svg";
+import { Banner, Btn, Container, Logo, Wrapper } from "./loginStyle";
 
 function Login() {
   const openNew = async () => {
@@ -19,23 +17,19 @@ function Login() {
 
   return (
     <>
-      <LoginSection>
-        <LoginContainer>
-          <LoginBox>
-            <img src="/logo-large.png" alt="experanto logo" />
-            <div>
-              <p>SIGN IN</p>
-              <hr />
-              <div>
-                <LoginWithGoogleButton type="button" onClick={openNew}>
-                  <img src="/google-icon-button.png" alt="google" />
-                  <p>Continue with Google</p>
-                </LoginWithGoogleButton>
-              </div>
-            </div>
-          </LoginBox>
-        </LoginContainer>
-      </LoginSection>
+      <Wrapper>
+        <Container>
+          <div>
+            <Logo src={logoFull} alt="" />
+            <h2>登入 / 註冊</h2>
+            <Btn type="button" onClick={openNew}>
+              <img src={googleLogo} alt="" />
+              <p>Continue with google</p>
+            </Btn>
+          </div>
+          <Banner src={loginImg} alt="" />
+        </Container>
+      </Wrapper>
     </>
   );
 }
