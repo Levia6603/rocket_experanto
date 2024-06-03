@@ -14,7 +14,7 @@ const apiBase = {
   POST_POST: `/api/post`,
   GET_CHECK_POST: `/api/checkPost`,
   GET_POST_LIST: `/api/postList`,
- 
+  GET_HOT_LANGUAGE: `/api/languages/popular`,
 };
 
 export default apiBase;
