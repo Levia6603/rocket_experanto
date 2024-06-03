@@ -2,12 +2,9 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiBase from "../../Api";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../../redux/user/userSlice";
 
 function PassValue() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { GOOGLE_LOGIN } = apiBase;
 
   const getLoginData = async () => {
@@ -18,16 +15,15 @@ function PassValue() {
       .post(GOOGLE_LOGIN, { Code: code })
       .then((res) => res.data);
 
-    console.log(loginData);
-
     const {
       token,
       message,
       data: { photos, name },
     } = loginData;
 
-    dispatch(setUser({ name, avatar: photos }));
     localStorage.setItem("token", token);
+    localStorage.setItem("name", name);
+    localStorage.setItem("avatar", photos);
 
     if (message === "註冊成功") {
       navigate("/user/profile/edit");

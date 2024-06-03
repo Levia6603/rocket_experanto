@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { Container, Photo, Menu } from "./profileStyle";
 import star from "/profile_box_icons/star-black.png";
-import { useSelector } from "react-redux";
-import { RootStateType } from "../../../redux";
 
 function ProfileBox() {
-  const user = useSelector((state: RootStateType) => state.user.user);
-  const { avatar, name } = user;
+  const userName = localStorage.getItem("name");
+  const avatar = localStorage.getItem("avatar");
 
   const navigate = useNavigate();
   return (
@@ -14,9 +12,9 @@ function ProfileBox() {
       <Container>
         <Photo>
           <div>
-            <img src={avatar} alt="" />
+            <img src={avatar || ""} alt="" />
           </div>
-          <h5>{name}</h5>
+          <h5>{userName}</h5>
           <div>
             <div>
               <p>Taipei</p>
