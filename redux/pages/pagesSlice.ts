@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   pages: 1,
   page: 1,
+  languageIds: [] as number[],
 };
 
 const pagesSlice = createSlice({
@@ -15,8 +16,11 @@ const pagesSlice = createSlice({
     setPage: (state, action) => {
       state.page = action.payload;
     },
+    setLanguageIds: (state, action) => {
+      state.languageIds = action.payload;
+    },
   },
 });
 
-export const { setPages, setPage } = pagesSlice.actions;
+export const { setPages, setPage, setLanguageIds } = pagesSlice.actions;
 export default pagesSlice.reducer;

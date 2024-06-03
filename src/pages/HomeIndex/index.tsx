@@ -22,7 +22,12 @@ export interface PostListInterface {
 
 function HomeIndex() {
   const dispatch = useDispatch();
+  //* 從 redux state 取得總頁數
   const page = useSelector((state: RootStateType) => state.pages.page);
+  //* 從 redux state 取得被選擇的熱門語言陣列
+  const languageIds = useSelector(
+    (state: RootStateType) => state.pages.languageIds
+  );
 
   const area = ["Taipei", "Taoyuan", "Taichung", "Tainan", "Kaohsiung"];
   const defaultValue = "請選擇區域";
@@ -35,6 +40,7 @@ function HomeIndex() {
   const [postList, setPostList] = useState<PostListInterface | null>(
     {} as PostListInterface
   );
+
   //* 根據頁碼傳回指定頁數的內容
   async function getPostListByPage(index: number) {
     const headers = {
@@ -50,6 +56,29 @@ function HomeIndex() {
         .then((res) => res.data)
         .catch((err) => console.log(err));
       setPostList(postList);
+      dispatch(setPages(postList.totalPages));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  //* 根據選擇的熱門語言陣列組合query
+  const languageQuery = languageIds.map((id) => `languageId=${id}`).join("&");
+  //* 根據選擇的語言傳回指定語言的內容
+  async function getPostListByLanguage(index: number, languageQuery: string) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    try {
+      const postList = await axios({
+        method: "GET",
+        url: `${apiBase.GET_POST_LIST}?page=${index}&${languageQuery}`,
+        headers: headers,
+      })
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
+      setPostList(postList);
+      dispatch(setPages(postList.totalPages));
     } catch (error) {
       console.error(error);
     }
@@ -85,28 +114,12 @@ function HomeIndex() {
     getPostListByPage(page);
   }, [page]);
 
-  async function getPost() {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
-    try {
-      const post = await axios({
-        method: "GET",
-        url: apiBase.GET_POST_LIST,
-        headers: headers,
-      })
-        .then((res) => res.data)
-        .catch((err) => console.log(err));
-      console.log(post);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
+  //* 當選擇語言陣列變動時重新取得API渲染畫面，當陣列為空時執行getPostByPage
   useEffect(() => {
-    getPost();
-  }, []);
+    languageIds.length > 0
+      ? getPostListByLanguage(page, languageQuery)
+      : getPostListByPage(page);
+  }, [languageIds, page, languageQuery]);
 
   return (
     <>
