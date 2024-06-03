@@ -4,14 +4,14 @@ import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSl
 import {
   Section,
   Container,
-  Navbar,
+  NavbarLoggedIn,
   LinkItem,
   NavBtn,
   Logo,
   SearchBar,
   LanguageSelector,
 } from "./navStyle";
-
+import logo from "/logo_full.png";
 import bell from "/profile_box_icons/bell.svg";
 import global from "/global.svg";
 import apiBase from "../../Api";
@@ -72,13 +72,10 @@ function Nav() {
       <Section>
         <Container>
           <Logo>
-            <img src="/nav-logo.png" alt="experanto logo" />
+            <img src={logo} alt="experanto logo" />
           </Logo>
           <SearchBar>
-            <input
-              type="text"
-              placeholder="What language would you like to search for today ?"
-            />
+            <input type="text" placeholder="您今天想學什麼語言？" />
             <button type="button">
               <svg
                 width="24"
@@ -102,14 +99,14 @@ function Nav() {
             </button>
           </SearchBar>
 
-          <Navbar>
+          <NavbarLoggedIn>
             <li>
               <LinkItem
                 to={
                   isCompleted.Code !== 200 ? "/posting" : "/user/profile/edit"
                 }
               >
-                <NavBtn onClick={handlePost}>Post</NavBtn>
+                <NavBtn onClick={handlePost}>發表貼文</NavBtn>
               </LinkItem>
             </li>
             <li>
@@ -130,7 +127,7 @@ function Nav() {
                 setValue={handleSelect}
               />
             </li>
-          </Navbar>
+          </NavbarLoggedIn>
         </Container>
       </Section>
     </>
