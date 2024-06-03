@@ -18,8 +18,6 @@ function PassValue() {
       .post(GOOGLE_LOGIN, { Code: code })
       .then((res) => res.data);
 
-    console.log(loginData);
-
     const {
       token,
       message,
