@@ -3,6 +3,9 @@ import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import liked from "/profile_box_icons/heart.svg";
+import solidLiked from "/solid-heart.svg";
+import exchange from "/exchange_icon.svg";
+import { useEffect } from "react";
 
 export interface SimplifiedPostInterface {
   Learn?: string;
@@ -34,56 +37,51 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
       dispatch(setPostId(postId));
     }
   };
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
+
   return (
     <Wrapper data-postid={props?.PostId || ""} onClickCapture={handleClick}>
-      <Header>
-        <div>
+      <div>
+        <Header>
           <div>
-            <img src={props.userAvatar} alt="avatar" />
+            <div>
+              <img src={props.userAvatar} alt="avatar" />
+            </div>
+            <h6>{props.userName}</h6>
           </div>
-          <h6>{props.userName}</h6>
-        </div>
-        <div>
-          {props.isFavorite ? (
-            <img src={liked} alt="isLiked" />
-          ) : (
-            <img src={liked} alt="liked" />
-          )}
-        </div>
-      </Header>
-      <Content>
-        <div>
           <div>
-            <h6>文章標題</h6>
+            {props.isFavorite ? (
+              <img src={solidLiked} alt="solidLiked" />
+            ) : (
+              <img src={liked} alt="liked" />
+            )}
+            <p>收藏</p>
           </div>
-          <p>{props.title}</p>
-        </div>
+        </Header>
+
         <div>
-          <div>
-            <h6>擅長語言</h6>
-          </div>
-          <p>{props.skill}</p>
+          <p>{props?.Learn}</p>
+          <img src={exchange} alt="" />
+          <p>{props?.skill}</p>
         </div>
+
         <div>
-          <div>
-            <h6>我想學</h6>
-          </div>
-          <p>{props.Learn}</p>
+          <Content title="我在這裡啦～">
+            <h4>{props.title}</h4>
+            <p>{props.content}</p>
+          </Content>
+          <HashTagSection>
+            {props.tags?.map((el, index) => (
+              <HashTag key={index}>
+                <p>{el}</p>
+              </HashTag>
+            ))}
+          </HashTagSection>
         </div>
-        <div>
-          <div>
-            <h6>我的目標</h6>
-          </div>
-          <p>{props.content}</p>
-        </div>
-      </Content>
-      <HashTagSection>
-        {props.tags?.map((el, index) => (
-          <HashTag key={index}>
-            <p>{el}</p>
-          </HashTag>
-        ))}
-      </HashTagSection>
+      </div>
     </Wrapper>
   );
 }
