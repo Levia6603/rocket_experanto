@@ -7,6 +7,7 @@ import LanguageFilter from "../../components/LanguageFilter";
 import SlidingPost from "../../components/SlidingPost";
 
 function Home() {
+  const isToken = localStorage.getItem("token");
 
   return (
     <>
@@ -17,7 +18,7 @@ function Home() {
             <Outlet />
           </Dashboard>
           <RightSection>
-            <ProfileBox />
+            {isToken && <ProfileBox />}
             <LanguageFilter />
           </RightSection>
         </Container>

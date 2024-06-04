@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 
 interface SelectProps {
-  readonly $width: number;
+  readonly $width: string;
   readonly $length: number;
 }
 
@@ -10,7 +10,7 @@ export const Label = styled.label<SelectProps>`
   display: flex;
   align-items: center;
   position: relative;
-  width: ${({ $width }) => $width}px;
+  width: ${({ $width }) => $width};
   padding: 14px 12px;
   border: 1px solid #bdbdbd;
   border-radius: 4px;
@@ -25,6 +25,7 @@ export const Label = styled.label<SelectProps>`
     display: none;
     flex-direction: column;
     overflow-x: scroll;
+    z-index: 1;
     width: 100%;
     max-height: 250px;
     border: 1px solid #bdbdbd;

@@ -1,39 +1,89 @@
 import { styled } from "styled-components";
 
+// 定義 props 的型別
+
 export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border: 1px solid #bdbdbd;
-  border-radius: 4px;
-  padding: 1rem;
+  width: 941px;
+  //* 因為需要向內推，因此多這層來包所有內容
+  & > div {
+    display: flex;
+    width: 929px;
+    height: 262px;
+    border: 1px solid black;
+    border-radius: 0.25rem;
+    position: relative;
+    background-color: white;
+    &:hover {
+      box-shadow: 1rem 1rem 0 black;
+      transform: translate(-1rem, -1rem);
+      transition: all 0.2s ease;
+    }
+
+    //* Header 區
+
+    //* tag 樣式
+    & > div:nth-child(2) {
+      display: flex;
+      gap: 0.5rem;
+      background-color: #454545;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      position: absolute;
+      right: -12px;
+      top: 1rem;
+    }
+    //* 文字資訊
+    & > div:last-child {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+  }
 `;
 
 export const Header = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  width: 194px;
+  gap: 0.75rem;
+  background-color: #fffbf2;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  border-right: 1px solid black;
 
   //*大頭照 ＋ 名字
-  & > div {
+  & > div:nth-child(1) {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
-    > div:nth-child(1) {
+    gap: 0.75rem;
+    // * 大頭照
+    > div {
+      border-radius: 999px;
+      overflow: hidden;
       & > img {
-        width: 35px;
-        height: 35px;
+        width: 60px;
+        height: 60px;
       }
     }
+    // * 名字
     & > h6 {
       font-weight: 900;
     }
   }
   //*愛心按鈕
   & > div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
     & > img {
-      width: 20px;
-      height: 20px;
+      width: 1rem;
+      height: 1rem;
     }
   }
 `;
@@ -41,34 +91,29 @@ export const Header = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 94px;
+  align-items: start;
   gap: 0.25rem;
-  //* 項目
-  & > div {
-    //* 名稱
-    & > div {
-      min-width: 124px;
-      height: 32px;
-      background-color: #f5f5f5;
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
-      & > h6 {
-      }
+
+  & > h4 {
+    font-weight: 900;
+    position: relative;
+    z-index: 0;
+    &::after {
+      content: "";
+      display: block;
+      width: 105%;
+      height: 15px;
+      background-color: #ffce26;
+      position: absolute;
+      bottom: 0;
+      z-index: -1;
     }
-    //* 文字
-    & > p {
-    }
-  }
-  & > div {
-    display: flex;
-    gap: 0.5rem;
   }
 `;
 
 export const HashTagSection = styled.div`
   display: flex;
   gap: 0.5rem;
-  padding: 0.25rem 94px;
 `;
 
 export const HashTag = styled.div`
