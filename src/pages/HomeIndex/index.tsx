@@ -123,15 +123,6 @@ function HomeIndex() {
 
   return (
     <>
-      <Wrapper>
-        <AreaSelector
-          size="short"
-          languageList={area}
-          currentValue={selectArea}
-          setValue={handleSelect}
-        />
-      </Wrapper>
-
       <PostCards>
         {postList?.list?.map((post) => (
           <PostCard key={post.PostId} {...post} />
