@@ -11,7 +11,6 @@ import {
   CertificationsSection,
   CertificationCard,
   AddCertBtn,
-  UploadImgBtn,
   Mark,
 } from "./styles";
 import closeIcon from "/close-lg.svg";
@@ -101,6 +100,10 @@ const ProfileEdit = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
+      if (files.length > 6) {
+        alert("最多只能上傳 6 張照片");
+        return;
+      }
       setImages(files);
       setImagePreviews(files.map((file) => URL.createObjectURL(file))); //* 產生預覽照片，比較意外的是這邊的迴圈是要在setImagePreviews裡面，我一開始以為是用迴圈包住它。
     }
@@ -360,27 +363,25 @@ const ProfileEdit = () => {
               ))}
             </div>
             <div>
-              <label>
-                <AddCertBtn $color="" $backgroundColor="">
-                  新增檔案
-                </AddCertBtn>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  onChange={handleImageChange}
-                  multiple
-                />
-              </label>
-            </div>
-
-            <p>
               {isLoading ? (
                 "Uploading..."
               ) : (
-                <UploadImgBtn type="button">上傳圖片</UploadImgBtn>
+                <label>
+                  {/* <Btn $style="outline">新增檔案</Btn> */}
+                  <AddCertBtn $color="" $backgroundColor="">
+                    新增檔案
+                  </AddCertBtn>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="image"
+                    onChange={handleImageChange}
+                    multiple
+                  />
+                  <p>最多上傳六張圖片</p>
+                </label>
               )}
-            </p>
+            </div>
           </CertificationsSection>
           <div>
             <Btn $style="disable" type="button">
