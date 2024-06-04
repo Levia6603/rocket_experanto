@@ -11,10 +11,16 @@ export const Section = styled.nav`
 
 export const Container = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   width: 1320px;
   padding: 1rem 0;
+  //* 第一組LOGO + 搜尋區
+  & > div {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  }
 `;
 
 //* logo
@@ -22,6 +28,7 @@ export const Logo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 3rem;
   cursor: pointer;
   img {
     width: 200px;
@@ -51,27 +58,31 @@ export const SearchBar = styled.div`
   }
 
   & > button {
+    display: flex;
     color: #c6c6c6;
+
     cursor: pointer;
     padding: 0.5rem;
     border-top: 0;
     border-bottom: 0;
-    border-left: 0;
+    border-left: 1px solid #c6c6c6;
     border-right: 0;
     background-color: transparent;
   }
 `;
 
-// * 登入後可以看到的畫面
+// * 登入後可以看到的選項
 export const NavbarLoggedIn = styled.ul`
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   gap: 1.5rem;
 
+  //* 發文
   & li:first-child {
   }
 
+  //* 通知按鈕
   & li:nth-child(2) {
     & > a {
       display: flex;
@@ -87,6 +98,7 @@ export const NavbarLoggedIn = styled.ul`
       }
     }
   }
+  //* 語言選擇器
   & li:last-child {
     display: flex;
     justify-content: center;
@@ -98,11 +110,36 @@ export const NavbarLoggedIn = styled.ul`
     & > div:nth-child(2) {
       display: flex;
       align-items: center;
+      z-index: 2;
     }
   }
 `;
 
-//* ul內旳連結
+//* 未登入可以看到的選項
+export const NavbarNotLoggedIn = styled.ul`
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 1.5rem;
+
+  //* 語言選擇器
+  & li:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > div:nth-of-type(1) {
+      display: flex;
+      align-items: center;
+    }
+    & > div:nth-child(2) {
+      display: flex;
+      align-items: center;
+      z-index: 2;
+    }
+  }
+`;
+
+//* 連結的 item 外框
 export const LinkItem = styled(NavLink)`
   cursor: pointer;
   list-style: none;
@@ -125,20 +162,22 @@ export const NavBtn = styled(Button)`
   }
 `;
 
-//* 語言選擇
+//* 語言選擇按鈕
 export const LanguageSelector = styled(Selector)`
   width: fit-content;
   height: 21px;
   background-color: transparent;
   border: 0;
   font-size: 14px;
-  padding: 0;
+  padding: 0.5rem 1rem;
   & > p:nth-of-type(1) {
     width: fit-content;
     padding: 0.5rem;
   }
   & > div:nth-of-type(1) {
     width: fit-content;
+    top: 30px;
+    padding: 0.5rem 1rem;
     & > ul {
       width: fit-content;
       & > li {

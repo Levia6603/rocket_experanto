@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Photo, Menu } from "./profileStyle";
 import star from "/profile_box_icons/star-yellow.svg";
@@ -24,7 +24,16 @@ interface listInterface {
 }
 function ProfileBox() {
   const navigate = useNavigate();
+  //* 決定功能選單的長度
   const [showAll, setShowAll] = useState(false);
+
+  //* 用登入狀態決定是否可以發文
+  const [isLogin, setLogin] = useState(false);
+  //* 如果有 token 的話就可以看到發文按妞
+  useEffect(() => {
+    const isToken = localStorage.getItem("token");
+    setLogin(isToken ? true : false);
+  }, []);
 
   //* 設定選單
   const list: listInterface[] = [
@@ -93,63 +102,67 @@ function ProfileBox() {
   //* 從localStorage取得使用者資訊
   const userName = localStorage.getItem("name");
   const avatar = localStorage.getItem("avatar");
+
   //* 用戶登出
   function handleLogout() {
+    setLogin(false);
     localStorage.clear();
   }
   const listToShow = showAll ? list.length : 4;
 
   return (
     <>
-      <Container>
-        <Photo>
-          <div>
-            <img src={avatar || ""} alt="大頭貼" />
-          </div>
-          <h5>{userName}</h5>
-          <div>
+      {isLogin && (
+        <Container>
+          <Photo>
             <div>
-              <p>Taipei</p>
-              <p>縣市區域</p>
+              <img src={avatar || ""} alt="大頭貼" />
             </div>
+            <h5>{userName}</h5>
             <div>
               <div>
-                <img src={star} alt="" />
-                <p>
-                  5.0 <span> (1)</span>
-                </p>
+                <p>Taipei</p>
+                <p>縣市區域</p>
               </div>
-              <p>評價</p>
+              <div>
+                <div>
+                  <img src={star} alt="" />
+                  <p>
+                    5.0 <span> (1)</span>
+                  </p>
+                </div>
+                <p>評價</p>
+              </div>
             </div>
-          </div>
-        </Photo>
-        <Menu>
-          <ul>
-            {list.slice(0, listToShow).map((item) => (
-              <li
-                key={item.name}
-                onClick={() => {
-                  item.url && navigate(item.url);
-                  item.method && item.method();
-                }}
-              >
-                <img src={item.icon} alt="" />
-                <p>{item.name}</p>
-              </li>
-            ))}
-            {!showAll && (
-              <li
-                onClick={() => {
-                  setShowAll(true);
-                }}
-              >
-                <img src={dropdown} alt="" />
-                <p>顯示全部</p>
-              </li>
-            )}
-          </ul>
-        </Menu>
-      </Container>
+          </Photo>
+          <Menu>
+            <ul>
+              {list.slice(0, listToShow).map((item) => (
+                <li
+                  key={item.name}
+                  onClick={() => {
+                    item.url && navigate(item.url);
+                    item.method && item.method();
+                  }}
+                >
+                  <img src={item.icon} alt="" />
+                  <p>{item.name}</p>
+                </li>
+              ))}
+              {!showAll && (
+                <li
+                  onClick={() => {
+                    setShowAll(true);
+                  }}
+                >
+                  <img src={dropdown} alt="" />
+                  <p>顯示全部</p>
+                </li>
+              )}
+            </ul>
+          </Menu>
+        </Container>
+      )}
     </>
   );
 }
