@@ -17,6 +17,7 @@ import dropUp from "/profile_box_icons/chevron-up.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateType } from "../../../redux";
 import { setShowAll } from "../../../redux/profileState/profileState";
+import { useState, useEffect } from "react";
 
 interface listInterface {
   icon: string;
@@ -27,12 +28,12 @@ interface listInterface {
 function ProfileBox() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   //* 把目前的功能選單長度狀態存到redux
   const showAll = useSelector(
     (state: RootStateType) => state.profileState.showAll
   );
- 
+
   //* 用登入狀態決定是否可以發文
   const [isLogin, setLogin] = useState(false);
   //* 如果有 token 的話就可以看到發文按妞
@@ -140,35 +141,35 @@ function ProfileBox() {
                 <p>評價</p>
               </div>
             </div>
-          </div>
-        </Photo>
-        <Menu>
-          <ul>
-            {list.slice(0, listToShow).map((item) => (
-              <li
-                key={item.name}
-                onClick={() => {
-                  item.url && navigate(item.url);
-                  item.method && item.method();
-                }}
-              >
-                <img src={item.icon} alt="" />
-                <p>{item.name}</p>
-              </li>
-            ))}
-            {!showAll && (
-              <li
-                onClick={() => {
-                  dispatch(setShowAll());
-                }}
-              >
-                <img src={dropdown} alt="" />
-                <p>顯示全部</p>
-              </li>
-            )}
-          </ul>
-        </Menu>
-      </Container>
+          </Photo>
+          <Menu>
+            <ul>
+              {list.slice(0, listToShow).map((item) => (
+                <li
+                  key={item.name}
+                  onClick={() => {
+                    item.url && navigate(item.url);
+                    item.method && item.method();
+                  }}
+                >
+                  <img src={item.icon} alt="" />
+                  <p>{item.name}</p>
+                </li>
+              ))}
+              {!showAll && (
+                <li
+                  onClick={() => {
+                    dispatch(setShowAll());
+                  }}
+                >
+                  <img src={dropdown} alt="" />
+                  <p>顯示全部</p>
+                </li>
+              )}
+            </ul>
+          </Menu>
+        </Container>
+      )}
     </>
   );
 }
