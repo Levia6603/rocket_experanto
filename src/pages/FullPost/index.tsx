@@ -18,7 +18,7 @@ import {
 } from "./styles";
 import Schedule from "../../components/Schedule";
 import Comments from "../../components/Comments";
-import star from "/profile_box_icons/star-black.png";
+import star from "/profile_box_icons/star-yellow.png";
 import like from "/profile_box_icons/heart.svg";
 import noCertification from "/no-certification-lg.svg";
 
