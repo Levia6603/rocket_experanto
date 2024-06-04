@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Photo, Menu } from "./profileStyle";
 import star from "/profile_box_icons/star-yellow.svg";
@@ -15,6 +14,9 @@ import completed from "/profile_box_icons/trophy.svg";
 import logout from "/profile_box_icons/box-arrow-in-right.svg";
 import dropdown from "/profile_box_icons/chevron-down.svg";
 import dropUp from "/profile_box_icons/chevron-up.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
+import { setShowAll } from "../../../redux/profileState/profileState";
 
 interface listInterface {
   icon: string;
@@ -24,9 +26,13 @@ interface listInterface {
 }
 function ProfileBox() {
   const navigate = useNavigate();
-  //* 決定功能選單的長度
-  const [showAll, setShowAll] = useState(false);
-
+  const dispatch = useDispatch();
+  
+  //* 把目前的功能選單長度狀態存到redux
+  const showAll = useSelector(
+    (state: RootStateType) => state.profileState.showAll
+  );
+ 
   //* 用登入狀態決定是否可以發文
   const [isLogin, setLogin] = useState(false);
   //* 如果有 token 的話就可以看到發文按妞
@@ -96,7 +102,7 @@ function ProfileBox() {
     {
       icon: dropUp,
       name: "顯示更少",
-      method: () => setShowAll(!showAll),
+      method: () => dispatch(setShowAll()),
     },
   ];
   //* 從localStorage取得使用者資訊
@@ -134,35 +140,35 @@ function ProfileBox() {
                 <p>評價</p>
               </div>
             </div>
-          </Photo>
-          <Menu>
-            <ul>
-              {list.slice(0, listToShow).map((item) => (
-                <li
-                  key={item.name}
-                  onClick={() => {
-                    item.url && navigate(item.url);
-                    item.method && item.method();
-                  }}
-                >
-                  <img src={item.icon} alt="" />
-                  <p>{item.name}</p>
-                </li>
-              ))}
-              {!showAll && (
-                <li
-                  onClick={() => {
-                    setShowAll(true);
-                  }}
-                >
-                  <img src={dropdown} alt="" />
-                  <p>顯示全部</p>
-                </li>
-              )}
-            </ul>
-          </Menu>
-        </Container>
-      )}
+          </div>
+        </Photo>
+        <Menu>
+          <ul>
+            {list.slice(0, listToShow).map((item) => (
+              <li
+                key={item.name}
+                onClick={() => {
+                  item.url && navigate(item.url);
+                  item.method && item.method();
+                }}
+              >
+                <img src={item.icon} alt="" />
+                <p>{item.name}</p>
+              </li>
+            ))}
+            {!showAll && (
+              <li
+                onClick={() => {
+                  dispatch(setShowAll());
+                }}
+              >
+                <img src={dropdown} alt="" />
+                <p>顯示全部</p>
+              </li>
+            )}
+          </ul>
+        </Menu>
+      </Container>
     </>
   );
 }
