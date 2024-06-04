@@ -9,7 +9,7 @@ import {
   TextAreaWrapper,
   SubmitButton,
 } from "./styles";
-import star from "../../../public/profile_box_icons/star-black.png";
+import star from "../../../public/profile_box_icons/star-yellow.svg";
 
 function Commenting() {
   return (
