@@ -5,7 +5,6 @@ import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import liked from "/profile_box_icons/heart.svg";
 import solidLiked from "/solid-heart.svg";
 import exchange from "/exchange_icon.svg";
-import { useEffect } from "react";
 
 export interface SimplifiedPostInterface {
   Learn?: string;
@@ -37,10 +36,6 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
       dispatch(setPostId(postId));
     }
   };
-
-  useEffect(() => {
-    console.log(props);
-  }, [props]);
 
   return (
     <Wrapper data-postid={props?.PostId || ""} onClickCapture={handleClick}>

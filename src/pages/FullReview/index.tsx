@@ -7,7 +7,7 @@ import {
   Review,
   ReviewItem,
 } from "./styles";
-import star from "/profile_box_icons/star-black.png";
+import star from "/profile_box_icons/star-yellow.svg";
 function FullReview() {
   return (
     <>

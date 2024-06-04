@@ -3,18 +3,20 @@ import { styled } from "styled-components";
 export const LanguageFilter = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+
   padding: 0.5rem 0;
   & > p {
     display: flex;
-    background-color: #dbdbdb;
-    font-weight: 900;
+    background-color: #5e5e5e;
+    color: white;
     font-size: 14px;
     padding: 0.5rem 1rem;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
   }
   & > ul {
+    background-color: white;
+    padding: 0.75rem;
   }
   & > input {
     display: flex;
@@ -32,5 +34,8 @@ export const FilterItem = styled.label`
   & > input {
   }
   & > p {
+    & > span {
+      color: #a8acab;
+    }
   }
 `;
