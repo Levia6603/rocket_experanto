@@ -164,13 +164,6 @@ export const CardItem = styled.div`
   }
 `;
 
-export const LanguageBtn = styled(Button)`
-  font-size: 20px;
-  padding: 1.5rem 100px;
-  background-color: #bdbdbd;
-  border: 0;
-  border-radius: 4px;
-`;
 export const DeleteItemBtn = styled(Button)`
   position: absolute;
   right: -5%;
@@ -198,113 +191,113 @@ export const AddItemBtn = styled(Button)`
     font-weight: 100;
   }
 `;
-//帶圖片版本
-export const AddCardBtn = styled(Button)`
-  border: 0;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  & > img {
-    width: 40px;
-    height: 40px;
-  }
-`;
 
 interface AddCertBtnProps {
   $color?: string;
   $backgroundColor?: string;
 }
 export const AddCertBtn = styled.div<AddCertBtnProps>`
-  width: fit-content;
-  height: fit-content;
   background-color: ${({ $backgroundColor }) =>
     $backgroundColor || "transparent"};
   color: ${({ $color }) => $color || "black"};
-  border: 2px solid black;
-  border-radius: 0.5rem;
+  border: 1px solid black;
+  border-radius: 0.25rem;
   font-size: 1rem;
-  padding: 8px 16px;
+  padding: 12px 20px;
+  font-weight: 700;
   cursor: pointer;
-`;
-
-export const UploadImgBtn = styled(Button)`
-  border: 0;
-  background-color: transparent;
-  border: 2px solid black;
-  border-radius: 0.5rem;
+  &:hover {
+    box-shadow: 4px 4px 0 #000;
+    transition: all 0.3s;
+  }
+  &:active {
+    box-shadow: 0 0 0;
+    transition: all 0s;
+  }
 `;
 
 export const CertificationsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   h2 {
     font-size: 24px;
     font-weight: 700;
     line-height: 2;
     border-bottom: 2px solid #454545;
   }
-  & > div {
+  //* 卡片預覧區
+  & > div:nth-of-type(1) {
     display: flex;
-    gap: 0.5rem;
-    padding-top: 10px;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  //* 新增卡片區
+  & > div:nth-of-type(2) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 200px;
+    border: 1px solid #5e5e5e;
+    border-radius: 4px;
+
+    //* 新增圖片鈕
     & > label {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+
       & > input {
         display: none;
+      }
+
+      & > p {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #454545;
+        cursor: pointer;
       }
     }
   }
 `;
 
+//* 證書卡片
 export const CertificationCard = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.25rem;
-  border: 1px solid #bdbdbd;
+  gap: 0.75rem;
+  width: 184px;
+  height: 216px;
+  padding: 1rem;
+  border: 1px solid #5e5e5e;
   border-radius: 4px;
-  width: 136px;
-  height: 134px;
+
+  //* 剛除按鈕
   & > div:nth-child(1) {
+    display: flex;
+    justify-content: end;
+    width: 100%;
     & > img {
-      width: 78px;
-      height: 78px;
+      width: 15px;
+      height: 15px;
     }
   }
+  //* 檔案預覧處
   & > div:nth-child(2) {
     padding: 0.5rem;
     border: 1px solid #bdbdbd;
     border-radius: 4px;
     & > input {
-      max-width: 112px;
-      max-height: 24px;
+      max-width: 152px;
+      max-height: 152px;
       border: 0;
     }
-  }
-`;
-
-export const CancelBtn = styled(Button)`
-  border: 1px solid black;
-  background-color: transparent;
-  &:hover {
-    background-color: black;
-    color: white;
-  }
-`;
-
-export const SaveBtn = styled(Button)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  background-color: black;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  border: 1px solid black;
-  &:hover {
-    background-color: #dbdbdb;
-    color: black;
-  }
-  & > img {
-    width: 12px;
-    height: 12px;
   }
 `;
