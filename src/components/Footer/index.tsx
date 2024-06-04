@@ -1,7 +1,9 @@
 import { Wrapper, Container, FooterContent, FooterText } from "./footerStyle";
-import logo from "/nav-logo.png";
+import logo from "/logo_large.svg";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+  const navigate = useNavigate();
   return (
     <>
       <Wrapper>
@@ -11,18 +13,20 @@ function Footer() {
             <div>
               <ul>
                 <li>
-                  <h6>Your account</h6>
+                  <h6>您的帳號</h6>
                 </li>
-                <li>Home</li>
-                <li>Log in</li>
-                <li>Profile</li>
-                <li>My Favorites</li>
+                <li onClick={() => navigate("/")}>首頁</li>
+                <li onClick={() => navigate("/login")}>登入</li>
+                <li onClick={() => navigate("/user/profile/index")}>
+                  個人資訊
+                </li>
+                <li>我的收藏</li>
               </ul>
               <ul>
                 <li>
-                  <h6>About us</h6>
+                  <h6>關於我們</h6>
                 </li>
-                <li>How to use</li>
+                <li>使用教學</li>
               </ul>
             </div>
           </FooterContent>
