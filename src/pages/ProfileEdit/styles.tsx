@@ -9,11 +9,12 @@ export const ProfileEditSection = styled.section`
 export const Photo = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
   & > div {
     & > img {
       width: 80px;
       height: 80px;
+      border-radius: 80px;
     }
   }
 `;
@@ -21,10 +22,9 @@ export const PhotoChangeButton = styled(Button)`
   display: flex;
   align-items: center;
   gap: 4.5px;
-  border: 0;
-  & > img {
-    width: 12px;
-    height: 12px;
+  border: 1px solid #000;
+  p {
+    font-weight: 700;
   }
 `;
 
@@ -32,12 +32,17 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 1296px;
+  margin: 0 auto;
+  padding: 32px;
+  background-color: #fff;
   & > div {
     margin-top: 2rem;
-    & > h4 {
-      font-weight: 900;
-      border-bottom: 1px solid #616161;
-      padding-bottom: 10px;
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 2;
+      border-bottom: 2px solid #5e5e5e;
     }
   }
   & > div:nth-child(5) {
@@ -53,12 +58,16 @@ export const PersonalInfo = styled.div`
   padding-top: 10px;
   padding-bottom: 8px;
   & > label {
+    width: 50%;
     & > p {
-      font-size: 12px;
       font-weight: 900;
       margin-bottom: 8px;
     }
   }
+`;
+
+export const Mark = styled.span`
+  color: #ff5454;
 `;
 
 export const PersonalInfoSelect = styled(Select)`
@@ -66,9 +75,11 @@ export const PersonalInfoSelect = styled(Select)`
 `;
 
 export const LanguageSection = styled.div`
-  & > h4 {
+  & > h2 {
+    margin-bottom: 24px;
+    line-height: 2;
     font-weight: bold;
-    border-bottom: 1px solid #616161;
+    border-bottom: 2px solid #5e5e5e;
   }
   & > p {
     font-weight: bold;
@@ -76,7 +87,7 @@ export const LanguageSection = styled.div`
 
   & > div:nth-child(3) {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem 0;
     & > .addCard {
@@ -89,54 +100,61 @@ export const LanguageSection = styled.div`
 `;
 
 export const Card = styled.div`
-  min-width: 282px;
-  min-height: 518px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 0.5rem 0.25rem;
+  gap: 8px;
+  padding: 12px;
   border: 1px solid #bdbdbd;
   border-radius: 4px;
+  h3 {
+    font-size: 16px;
+    font-weight: 700;
+  }
   & > div:nth-child(1) {
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+    align-items: center;
   }
   & > label {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: start;
+    gap: 8px;
   }
   & > div:nth-child(3) {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-    padding: 10px 4px;
-    gap: 10px;
-  }
-  & > div:nth-child(4) {
-    display: flex;
-    justify-content: center;
-    padding: 10px 4px;
+    gap: 16px;
   }
 `; // card
 
 export const CardItem = styled.div`
   display: flex;
   justify-content: start;
-  align-items: start;
-  width: 100%;
+  align-items: center;
+  position: relative;
+  width: 95%;
   gap: 10px;
   padding: 6px 12px;
   border: 1px solid #bdbdbd;
   border-radius: 4px;
-
   & > p:nth-child(1) {
     display: block;
+    position: absolute;
+    top: -8px;
     width: 20px;
+    background-color: #fff;
+    text-align: center;
+    line-height: 1;
   }
   & > textarea {
-    max-width: 191px;
+    width: 100%;
+    margin-top: 4px;
     border: 0;
+    font-size: 16px;
+    outline: none;
   }
   & > button:nth-child(3) {
     display: flex;
@@ -154,10 +172,13 @@ export const LanguageBtn = styled(Button)`
   border-radius: 4px;
 `;
 export const DeleteItemBtn = styled(Button)`
+  position: absolute;
+  right: -5%;
   border: 0;
   background-color: transparent;
   padding: 0;
   margin: 0;
+  cursor: pointer;
   & > img {
     width: 1rem;
     height: 1rem;
@@ -165,13 +186,16 @@ export const DeleteItemBtn = styled(Button)`
 `;
 
 export const AddItemBtn = styled(Button)`
-  border: 0;
+  width: 95%;
+  border: 1px solid #bdbdbd;
+  border-radius: 4px;
   background-color: transparent;
   padding: 0;
   margin: 0;
-  & > img {
-    width: 2rem;
-    height: 2rem;
+  p {
+    color: #bdbdbd;
+    font-size: 30px;
+    font-weight: 100;
   }
 `;
 //帶圖片版本
@@ -211,11 +235,12 @@ export const UploadImgBtn = styled(Button)`
 `;
 
 export const CertificationsSection = styled.div`
-  & > h4 {
-    font-weight: bold;
-    border-bottom: 1px solid #616161;
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 2;
+    border-bottom: 2px solid #454545;
   }
-
   & > div {
     display: flex;
     gap: 0.5rem;
