@@ -146,7 +146,7 @@ function Posting() {
             <Wanted>
               <h6>想學的語言</h6>
               <WantedList
-                width={347}
+                width={"347px"}
                 currentValue={selectedWanted.Name || "請選擇想學的語言"}
                 list={wantedList}
                 setValue={setSelectedWanted}
