@@ -4,7 +4,7 @@ import { setPages } from "../../../redux/pages/pagesSlice";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
-import { Wrapper, AreaSelector } from "./styles";
+
 import apiBase from "../../Api";
 import axios from "axios";
 import { SimplifiedPostInterface } from "../../components/PostCard";
@@ -28,13 +28,6 @@ function HomeIndex() {
   const languageIds = useSelector(
     (state: RootStateType) => state.pages.languageIds
   );
-
-  const area = ["Taipei", "Taoyuan", "Taichung", "Tainan", "Kaohsiung"];
-  const defaultValue = "請選擇區域";
-  const [selectArea, setSelectArea] = useState(defaultValue);
-  function handleSelect(el: string) {
-    setSelectArea(el);
-  }
 
   //* 把資料存入 Post List
   const [postList, setPostList] = useState<PostListInterface | null>(
