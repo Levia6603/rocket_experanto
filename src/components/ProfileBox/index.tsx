@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Photo, Menu } from "./profileStyle";
 import star from "/profile_box_icons/star-yellow.svg";
@@ -15,6 +14,9 @@ import completed from "/profile_box_icons/trophy.svg";
 import logout from "/profile_box_icons/box-arrow-in-right.svg";
 import dropdown from "/profile_box_icons/chevron-down.svg";
 import dropUp from "/profile_box_icons/chevron-up.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
+import { setShowAll } from "../../../redux/profileState/profileState";
 
 interface listInterface {
   icon: string;
@@ -24,7 +26,10 @@ interface listInterface {
 }
 function ProfileBox() {
   const navigate = useNavigate();
-  const [showAll, setShowAll] = useState(false);
+  const showAll = useSelector(
+    (state: RootStateType) => state.profileState.showAll
+  );
+  const dispatch = useDispatch();
 
   //* 設定選單
   const list: listInterface[] = [
@@ -87,7 +92,7 @@ function ProfileBox() {
     {
       icon: dropUp,
       name: "顯示更少",
-      method: () => setShowAll(!showAll),
+      method: () => dispatch(setShowAll()),
     },
   ];
   //* 從localStorage取得使用者資訊
@@ -140,7 +145,7 @@ function ProfileBox() {
             {!showAll && (
               <li
                 onClick={() => {
-                  setShowAll(true);
+                  dispatch(setShowAll());
                 }}
               >
                 <img src={dropdown} alt="" />

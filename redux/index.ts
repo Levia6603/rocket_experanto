@@ -3,6 +3,7 @@ import slidingSlice from "./slidingState/slidingSlice";
 import checkProfileSlice from "./checkProfile/checkProfileSlice";
 import postIdSlice from "./postId/postIdSlice";
 import pagesSlice from "./pages/pagesSlice";
+import profileStateSlice from "./profileState/profileState";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     checkProfile: checkProfileSlice,
     postId: postIdSlice,
     pages: pagesSlice,
+    profileState: profileStateSlice,
   },
 });
 
