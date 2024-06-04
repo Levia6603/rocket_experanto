@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.section`
   padding: 36px 0;
+  background-color: #919191;
 `;
 export const Container = styled.div`
   font-family: sans-serif;
@@ -12,6 +13,8 @@ export const Container = styled.div`
 
 export const FooterContent = styled.div`
   display: flex;
+  width: 966px;
+  justify-content: center;
   gap: 240px;
   margin-bottom: 30px;
   div {
@@ -19,10 +22,11 @@ export const FooterContent = styled.div`
     gap: 24px;
     ul {
       width: 234px;
+      color: white;
       h6 {
         margin-bottom: 8px;
         font-size: 16px;
-        font-weight: 600;
+        font-weight: 700;
       }
       li {
         line-height: 1.5;
