@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import ProtectedRoute from "../components/ProtectedRoute";
 import App from "../App";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
@@ -34,7 +35,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user/profile",
-    element: <SignUpEdit />,
+    element: <ProtectedRoute element={<SignUpEdit />} />,
     children: [
       { path: "", element: <Navigate to="index" replace /> },
       { path: "edit", element: <ProfileEdit /> },
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <Profile />,
+    element: <ProtectedRoute element={<Profile />} />,
     children: [
       { path: "", element: <Navigate to="profile/index" replace /> },
       {
