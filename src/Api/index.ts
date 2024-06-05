@@ -15,6 +15,7 @@ const apiBase = {
   GET_CHECK_POST: `/api/checkPost`,
   GET_POST_LIST: `/api/postList`,
   GET_HOT_LANGUAGE: `/api/languages/popular`,
+  GET_CHECK_PERMISSION: `/api/Apply`,
 };
 
 export default apiBase;

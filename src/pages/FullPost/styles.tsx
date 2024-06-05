@@ -263,3 +263,13 @@ export const Buttons = styled.div`
     color: #fff;
   }
 `;
+
+export const PopUp = styled.section`
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: scroll;
+  width: 100vw;
+  height: 100vh;
+  background-color: #d5d5d5da;
+`;

@@ -14,12 +14,14 @@ import {
   Tags,
   Tag,
   Buttons,
-  PostButton,
+  PopUp,
 } from "./styles";
 import Comments from "../../components/Comments";
 import star from "/profile_box_icons/star-yellow.svg";
 import like from "/profile_box_icons/heart.svg";
 import ApplySchedule from "../../components/ApplySchedule";
+import { Btn } from "../../styles/Btn";
+import Apply from "../../components/Apply";
 
 export interface PostInterface {
   userName?: string;
@@ -44,12 +46,23 @@ interface TimeData {
   Fri?: { start: string; end: string }[];
   Sat?: { start: string; end: string }[];
 }
+interface SelectTimeData {
+  Sun?: { start: string; end: string; select: boolean }[];
+  Mon?: { start: string; end: string; select: boolean }[];
+  Tue?: { start: string; end: string; select: boolean }[];
+  Wed?: { start: string; end: string; select: boolean }[];
+  Thu?: { start: string; end: string; select: boolean }[];
+  Fri?: { start: string; end: string; select: boolean }[];
+  Sat?: { start: string; end: string; select: boolean }[];
+}
 
 function FullPost() {
   const [post, setPost] = useState({} as PostInterface);
   const [timeData, setTimeData] = useState<TimeData>({});
   const [tags, setTags] = useState(String);
   const [tagAry, setTagAry] = useState([] as string[]);
+  const [selectTime, setSelectTime] = useState<SelectTimeData>({});
+  const [applyState, setApplyState] = useState(false);
 
   //* 接回 Post List
   async function getPost(id: number) {
@@ -67,9 +80,34 @@ function FullPost() {
         .catch((err) => console.log(err));
       setPost(post);
       setTags(post.tags || "");
-      setTimeData(post.availableHours);
+
+      const availableTime: TimeData = post.availableHours;
+      setTimeData(availableTime);
+      //在時間
+      let selectData: SelectTimeData = {};
+      Object.entries(availableTime).forEach((arr) => {
+        const [week, time] = arr;
+        const newTime = time.map((el: { start: string; end: string }) => {
+          return { ...el, select: false };
+        });
+        selectData = { ...selectData, [week]: newTime };
+      });
+      setSelectTime(selectData);
     } catch (error) {
       console.error(error);
+    }
+  }
+  async function checkPermission(id: number) {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    const message = await axios
+      .get(`${apiBase.GET_CHECK_PERMISSION}/${id}`, {
+        headers,
+      })
+      .then((res) => res.data.message);
+    if (message === "可申請") {
+      setApplyState(true);
     }
   }
 
@@ -85,6 +123,11 @@ function FullPost() {
 
   return (
     <>
+      {applyState && (
+        <PopUp>
+          <Apply selectTime={selectTime} setSelectTime={setSelectTime} />
+        </PopUp>
+      )}
       <Wrapper>
         <Container>
           <Header>
@@ -204,8 +247,18 @@ function FullPost() {
             </div>
           </Tags>
           <Buttons>
-            <PostButton>回到上一頁</PostButton>
-            <PostButton>申請</PostButton>
+            <Btn $style="outline" type="button">
+              返回貼文搜尋
+            </Btn>
+            <Btn
+              $style="primary"
+              type="button"
+              onClick={() => {
+                checkPermission(4);
+              }}
+            >
+              申請
+            </Btn>
           </Buttons>
         </Container>
         <Comments />
