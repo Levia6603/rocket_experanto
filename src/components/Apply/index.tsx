@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import apiBase from "../../Api";
 import { Btn } from "../../styles/Btn";
+import { useParams } from "react-router-dom";
 
 type timeData = { start: string; end: string; select: boolean }[];
 
@@ -31,6 +32,7 @@ interface Props {
     Sat?: timeData;
   };
   setSelectTime: any;
+  setApplyState: any;
 }
 
 interface Data {
@@ -43,11 +45,19 @@ interface Data {
   Sat?: { start: string; end: string }[];
 }
 
-function Apply({ selectTime, setSelectTime }: Props) {
+interface ApplyData {
+  PostId: number;
+  LearnMotivation: string;
+  SelectedTimes: Data;
+}
+
+function Apply({ selectTime, setSelectTime, setApplyState }: Props) {
   const avatar = localStorage.getItem("avatar");
   const name = localStorage.getItem("name");
   const [certification, setCertification] = useState<string[]>([]);
   const [learnMotivation, setLearnMotivation] = useState("");
+
+  const { id } = useParams();
 
   async function getUserData() {
     const headers = {
@@ -59,6 +69,21 @@ function Apply({ selectTime, setSelectTime }: Props) {
     setCertification(data);
   }
 
+  async function sendApply(data: ApplyData) {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    const message = await axios
+      .post(apiBase.POST_SEND_APPLY, data, {
+        headers,
+      })
+      .then((res) => res.data.message);
+    if (message === "新增成功") {
+      alert("成功送出申請！");
+      setApplyState(false);
+    }
+  }
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -67,7 +92,11 @@ function Apply({ selectTime, setSelectTime }: Props) {
     <Wrapper>
       <Container>
         <div>
-          <CloseButton>
+          <CloseButton
+            onClick={() => {
+              setApplyState(false);
+            }}
+          >
             <img src={close} alt="close" />
           </CloseButton>
         </div>
@@ -246,7 +275,13 @@ function Apply({ selectTime, setSelectTime }: Props) {
           <Certification image={certification} />
         </CertificationWrapper>
         <Submit>
-          <Btn $style="outline" type="button">
+          <Btn
+            $style="outline"
+            type="button"
+            onClick={() => {
+              setApplyState(false);
+            }}
+          >
             取消申請
           </Btn>
           <Btn
@@ -267,11 +302,11 @@ function Apply({ selectTime, setSelectTime }: Props) {
                 }
               });
               const data = {
-                PostId: 4,
+                PostId: Number(id),
                 LearnMotivation: learnMotivation,
                 SelectedTimes: select,
               };
-              console.log(data);
+              sendApply(data);
             }}
           >
             送出申請

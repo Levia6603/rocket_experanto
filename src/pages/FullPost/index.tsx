@@ -22,6 +22,7 @@ import like from "/profile_box_icons/heart.svg";
 import ApplySchedule from "../../components/ApplySchedule";
 import { Btn } from "../../styles/Btn";
 import Apply from "../../components/Apply";
+import { useNavigate, useParams } from "react-router-dom";
 
 export interface PostInterface {
   userName?: string;
@@ -63,9 +64,12 @@ function FullPost() {
   const [tagAry, setTagAry] = useState([] as string[]);
   const [selectTime, setSelectTime] = useState<SelectTimeData>({});
   const [applyState, setApplyState] = useState(false);
+  const navigate = useNavigate();
+
+  const { id } = useParams();
 
   //* 接回 Post List
-  async function getPost(id: number) {
+  async function getPost(id: string) {
     const headers = {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -97,7 +101,7 @@ function FullPost() {
       console.error(error);
     }
   }
-  async function checkPermission(id: number) {
+  async function checkPermission(id: string) {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     };
@@ -113,7 +117,7 @@ function FullPost() {
 
   //*接回 Post List
   useEffect(() => {
-    getPost(4);
+    getPost(id || "");
   }, []);
 
   useEffect(() => {
@@ -125,7 +129,11 @@ function FullPost() {
     <>
       {applyState && (
         <PopUp>
-          <Apply selectTime={selectTime} setSelectTime={setSelectTime} />
+          <Apply
+            selectTime={selectTime}
+            setSelectTime={setSelectTime}
+            setApplyState={setApplyState}
+          />
         </PopUp>
       )}
       <Wrapper>
@@ -247,14 +255,20 @@ function FullPost() {
             </div>
           </Tags>
           <Buttons>
-            <Btn $style="outline" type="button">
+            <Btn
+              $style="outline"
+              type="button"
+              onClick={() => {
+                navigate("/home/index");
+              }}
+            >
               返回貼文搜尋
             </Btn>
             <Btn
               $style="primary"
               type="button"
               onClick={() => {
-                checkPermission(4);
+                checkPermission(id || "");
               }}
             >
               申請
