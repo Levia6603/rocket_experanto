@@ -13,10 +13,9 @@ export const Wrapper = styled.div`
     border-radius: 0.25rem;
     position: relative;
     background-color: white;
+    transition: all 0.3s ease;
     &:hover {
-      box-shadow: 1rem 1rem 0 black;
-      transform: translate(-1rem, -1rem);
-      transition: all 0.2s ease;
+      box-shadow: 12px 12px 0 #000;
     }
 
     //* Header 區
