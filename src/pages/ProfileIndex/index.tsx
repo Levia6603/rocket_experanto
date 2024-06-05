@@ -72,7 +72,10 @@ const ProfileIndex = () => {
               <h1>{profile?.name}</h1>
             </li>
             <li>
-              <Button type="button" onClick={() => navigate("edit")}>
+              <Button
+                type="button"
+                onClick={() => navigate("/user/profile/edit")}
+              >
                 編輯
               </Button>
             </li>

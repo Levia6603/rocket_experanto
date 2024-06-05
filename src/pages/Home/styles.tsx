@@ -32,5 +32,7 @@ export const PostCards = styled.div`
 export const RightSection = styled.div`
   display: flex;
   flex-direction: column;
+  width: 306px;
+  gap: 2rem;
   height: 100%;
 `;

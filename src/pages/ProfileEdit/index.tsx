@@ -1,7 +1,6 @@
 import {
   ProfileEditSection,
   Photo,
-  PhotoChangeButton,
   Form,
   PersonalInfo,
   LanguageSection,
@@ -9,27 +8,19 @@ import {
   CardItem,
   AddItemBtn,
   DeleteItemBtn,
-  AddCardBtn,
   CertificationsSection,
   CertificationCard,
-  CancelBtn,
-  SaveBtn,
   AddCertBtn,
-  UploadImgBtn,
+  Mark,
 } from "./styles";
 import closeIcon from "/close-lg.svg";
-import deleteCircle from "/delete-circle.svg";
-import avatar from "/nav-profile.png";
-import addSquare from "/add-square.svg";
-import addCircle from "/add-circle-lg.svg";
-import saveBlack from "/save-black.svg";
-import saveWhite from "/save-white.svg";
 import Select from "../../components/Select";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
 import { getList } from "../../Api";
+import { Btn } from "../../styles/Btn";
 
 export type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; GoalsContent: string[] }[];
@@ -41,6 +32,7 @@ type FormData = {
 };
 
 const ProfileEdit = () => {
+  const avatar = localStorage.getItem("avatar");
   //* 語言清單
   const [languageList, setLanguageList] = useState<apiList>([]);
   //* 設定教學計劃列表
@@ -108,6 +100,10 @@ const ProfileEdit = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
+      if (files.length > 6) {
+        alert("最多只能上傳 6 張照片");
+        return;
+      }
       setImages(files);
       setImagePreviews(files.map((file) => URL.createObjectURL(file))); //* 產生預覽照片，比較意外的是這邊的迴圈是要在setImagePreviews裡面，我一開始以為是用迴圈包住它。
     }
@@ -199,29 +195,30 @@ const ProfileEdit = () => {
         <Form onSubmit={handleSubmit}>
           <Photo>
             <div>
-              <img src={avatar} alt="" />
+              <img src={avatar || ""} alt="" />
             </div>
-            <PhotoChangeButton>
-              <img src={saveBlack} alt="" />
-              <p>Change Photo</p>
-            </PhotoChangeButton>
+            <Btn $style={"outline"} type="button">
+              更改大頭照
+            </Btn>
           </Photo>
           <div>
-            <h4>Edit Profile</h4>
+            <h2>編輯個人資料</h2>
             <PersonalInfo>
-              <label htmlFor="">
-                <p>Gender</p>
+              <label>
+                <p>性別</p>
                 <Select
-                  width={447}
+                  width={"100%"}
                   list={genderList}
                   currentValue={selectedGender.Name || "請選擇性別"}
                   setValue={setSelectedGender}
                 ></Select>
               </label>
-              <label htmlFor="">
-                <p>Location</p>
+              <label>
+                <p>
+                  縣市區域 <Mark>*</Mark>
+                </p>
                 <Select
-                  width={447}
+                  width={"100%"}
                   list={locationList}
                   currentValue={selectedLocation.Name || "請選擇地區"}
                   setValue={setSelectedLocation}
@@ -230,14 +227,17 @@ const ProfileEdit = () => {
             </PersonalInfo>
           </div>
           <LanguageSection>
-            <h4>Language</h4>
-            <p>Create language (最多 6 個)</p>
+            <h2>編輯語言</h2>
+            <p>
+              擅長語言 (最多 6 個) <Mark>*</Mark>
+            </p>
             <div>
               {planList.map((obj, index) => {
                 const { languageId, GoalsContent } = obj;
                 return (
                   <Card key={index}>
                     <div>
+                      <h3>擅長語言 {index + 1}</h3>
                       <img
                         src={closeIcon}
                         alt=""
@@ -249,8 +249,11 @@ const ProfileEdit = () => {
                       />
                     </div>
                     <label>
+                      <p>
+                        選擇擅長語言 <Mark>*</Mark>
+                      </p>
                       <Select
-                        width={264}
+                        width={"95%"}
                         list={languageList}
                         currentValue={
                           languageId
@@ -265,9 +268,12 @@ const ProfileEdit = () => {
                       />
                     </label>
                     <div>
+                      <p>
+                        填寫教學計畫 <Mark>*</Mark>
+                      </p>
                       {GoalsContent.map((el, i) => (
                         <CardItem key={i}>
-                          <p>{i + 1} </p>
+                          <p> {i + 1} </p>
                           <textarea
                             placeholder="請輸入您的學習目標"
                             value={el}
@@ -276,10 +282,10 @@ const ProfileEdit = () => {
                               newList[index].GoalsContent[i] = e.target.value;
                               setPlanList(newList);
                             }}
-                          ></textarea>
+                          />
                           <DeleteItemBtn type="button">
                             <img
-                              src={deleteCircle}
+                              src={closeIcon}
                               alt=""
                               onClick={() => {
                                 const newList = [...planList];
@@ -297,9 +303,7 @@ const ProfileEdit = () => {
                     </div>
                     <div>
                       <AddItemBtn type="button">
-                        <img
-                          src={addSquare}
-                          alt=""
+                        <p
                           onClick={() => {
                             if (GoalsContent.length >= 6) {
                               alert("最多 6 個目標");
@@ -309,33 +313,39 @@ const ProfileEdit = () => {
                             newList[index].GoalsContent.push("");
                             setPlanList(newList);
                           }}
-                        />
+                        >
+                          +
+                        </p>
                       </AddItemBtn>
                     </div>
                   </Card>
                 );
               })}
-              <div className="addCard">
-                <AddCardBtn type="button">
-                  <img
-                    src={addCircle}
-                    alt=""
-                    onClick={() => {
-                      if (planList.length >= 6) {
-                        alert("最多 6 個語言");
-                        return;
-                      }
-                      const newList = [...planList];
-                      newList.push({ languageId: 0, GoalsContent: [""] });
-                      setPlanList(newList);
-                    }}
-                  />
-                </AddCardBtn>
-              </div>
+              {planList.length < 6 ? (
+                <Btn
+                  $style="outline"
+                  type="button"
+                  onClick={() => {
+                    if (planList.length >= 6) {
+                      alert("最多 6 個語言");
+                      return;
+                    }
+                    const newList = [...planList];
+                    newList.push({ languageId: 0, GoalsContent: [""] });
+                    setPlanList(newList);
+                  }}
+                >
+                  新增
+                </Btn>
+              ) : (
+                <Btn $style="disable" type="button">
+                  新增
+                </Btn>
+              )}
             </div>
           </LanguageSection>
           <CertificationsSection title="證書上傳區">
-            <h4>Certifications</h4>
+            <h2>語言證書檔案</h2>
             <div>
               {imagePreviews?.map((preview, index) => (
                 <CertificationCard key={index}>
@@ -353,36 +363,33 @@ const ProfileEdit = () => {
               ))}
             </div>
             <div>
-              <label>
-                <AddCertBtn $color="" $backgroundColor="">
-                  新增檔案
-                </AddCertBtn>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="image"
-                  onChange={handleImageChange}
-                  multiple
-                />
-              </label>
-            </div>
-
-            <p>
               {isLoading ? (
                 "Uploading..."
               ) : (
-                <UploadImgBtn type="button">上傳圖片</UploadImgBtn>
+                <label>
+                  {/* <Btn $style="outline">新增檔案</Btn> */}
+                  <AddCertBtn $color="" $backgroundColor="">
+                    新增檔案
+                  </AddCertBtn>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="image"
+                    onChange={handleImageChange}
+                    multiple
+                  />
+                  <p>最多上傳六張圖片</p>
+                </label>
               )}
-            </p>
+            </div>
           </CertificationsSection>
           <div>
-            <CancelBtn>
-              <p>Cancel</p>
-            </CancelBtn>
-            <SaveBtn type="submit">
-              <img src={saveWhite} alt="" />
-              <p>Save</p>
-            </SaveBtn>
+            <Btn $style="disable" type="button">
+              取消編輯
+            </Btn>
+            <Btn $style="primary" type="submit">
+              儲存變更
+            </Btn>
           </div>
         </Form>
       </ProfileEditSection>

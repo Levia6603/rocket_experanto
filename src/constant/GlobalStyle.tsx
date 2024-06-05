@@ -3,10 +3,13 @@ import reset from "styled-reset";
 
 export const GlobalStyle = createGlobalStyle`
     ${reset}
+    body{
+        background-color: #F1F1F1;
+    }
     * {
         box-sizing: border-box;
     }
-    h1,h2,h3,h4,h5,h6,p,li,a{
+    h1,h2,h3,h4,h5,h6,p,li,a,button{
         font-family: sans-serif;
         text-decoration: none;
         line-height: 1.5;

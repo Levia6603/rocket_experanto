@@ -17,7 +17,7 @@ import {
   PostButton,
 } from "./styles";
 import Comments from "../../components/Comments";
-import star from "/profile_box_icons/star-black.png";
+import star from "/profile_box_icons/star-yellow.svg";
 import like from "/profile_box_icons/heart.svg";
 import noCertification from "/no-certification-lg.svg";
 import ApplySchedule from "../../components/ApplySchedule";

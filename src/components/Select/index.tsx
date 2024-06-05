@@ -2,7 +2,7 @@ import { Label } from "./SelectStyle";
 import arrowDown from "/chevron-down.png";
 
 interface Props {
-  width: number;
+  width: string;
   list: { Id: number; Name: string }[];
   currentValue: string | number;
   setValue: (param: { Id: number; Name: string }) => void;

@@ -7,6 +7,8 @@ import LanguageFilter from "../../components/LanguageFilter";
 import SlidingPost from "../../components/SlidingPost";
 
 function Home() {
+  // const isToken = localStorage.getItem("token");
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <>
