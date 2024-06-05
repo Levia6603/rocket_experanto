@@ -15,6 +15,7 @@ export const Container = styled.div`
   padding: 32px;
   border: 1px solid #616161;
   border-radius: 4px;
+  background-color: #fff;
 `;
 
 export const Header = styled.div`
@@ -27,17 +28,18 @@ export const Header = styled.div`
     & > img {
       width: 80px;
       height: 80px;
+      border: 1px solid #000;
+      border-radius: 80px;
     }
   }
   & > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     & > div:nth-child(1) {
-      display: flex;
-      align-items: center;
-      gap: 12px;
       & > h4 {
         font-weight: bold;
         padding-right: 12px;
-        border-right: 1px solid #616161;
       }
     }
     & > div:nth-child(2) {
@@ -55,7 +57,6 @@ export const Header = styled.div`
 
         & > p {
           color: #616161;
-          font-weight: bold;
         }
         & > img {
           width: 1rem;
@@ -78,13 +79,16 @@ export const Info = styled.div`
   }
   //* 詳細資訊
   & > div:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     padding-top: 12px;
-    & > div {
-      display: flex;
-      gap: 0.5rem;
-      & > p {
-        color: #616161;
-        font-weight: bold;
+    & > p {
+      color: #454545;
+      span {
+        margin-left: 8px;
+        font-weight: 700;
+        color: #454545;
       }
     }
   }
@@ -118,26 +122,20 @@ export const Needs = styled.div`
   & > div:nth-child(2) {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 8px;
     padding-top: 0.75rem;
     & > div {
       display: flex;
       gap: 0.5rem;
       //* 項目
       & > h6 {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        max-width: 112px;
-        max-height: 32px;
-        min-width: 112px;
-        min-height: 32px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
+        color: #454545;
       }
-      & > p {
-        display: flex;
-        align-items: center;
+      p {
+        color: #454545;
+      }
+      span {
+        font-weight: 700;
       }
     }
   }
@@ -155,34 +153,21 @@ export const Plans = styled.div`
   }
   //* 內容
   & > div:nth-child(2) {
-    padding-top: 0.75rem;
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    //* 教學計畫
-    & > div:nth-child(1) {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      & > h6 {
-        display: flex;
-        justify-content: end;
-        align-items: center;
-        max-width: 112px;
-        max-height: 32px;
-        min-width: 112px;
-        min-height: 32px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
-      }
-      display: flex;
-      min-width: 111px;
+    gap: 8px;
+    padding-top: 12px;
+    font-weight: 700;
+    p {
+      margin-bottom: 8px;
     }
-    //* 教學計畫內容
-    & > div:nth-child(2) {
+    ol {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 8px;
+    }
+    li {
+      display: flex;
+      gap: 8px;
     }
   }
 `;
@@ -216,8 +201,9 @@ export const Certification = styled.div`
     border-radius: 4px;
     overflow: hidden;
     & > img {
-      width: 204px;
-      height: 204px;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
     }
   }
   //* 文字
@@ -276,4 +262,14 @@ export const Buttons = styled.div`
     border: 1px solid #616161;
     color: #fff;
   }
+`;
+
+export const PopUp = styled.section`
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: scroll;
+  width: 100vw;
+  height: 100vh;
+  background-color: #d5d5d5da;
 `;
