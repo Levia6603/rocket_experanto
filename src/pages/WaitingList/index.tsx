@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Wrapper,
   Container,
@@ -9,6 +9,8 @@ import {
   Item,
 } from "./styles";
 import ButtonPair from "../../components/ButtonPair";
+import axios from "axios";
+import apiBase from "../../Api";
 // import PageBar from "../../components/PageBar";
 const avatar = "/nav-profile.png";
 
@@ -19,6 +21,39 @@ function WaitingList() {
   const handleChange = (sort: string) => {
     setSort(sort);
   };
+  //* 儲存等待回覆列表
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    //* 接回等待回覆列表
+    async function getWaitingList() {
+      const headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
+
+      try {
+        await axios({
+          method: "GET",
+          url: apiBase.GET_WAITING_FOR_APPROVAL_LIST,
+          headers: headers,
+        })
+          .then((res) => {
+            setList(res.data.data);
+          })
+          .catch((err) => console.log(err));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getWaitingList();
+  }, []);
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
+
   return (
     <>
       <Wrapper title="我是Wrapper">
