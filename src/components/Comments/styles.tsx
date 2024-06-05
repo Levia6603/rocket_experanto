@@ -14,6 +14,7 @@ export const Container = styled.div`
   padding: 32px;
   border: 1px solid #616161;
   border-radius: 4px;
+  background-color: #fff;
   & > div:nth-of-type(1) {
     width: 100%;
   }

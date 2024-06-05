@@ -19,7 +19,6 @@ import {
 import Comments from "../../components/Comments";
 import star from "/profile_box_icons/star-yellow.svg";
 import like from "/profile_box_icons/heart.svg";
-import noCertification from "/no-certification-lg.svg";
 import ApplySchedule from "../../components/ApplySchedule";
 
 export interface PostInterface {
@@ -95,7 +94,6 @@ function FullPost() {
             <div>
               <div>
                 <h4>{post?.userName}</h4>
-                <p>{post?.userLocations}</p>
               </div>
               <div>
                 <div title="評價">
@@ -125,19 +123,17 @@ function FullPost() {
               <h4>{post?.title}</h4>
             </div>
             <div>
-              <div>
-                <p>發文有效日</p>
-                <p>{`${post?.startDate} - ${post?.endDate}`}</p>
-              </div>
-              <div>
-                <p>所在城市</p>
-                <p>{post?.userLocations}</p>
-              </div>
+              <p>
+                交換期限:<span>{`${post?.startDate} - ${post?.endDate}`}</span>
+              </p>
+              <p>
+                縣市地區:<span>{post?.userLocations}</span>
+              </p>
             </div>
           </Info>
           <Calendar>
             <div>
-              <h6>可交換時間</h6>
+              <h6>每週有空的時段</h6>
             </div>
             <div>
               <ApplySchedule timeData={timeData} />
@@ -145,42 +141,43 @@ function FullPost() {
           </Calendar>
           <Needs>
             <div>
-              <h6>需求</h6>
+              <h6>想交換的語言</h6>
             </div>
             <div>
               <div>
-                <h6>我想學：</h6>
-                <p>{post.learn?.[0].Name || ""}</p>
+                <h6>想學語言:</h6>
+                <p>
+                  <span>{post.learn?.[0].Name || ""}</span>
+                </p>
               </div>
               <div>
-                <h6>我希望可以：</h6>
+                <h6>學習動機:</h6>
                 <p>{post.learn?.[0].content || ""}</p>
               </div>
             </div>
           </Needs>
           <Plans>
             <div>
-              <h6>你可以學到：</h6>
+              <h6>教學計畫</h6>
             </div>
             <div>
+              <h6>教學語言：</h6>
               <div>
-                <h6>教學語言：</h6>
                 <p>{post?.skills?.[0].language || ""}</p>
-              </div>
-
-              <div>
-                {post.skills?.[0].goal?.map((goal, index) => (
-                  <p key={index}>
-                    <span>{index + 1}. </span>
-                    {goal}
-                  </p>
-                ))}
+                <ol>
+                  {post.skills?.[0].goal?.map((goal, index) => (
+                    <li key={index}>
+                      <span>{index + 1}. </span>
+                      {goal}
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
           </Plans>
           <Certifications>
             <div>
-              <h6>證書</h6>
+              <h6>語言證書檔案</h6>
             </div>
             <div>
               {post?.images?.map((image, index) => (
@@ -191,8 +188,9 @@ function FullPost() {
               ))}
 
               <Certification>
-                <img src={noCertification} alt="no certification" />
-                <h6>托福</h6>
+                {post.images?.map((el, i) => (
+                  <img key={i} src={el} alt="no certification" />
+                ))}
               </Certification>
             </div>
           </Certifications>

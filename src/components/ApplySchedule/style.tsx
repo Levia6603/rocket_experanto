@@ -13,12 +13,8 @@ export const Container = styled.div`
   li {
     padding: 5px 0;
     text-align: center;
-    border: 1px solid #000;
-    border-radius: 8px;
-    cursor: pointer;
-    &:hover {
-      background-color: #e2e2e2;
-    }
+    font-size: 14px;
+    font-weight: 700;
   }
 `;
 
