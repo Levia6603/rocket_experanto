@@ -30,6 +30,7 @@ import plusBtn from "/plus.svg";
 import deleteBtn from "/delete.svg";
 import closeBtn from "/close.svg";
 import { Btn } from "../../styles/Btn";
+import { useNavigate } from "react-router-dom";
 
 type Formvalues = {
   subject: string;
@@ -55,6 +56,7 @@ interface SetTimeData {
 }
 
 function Posting() {
+  const navigate = useNavigate();
   //* 從 redux toolkit 中叫出資料
   const checkProfileState = useSelector(
     (state: RootStateType) => state.checkProfile.checkProfileState
@@ -990,7 +992,14 @@ function Posting() {
                   axios
                     .post(apiBase.POST_POST, data, { headers })
                     .then((res) => {
-                      console.log(res);
+                      const message = res.data.message;
+                      if (message === "新增成功") {
+                        alert(message);
+                        navigate("/home/index");
+                      } else if (message === "請重新登入") {
+                        alert(message);
+                        navigate("/login");
+                      }
                     });
                 }}
               >
