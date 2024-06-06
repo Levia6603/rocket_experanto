@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import Selector from "../../components/Selector";
 
 export const Wrapper = styled.section`
   width: 100%;
@@ -15,7 +14,8 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h2`
-  padding-bottom: 2rem;
+  padding-bottom: 2.25rem;
+  font-weight: 900;
 `;
 
 export const SortWrapper = styled.div`
@@ -24,31 +24,21 @@ export const SortWrapper = styled.div`
   align-items: center;
   & > p {
   }
-`;
-export const Sort = styled(Selector)`
-  width: 100%;
-  min-width: 10rem;
-  max-width: 10rem;
-  max-height: 2rem;
-  min-height: 2rem;
-  background-color: transparent;
-  & > p:nth-of-type(1) {
-    width: fit-content;
+  & > select {
+    width: 100%;
+    min-width: 10rem;
+    max-width: 10rem;
+    max-height: 2rem;
+    min-height: 2rem;
+    background-color: transparent;
     padding: 0.5rem;
-  }
-  & > div:nth-of-type(1) {
-    width: 10rem;
-    & > ul {
-      width: 100%;
-      & > li {
-        width: 100%;
-        padding: 0.5rem 1rem;
-      }
-    }
+    border: 1px solid #616161;
+    border-radius: 4px;
+    color: #616161;
   }
 `;
 
-export const List = styled.div`
+export const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -59,16 +49,27 @@ export const List = styled.div`
 
 export const Item = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
   max-width: 1320px;
-  margin: 0 auto;
-  padding: 0.5rem;
-  border: 1px solid #bdbdbd;
+  padding: 0.75rem;
+  border: 1px solid #000;
   border-radius: 4px;
+  transition: box-shadow 0.3s ease-in-out; /* 確保transition應用於box-shadow */
+
+  &:hover {
+    box-shadow: 4px 4px 0 #000;
+  }
+
   //* 大頭貼
   & > div:nth-of-type(1) {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #000;
+    border-radius: 999px;
+    overflow: hidden;
     & > img {
+      object-fit: cover;
       width: 40px;
       height: 40px;
     }
@@ -79,11 +80,14 @@ export const Item = styled.div`
     flex-direction: column;
     flex-grow: 1;
     gap: 2px;
-    & > h5 {
-      font-weight: 900;
+
+    //* 發文標題
+    & > h4 {
+      font-weight: 700;
     }
     & > p {
-      color: #9e9e9e;
+      font-size: 1rem;
+      color: #919191;
     }
   }
 
@@ -91,10 +95,6 @@ export const Item = styled.div`
   & > div:nth-of-type(3) {
     display: flex;
     align-items: center;
-    & > div {
-      & > button {
-        font-size: 14px;
-      }
-    }
+    gap: 0.75rem;
   }
 `;
