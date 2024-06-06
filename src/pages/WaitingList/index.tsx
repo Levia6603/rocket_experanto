@@ -5,7 +5,7 @@ import apiBase from "../../Api";
 import PageBar from "../../components/PageBar";
 import { Btn } from "../../styles/Btn";
 
-interface WaitingListInterface {
+type WaitingListInterface = {
   ExchangesId: number;
   PostId: string;
   ExchangeStatus: boolean;
@@ -14,7 +14,7 @@ interface WaitingListInterface {
   Title: string;
   AppliCreatedAt: string;
   PostExpirationDate: string;
-}
+};
 
 function WaitingList() {
   const [sort, setSort] = useState("由新到舊");
