@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setPages } from "../../../redux/pages/pagesSlice";
+import { RootStateType } from "../../../redux";
+import axios from "axios";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
+import apiBase from "../../Api";
 import {
   Wrapper,
   Container,
@@ -13,24 +17,62 @@ import {
   Candidate,
 } from "./styles";
 import { SortWrapper } from "../WaitingList/styles";
-import pserson from "../../../public/profile_box_icons/person.svg";
-import dropdownIcon from "/chevron-down.png";
-import avatar from "/avatar-80.svg";
+import PageBar from "../../components/PageBar";
+import person from "../../../public/profile_box_icons/person.svg";
+import dropdownIcon from "/chevron-down-white.svg";
+import exchange from "/exchange_icon.svg";
 
-import apiBase from "../../Api";
-import axios from "axios";
+type MatchingData = {
+  Code: number;
+  Status: string;
+  list: {
+    PostId: number;
+    PostTitle: string;
+    LanguageToLearn: string;
+    LatestApplicationDate: string;
+    ApplicationsCount: number;
+    Applications: {
+      ReceiverUserName: string;
+      ReceiverUserId: number;
+      ReceiverUserAvatar: string;
+      ExchangeId: number;
+      ApplyCreatedAt: string;
+      ApplyContent: string;
+      LanguageToLearn: string;
+      LanguageToTeach: string;
+    }[];
+  }[];
+  message: string;
+  page: number;
+  total: number;
+  totalPages: number;
+};
 
 function Matching() {
-  const [showDetails, setShowDetails] = useState(false);
-  const handleShowDetails = () => {
-    setShowDetails((showDetails) => !showDetails);
+  //* 導入 Redux 的 dispatch 用來記錄 offCanvas的狀態
+  const dispatch = useDispatch();
+  //* 從 redux state 取得總頁數
+  const page = useSelector((state: RootStateType) => state.pages.page);
+
+  //* 設定排序狀態
+  const [sort, setSort] = useState("由新到舊");
+  const handleChange = (sort: string) => {
+    setSort(sort);
   };
 
-  //* 滑入顯示資訊
-  const dispatch = useDispatch();
+  //* 手風琴開關，初始化是一個記錄 boolean 的陣列，透過callback function 傳入一個陣列，用來記錄每個手風琴是否開啟
+  const [openStates, setOpenStates] = useState<boolean[]>([]);
+  const handleShowDetails = (index: number) => {
+    setOpenStates((prev) =>
+      prev.map((isOpen, i) => (i === index ? !isOpen : isOpen))
+    );
+  };
 
-  //* 取得 WaitingList 資料
-  const [list, setList] = useState<any[]>([]);
+  //* 設定讀取狀態
+  const [loading, setLoading] = useState(true);
+
+  //* 取得 Matching List 資料
+  const [data, setData] = useState<MatchingData>({} as MatchingData);
   useEffect(() => {
     async function getMatchingList() {
       const headers = {
@@ -45,218 +87,157 @@ function Matching() {
           headers: headers,
         })
           .then((res) => {
-            console.log(res.data);
-            setList(res.data.data);
+            setData(res.data);
+            setOpenStates(new Array(res.data.list.length).fill(false)); //* 初始化手風琴陣列的狀態
+            dispatch(setPages(res.data.totalPages)); //* 設定總頁數
+            setLoading(false);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            setLoading(false);
+          });
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     }
     getMatchingList();
-  }, []);
+  }, [dispatch]);
+
+  //* 排序用的變數，排序依據是最新申請時間，下方render的 list 就會使用這組新的陣列
+  const sortedList = data.list?.sort(
+    (a: MatchingData["list"][number], b: MatchingData["list"][number]) => {
+      if (sort === "由新到舊") {
+        return (
+          new Date(b.LatestApplicationDate).getTime() -
+          new Date(a.LatestApplicationDate).getTime()
+        );
+      } else {
+        return (
+          new Date(a.LatestApplicationDate).getTime() -
+          new Date(b.LatestApplicationDate).getTime()
+        );
+      }
+    }
+  );
 
   useEffect(() => {
-    console.log(list);
-  }, [list]);
+    console.log(data);
+    console.log(page);
+  }, [data, page]);
 
   return (
     <>
       <Wrapper>
         <Container>
-          <Title>等待交換確認</Title>
+          <Title>{"申請與配對"}</Title>
           <SortWrapper>
             <p>時間排序</p>
-            <select>
+            <select value={sort} onChange={(e) => handleChange(e.target.value)}>
               <option value="由新到舊">由新到舊</option>
               <option value="由舊到新">由舊到新</option>
             </select>
           </SortWrapper>
           <Cards>
-            <CardWrapper $isOpen={showDetails}>
-              <Card $isOpen={showDetails}>
-                <div title="內容區">
-                  <div>
-                    <h5>{"我是真的很想學好英文啊"}</h5>
-                  </div>
-                  <div title="留言人數和申請時間">
-                    <div>
+            {loading ? (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <h2 style={{ textAlign: "center", fontWeight: "900" }}>
+                  讀取中...
+                </h2>
+              </div>
+            ) : sortedList ? (
+              sortedList?.map((item, index) => {
+                const isOpen = openStates[index];
+                return (
+                  <CardWrapper $isOpen={isOpen} key={index}>
+                    <Card $isOpen={isOpen}>
                       <div>
-                        <img src={pserson} alt="" />
+                        <div>
+                          <h5>{item.PostTitle}</h5>
+                        </div>
+                        <div>
+                          <div>
+                            <div>
+                              <img src={person} alt="" />
+                            </div>
+                            <p>
+                              <span>{item.ApplicationsCount}</span>人
+                            </p>
+                          </div>
+                          <div>
+                            <p>
+                              最新申請日期：
+                              <span>{item.LatestApplicationDate}</span>
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <p>
-                        <span>{"5"}</span>人
-                      </p>
-                    </div>
-                    <div>
-                      <p>
-                        最新申請日期：<span>{"2022/01/01"}</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div title="按鈕區">
-                  <ShowDetailsButton
-                    $isOpen={showDetails}
-                    onClick={handleShowDetails}
-                  >
-                    {showDetails ? "展開" : "收起"}
-                    <img src={dropdownIcon} alt="" />
-                  </ShowDetailsButton>
-                </div>
-              </Card>
-              <Candidates $isOpen={!showDetails}>
-                <Candidate
-                  title="候選人"
-                  onClick={() => dispatch(setSlidingPostState())}
-                >
-                  <div>
-                    <div>
-                      <img src={avatar} alt="Avatar" />
-                    </div>
-                    <p>John Doe</p>
-                    <p>
-                      提出申請時間<span>{"2022/01/01"}</span>
-                    </p>
-                  </div>
-                  <div>
-                    <div>
-                      <p>
-                        擅長語言：<span>{"中文"}</span>
-                      </p>
-                      <p>
-                        想學語言：<span>{"英文"}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p>學習動機</p>
-                      <p>
-                        {
-                          "我有強烈的學習英語的慾望。 英語是全球公認的語言，可以為我開啟更廣闊的世界。 我相信掌握英語可以提升我的溝通技巧，擴大職業機會，甚至更深入了解西方文化。"
+                      <div>
+                        <ShowDetailsButton
+                          $isOpen={isOpen}
+                          onClick={() => handleShowDetails(index)}
+                        >
+                          {isOpen ? "詳細內容" : "收合"}
+                          <img src={dropdownIcon} alt="" />
+                        </ShowDetailsButton>
+                      </div>
+                    </Card>
+                    <Candidates $isOpen={!isOpen}>
+                      {data?.list[index]?.Applications?.map(
+                        (item, index: number) => {
+                          return (
+                            <Candidate
+                              key={index}
+                              onClick={() => dispatch(setSlidingPostState())}
+                            >
+                              <div>
+                                <div>
+                                  <img src={item.ReceiverUserAvatar} alt="" />
+                                </div>
+                                <h5>{item.ReceiverUserName}</h5>
+                                <p>
+                                  提出申請時間<span>{item.ApplyCreatedAt}</span>
+                                </p>
+                              </div>
+                              <div>
+                                <div>
+                                  <p>{item.LanguageToLearn}</p>
+                                  <img src={exchange} alt="" />
+                                  <p>{item.LanguageToTeach}</p>
+                                </div>
+                                <div>
+                                  <p> {item.ApplyContent} </p>
+                                </div>
+                              </div>
+                            </Candidate>
+                          );
                         }
-                      </p>
-                    </div>
-                  </div>
-                </Candidate>
-                <Candidate title="候選人">
-                  <div>
-                    <div>
-                      <img src={avatar} alt="Avatar" />
-                    </div>
-                    <p>John Doe</p>
-                    <p>
-                      提出申請時間<span>{"2022/01/01"}</span>
-                    </p>
-                  </div>
-                  <div>
-                    <div>
-                      <p>
-                        擅長語言：<span>{"中文"}</span>
-                      </p>
-                      <p>
-                        想學語言：<span>{"英文"}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p>學習動機</p>
-                      <p>
-                        {
-                          "我有強烈的學習英語的慾望。 英語是全球公認的語言，可以為我開啟更廣闊的世界。 我相信掌握英語可以提升我的溝通技巧，擴大職業機會，甚至更深入了解西方文化。"
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </Candidate>
-                <Candidate title="候選人">
-                  <div>
-                    <div>
-                      <img src={avatar} alt="Avatar" />
-                    </div>
-                    <p>John Doe</p>
-                    <p>
-                      提出申請時間<span>{"2022/01/01"}</span>
-                    </p>
-                  </div>
-                  <div>
-                    <div>
-                      <p>
-                        擅長語言：<span>{"中文"}</span>
-                      </p>
-                      <p>
-                        想學語言：<span>{"英文"}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p>學習動機</p>
-                      <p>
-                        {
-                          "我有強烈的學習英語的慾望。 英語是全球公認的語言，可以為我開啟更廣闊的世界。 我相信掌握英語可以提升我的溝通技巧，擴大職業機會，甚至更深入了解西方文化。"
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </Candidate>
-                <Candidate title="候選人">
-                  <div>
-                    <div>
-                      <img src={avatar} alt="Avatar" />
-                    </div>
-                    <p>John Doe</p>
-                    <p>
-                      提出申請時間<span>{"2022/01/01"}</span>
-                    </p>
-                  </div>
-                  <div>
-                    <div>
-                      <p>
-                        擅長語言：<span>{"中文"}</span>
-                      </p>
-                      <p>
-                        想學語言：<span>{"英文"}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p>學習動機</p>
-                      <p>
-                        {
-                          "我有強烈的學習英語的慾望。 英語是全球公認的語言，可以為我開啟更廣闊的世界。 我相信掌握英語可以提升我的溝通技巧，擴大職業機會，甚至更深入了解西方文化。"
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </Candidate>
-                <Candidate title="候選人">
-                  <div>
-                    <div>
-                      <img src={avatar} alt="Avatar" />
-                    </div>
-                    <p>John Doe</p>
-                    <p>
-                      提出申請時間<span>{"2022/01/01"}</span>
-                    </p>
-                  </div>
-                  <div>
-                    <div>
-                      <p>
-                        擅長語言：<span>{"中文"}</span>
-                      </p>
-                      <p>
-                        想學語言：<span>{"英文"}</span>
-                      </p>
-                    </div>
-                    <div>
-                      <p>學習動機</p>
-                      <p>
-                        {
-                          "我有強烈的學習英語的慾望。 英語是全球公認的語言，可以為我開啟更廣闊的世界。 我相信掌握英語可以提升我的溝通技巧，擴大職業機會，甚至更深入了解西方文化。"
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </Candidate>
-              </Candidates>
-            </CardWrapper>
+                      )}
+                    </Candidates>
+                  </CardWrapper>
+                );
+              })
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <h2 style={{ textAlign: "center", fontWeight: "900" }}>
+                  目前沒有資料
+                </h2>
+              </div>
+            )}
           </Cards>
+          {sortedList && <PageBar />}
         </Container>
       </Wrapper>
     </>

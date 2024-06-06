@@ -37,16 +37,19 @@ export const CardWrapper = styled.div<ButtonProps>`
 //* 一則請求卡片
 export const Card = styled.div<ButtonProps>`
   display: flex;
-  border: 1px solid #bdbdbd;
+  background-color: #fcfcfc;
+  border: 1px solid #5e5e5e;
+  border-radius: 8px;
   ${({ $isOpen }) =>
-    $isOpen === false &&
+    $isOpen !== true &&
     css`
-      border-bottom: 3px solid #bdbdbd;
+      border-bottom: 0px;
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
     `}
 
-  border-top-right-radius: 8px;
-  border-top-left-radius: 8px;
   padding: 0.75rem;
+
   //* 內容
   & > div:nth-of-type(1) {
     display: flex;
@@ -100,8 +103,10 @@ export const ShowDetailsButton = styled(Button)<ButtonProps>`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: transparent;
+  background-color: #5e5e5e;
+  color: white;
   border-radius: 0.5rem;
+  border: 0;
   & > img {
     width: 1rem;
     height: 1rem;
@@ -123,75 +128,96 @@ export const Candidates = styled.div<ButtonProps>`
       display: flex;
     `}
   flex-wrap: wrap;
-  gap: 0.5rem;
-  border: 1px solid #bdbdbd;
+  gap: 1rem;
+  background-color: #fcfcfc;
+  border: 1px solid #5e5e5e;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  padding: 0.5rem;
+  padding: 1rem 1.5rem;
   overflow: hidden;
 `;
 
 //* 候選人卡片
 export const Candidate = styled.div`
   display: flex;
-  flex-direction: column;
-  border: 1px solid #bdbdbd;
-  border-radius: 8px;
-  padding: 0.5rem;
-  //* 卡片的上半部
+  width: 100%;
+  border: 1px solid #424242;
+  border-radius: 0.25rem;
+  transition: all 0.3s;
+
+  &:hover {
+    box-shadow: 4px 4px 0px #5e5e5e;
+  }
+  //* 卡片的左半部
   & > div:nth-of-type(1) {
-    width: 288px;
+    width: 180px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
     padding: 1.5rem;
-    background-color: #bdbdbd;
+    background-color: #fffbf2;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
 
     //* 大頭貼
     & > div:nth-of-type(1) {
+      width: 60px;
+      height: 60px;
+      border-radius: 999px;
+      overflow: hidden;
       & > img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
       }
     }
     //* 人名
-    & > p:nth-of-type(1) {
+    & > h5 {
+      color: #454545;
       font-weight: 900;
+      font-weight: 700;
+      text-align: center;
     }
     //* 申請時間
-    & > p:nth-of-type(2) {
-      color: black;
+    & > p:nth-of-type(1) {
+      font-size: 0.75rem;
+      color: #919191;
+      text-align: center;
     }
   }
-  //* 卡片的下半部
+  //* 卡片的右半部
   & > div:nth-of-type(2) {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1.5rem;
+    background-color: #ffffff;
+    flex-grow: 1;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    padding: 1rem;
+
+    //* 要交換的語言項目
     & > div:nth-of-type(1) {
       display: flex;
-
-      & > p:nth-child(1) {
-        width: 50%;
-        padding: 0.5rem;
-        border-right: 1px solid #bdbdbd;
-        font-weight: 900;
-      }
-      & > p:nth-child(2) {
-        width: 50%;
-        padding: 0.5rem;
-        border-left: 1px solid #bdbdbd;
-        font-weight: 900;
-      }
+      gap: 0.5rem;
+      width: fit-content;
+      background-color: #454545;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      white-space: nowrap;
     }
+
+    //* 學習動機
     & > div:nth-of-type(2) {
-      width: 288px;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
       & > p:nth-of-type(1) {
-      }
-      & > p:nth-of-type(2) {
+        color: #454545;
+        font-weight: 900;
       }
     }
   }
