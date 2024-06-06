@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import {
@@ -12,10 +12,13 @@ import {
   Candidates,
   Candidate,
 } from "./styles";
-import { SortWrapper, Sort } from "../Notifications/styles";
+import { SortWrapper } from "../WaitingList/styles";
 import pserson from "../../../public/profile_box_icons/person.svg";
 import dropdownIcon from "/chevron-down.png";
 import avatar from "/avatar-80.svg";
+
+import apiBase from "../../Api";
+import axios from "axios";
 
 function Matching() {
   const [showDetails, setShowDetails] = useState(false);
@@ -26,6 +29,37 @@ function Matching() {
   //* 滑入顯示資訊
   const dispatch = useDispatch();
 
+  //* 取得 WaitingList 資料
+  const [list, setList] = useState<any[]>([]);
+  useEffect(() => {
+    async function getMatchingList() {
+      const headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
+      try {
+        await axios({
+          method: "GET",
+          url: apiBase.GET_MATCHING_LIST,
+          headers: headers,
+        })
+          .then((res) => {
+            console.log(res.data);
+            setList(res.data.data);
+          })
+          .catch((err) => console.log(err));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getMatchingList();
+  }, []);
+
+  useEffect(() => {
+    console.log(list);
+  }, [list]);
+
   return (
     <>
       <Wrapper>
@@ -33,12 +67,10 @@ function Matching() {
           <Title>等待交換確認</Title>
           <SortWrapper>
             <p>時間排序</p>
-            <Sort
-              size="middle"
-              languageList={["由新到舊", "由舊到新"]}
-              currentValue={"由新到舊"}
-              setValue={() => {}}
-            />
+            <select>
+              <option value="由新到舊">由新到舊</option>
+              <option value="由舊到新">由舊到新</option>
+            </select>
           </SortWrapper>
           <Cards>
             <CardWrapper $isOpen={showDetails}>
