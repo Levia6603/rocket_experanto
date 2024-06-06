@@ -64,7 +64,7 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
         </div>
 
         <div>
-          <Content title="我在這裡啦～">
+          <Content>
             <h4>{props.title}</h4>
             <p>{props.content}</p>
           </Content>

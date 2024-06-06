@@ -18,6 +18,7 @@ const apiBase = {
   GET_WAITING_FOR_APPROVAL_LIST: `/api/posts/pending`,
   GET_CHECK_PERMISSION: `/api/Apply`,
   POST_SEND_APPLY: `/api/applications`,
+  GET_MATCHING_LIST: `/api/applylist`,
 };
 
 export default apiBase;

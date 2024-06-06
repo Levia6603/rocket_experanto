@@ -11,12 +11,15 @@ import {
   ButtonPairWrapper,
 } from "./styles";
 import { Calendar, Needs, Plans } from "../../pages/FullPost/styles";
-import Schedule from "../Schedule";
+// import ApplySchedule from "../ApplySchedule";
+
+// import Schedule from "../Schedule";
 import close from "/close-lg.svg";
 import avatar from "/avatar-80.svg";
 import location from "/map-pin.svg";
 
 function SlidingMatching() {
+  //* 設定Redux toolkit，控制是否顯示 offcanvas
   const dispatch = useDispatch();
   const isVisible = useSelector(
     (state: RootStateType) => state.sliding.slidingPostState
@@ -58,9 +61,7 @@ function SlidingMatching() {
             <div>
               <h6>Available Time</h6>
             </div>
-            <div>
-              <Schedule />
-            </div>
+            <div></div>
           </Calendar>
           <Needs>
             <div>

@@ -10,9 +10,9 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   height: 33px;
   display: flex;
-  border-top: 1px solid #616161;
-  border-bottom: 1px solid #616161;
-  border-left: 1px solid #616161;
+  border: 1px solid #616161;
+  border-radius: 0.25rem;
+  overflow: hidden;
 `;
 
 export const PageButton = styled(Button)`
@@ -22,6 +22,7 @@ export const PageButton = styled(Button)`
   align-items: center;
   border: 0;
   border-right: 1px solid #616161;
+
   background-color: transparent;
   &:hover {
     background-color: #e0e0e0;
