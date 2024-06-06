@@ -47,7 +47,9 @@ function PageBar() {
             {page}
           </PageButton>
         ))}
-        <PageButton onClick={handleNext}>下一頁</PageButton>
+        <PageButton style={{ borderRight: "none" }} onClick={handleNext}>
+          下一頁
+        </PageButton>
       </Container>
     </Wrapper>
   );
