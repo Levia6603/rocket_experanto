@@ -11,7 +11,7 @@ export const Label = styled.label<SelectProps>`
   align-items: center;
   position: relative;
   width: ${({ $width }) => $width};
-  padding: 14px 12px;
+  padding: 8px 16px;
   border: 1px solid #bdbdbd;
   border-radius: 4px;
   cursor: pointer;
@@ -21,13 +21,13 @@ export const Label = styled.label<SelectProps>`
   ul {
     position: absolute;
     left: 0;
-    top: 54px;
+    top: 40px;
     display: none;
     flex-direction: column;
     overflow-x: scroll;
     z-index: 1;
     width: 100%;
-    max-height: 250px;
+    max-height: 200px;
     border: 1px solid #bdbdbd;
     border-radius: 4px;
     background-color: #fff;
@@ -42,8 +42,9 @@ export const Label = styled.label<SelectProps>`
     align-items: center;
     flex-shrink: 0;
     width: 100%;
-    height: 50px;
-    padding: 0 12px;
+    height: 42px;
+    padding: 0 16px;
+    color: #454545;
   }
   li:hover {
     background-color: #f0eded;
@@ -65,6 +66,6 @@ const showOption = (index: number) => keyframes`
         height: 0;
     }
     to{
-        height: ${index <= 5 ? index * 50 : 250}px;
+        height: ${index <= 5 ? index * 40 : 200}px;
     }
 `;
