@@ -48,7 +48,12 @@ export const Card = styled.div<ButtonProps>`
       border-bottom-right-radius: 0px;
     `}
 
+  transition: all 0.3s;
   padding: 0.75rem;
+
+  &:hover {
+    box-shadow: 4px 4px 0px #5e5e5e;
+  }
 
   //* 內容
   & > div:nth-of-type(1) {
@@ -121,12 +126,17 @@ export const ShowDetailsButton = styled(Button)<ButtonProps>`
 //* 候選人區
 export const Candidates = styled.div<ButtonProps>`
   width: 100%;
-  display: none;
   ${({ $isOpen }) =>
-    $isOpen &&
-    css`
-      display: flex;
-    `}
+    $isOpen
+      ? css`
+          display: flex;
+          animation: show 1s linear;
+        `
+      : css`
+          display: none;
+          animation: close 1s linear;
+        `}
+  overflow: hidden;
   flex-wrap: wrap;
   gap: 1rem;
   background-color: #fcfcfc;
@@ -134,7 +144,24 @@ export const Candidates = styled.div<ButtonProps>`
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   padding: 1rem 1.5rem;
-  overflow: hidden;
+
+  @keyframes show {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes close {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
 `;
 
 //* 候選人卡片
