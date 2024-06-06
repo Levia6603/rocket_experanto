@@ -9,7 +9,6 @@ import Home from "../pages/Home";
 import HomeIndex from "../pages/HomeIndex";
 import FullPost from "../pages/FullPost";
 import Posting from "../pages/Posting";
-import Apply from "../components/Apply";
 import WaitingList from "../pages/WaitingList";
 import Notifications from "../pages/Notifications";
 import Exchanging from "../pages/Exchanging";
@@ -83,11 +82,10 @@ export const router = createBrowserRouter([
     children: [
       { path: "", element: <Navigate to="index" replace /> },
       { path: "index", element: <HomeIndex /> },
-      { path: "post", element: <FullPost /> },
+      { path: "post/:id", element: <FullPost /> },
     ],
   },
-  { path: "posting", element: <ProtectedRoute element={<Posting />} /> },
-  { path: "applying", element: <ProtectedRoute element={<Apply />} /> },
-  { path: "videocall", element: <ProtectedRoute element={<VideoChat />} /> },
+  { path: "posting", element: <Posting /> },
+  { path: "videocall", element: <VideoChat /> },
   { path: "*", element: <div>Not Found</div> },
 ]);

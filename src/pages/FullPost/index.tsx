@@ -14,13 +14,15 @@ import {
   Tags,
   Tag,
   Buttons,
-  PostButton,
+  PopUp,
 } from "./styles";
-import Schedule from "../../components/Schedule";
 import Comments from "../../components/Comments";
 import star from "/profile_box_icons/star-yellow.svg";
 import like from "/profile_box_icons/heart.svg";
-import noCertification from "/no-certification-lg.svg";
+import ApplySchedule from "../../components/ApplySchedule";
+import { Btn } from "../../styles/Btn";
+import Apply from "../../components/Apply";
+import { useNavigate, useParams } from "react-router-dom";
 
 export interface PostInterface {
   userName?: string;
@@ -32,18 +34,42 @@ export interface PostInterface {
   startDate?: string;
   learn?: { Id: number; Name: string; content: string }[];
   endDate?: string;
-  availabaleHours?: any;
+  availableHours?: any;
   images?: string[];
   isFavorite?: boolean;
+}
+interface TimeData {
+  Sun?: { start: string; end: string }[];
+  Mon?: { start: string; end: string }[];
+  Tue?: { start: string; end: string }[];
+  Wed?: { start: string; end: string }[];
+  Thu?: { start: string; end: string }[];
+  Fri?: { start: string; end: string }[];
+  Sat?: { start: string; end: string }[];
+}
+interface SelectTimeData {
+  Sun?: { start: string; end: string; select: boolean }[];
+  Mon?: { start: string; end: string; select: boolean }[];
+  Tue?: { start: string; end: string; select: boolean }[];
+  Wed?: { start: string; end: string; select: boolean }[];
+  Thu?: { start: string; end: string; select: boolean }[];
+  Fri?: { start: string; end: string; select: boolean }[];
+  Sat?: { start: string; end: string; select: boolean }[];
 }
 
 function FullPost() {
   const [post, setPost] = useState({} as PostInterface);
+  const [timeData, setTimeData] = useState<TimeData>({});
   const [tags, setTags] = useState(String);
   const [tagAry, setTagAry] = useState([] as string[]);
+  const [selectTime, setSelectTime] = useState<SelectTimeData>({});
+  const [applyState, setApplyState] = useState(false);
+  const navigate = useNavigate();
+
+  const { id } = useParams();
 
   //* 接回 Post List
-  async function getPost(id: number) {
+  async function getPost(id: string) {
     const headers = {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -58,15 +84,40 @@ function FullPost() {
         .catch((err) => console.log(err));
       setPost(post);
       setTags(post.tags || "");
-      console.log(post);
+
+      const availableTime: TimeData = post.availableHours;
+      setTimeData(availableTime);
+      //在時間
+      let selectData: SelectTimeData = {};
+      Object.entries(availableTime).forEach((arr) => {
+        const [week, time] = arr;
+        const newTime = time.map((el: { start: string; end: string }) => {
+          return { ...el, select: false };
+        });
+        selectData = { ...selectData, [week]: newTime };
+      });
+      setSelectTime(selectData);
     } catch (error) {
       console.error(error);
+    }
+  }
+  async function checkPermission(id: string) {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    const message = await axios
+      .get(`${apiBase.GET_CHECK_PERMISSION}/${id}`, {
+        headers,
+      })
+      .then((res) => res.data.message);
+    if (message === "可申請") {
+      setApplyState(true);
     }
   }
 
   //*接回 Post List
   useEffect(() => {
-    getPost(2);
+    getPost(id || "");
   }, []);
 
   useEffect(() => {
@@ -76,6 +127,15 @@ function FullPost() {
 
   return (
     <>
+      {applyState && (
+        <PopUp>
+          <Apply
+            selectTime={selectTime}
+            setSelectTime={setSelectTime}
+            setApplyState={setApplyState}
+          />
+        </PopUp>
+      )}
       <Wrapper>
         <Container>
           <Header>
@@ -85,7 +145,6 @@ function FullPost() {
             <div>
               <div>
                 <h4>{post?.userName}</h4>
-                <p>{post?.userLocations}</p>
               </div>
               <div>
                 <div title="評價">
@@ -115,62 +174,61 @@ function FullPost() {
               <h4>{post?.title}</h4>
             </div>
             <div>
-              <div>
-                <p>發文有效日</p>
-                <p>{`${post?.startDate} - ${post?.endDate}`}</p>
-              </div>
-              <div>
-                <p>所在城市</p>
-                <p>{post?.userLocations}</p>
-              </div>
+              <p>
+                交換期限:<span>{`${post?.startDate} - ${post?.endDate}`}</span>
+              </p>
+              <p>
+                縣市地區:<span>{post?.userLocations}</span>
+              </p>
             </div>
           </Info>
           <Calendar>
             <div>
-              <h6>可交換時間</h6>
+              <h6>每週有空的時段</h6>
             </div>
             <div>
-              <Schedule />
+              <ApplySchedule timeData={timeData} />
             </div>
           </Calendar>
           <Needs>
             <div>
-              <h6>需求</h6>
+              <h6>想交換的語言</h6>
             </div>
             <div>
               <div>
-                <h6>我想學：</h6>
-                <p>{post.learn?.[0].Name || ""}</p>
+                <h6>想學語言:</h6>
+                <p>
+                  <span>{post.learn?.[0].Name || ""}</span>
+                </p>
               </div>
               <div>
-                <h6>我希望可以：</h6>
+                <h6>學習動機:</h6>
                 <p>{post.learn?.[0].content || ""}</p>
               </div>
             </div>
           </Needs>
           <Plans>
             <div>
-              <h6>你可以學到：</h6>
+              <h6>教學計畫</h6>
             </div>
             <div>
+              <h6>教學語言：</h6>
               <div>
-                <h6>教學語言：</h6>
                 <p>{post?.skills?.[0].language || ""}</p>
-              </div>
-
-              <div>
-                {post.skills?.[0].goal?.map((goal, index) => (
-                  <p key={index}>
-                    <span>{index + 1}. </span>
-                    {goal}
-                  </p>
-                ))}
+                <ol>
+                  {post.skills?.[0].goal?.map((goal, index) => (
+                    <li key={index}>
+                      <span>{index + 1}. </span>
+                      {goal}
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
           </Plans>
           <Certifications>
             <div>
-              <h6>證書</h6>
+              <h6>語言證書檔案</h6>
             </div>
             <div>
               {post?.images?.map((image, index) => (
@@ -181,8 +239,9 @@ function FullPost() {
               ))}
 
               <Certification>
-                <img src={noCertification} alt="no certification" />
-                <h6>托福</h6>
+                {post.images?.map((el, i) => (
+                  <img key={i} src={el} alt="no certification" />
+                ))}
               </Certification>
             </div>
           </Certifications>
@@ -196,8 +255,24 @@ function FullPost() {
             </div>
           </Tags>
           <Buttons>
-            <PostButton>回到上一頁</PostButton>
-            <PostButton>申請</PostButton>
+            <Btn
+              $style="outline"
+              type="button"
+              onClick={() => {
+                navigate("/home/index");
+              }}
+            >
+              返回貼文搜尋
+            </Btn>
+            <Btn
+              $style="primary"
+              type="button"
+              onClick={() => {
+                checkPermission(id || "");
+              }}
+            >
+              申請
+            </Btn>
           </Buttons>
         </Container>
         <Comments />

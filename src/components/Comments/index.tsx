@@ -1,6 +1,6 @@
 import { Wrapper, Container, Title, Comment, WriteMessage } from "./styles";
-import Button from "../../styles/Button";
 import three_dots_vertical from "/three-dots-vertical.svg";
+import { Btn } from "../../styles/Btn";
 
 function Comments() {
   return (
@@ -49,20 +49,23 @@ function Comments() {
                   Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
                   illo at, non tempora eum unde sed accusamus deleniti fugit est
                   asperiores dicta ad. Earum quisquam porro quae nostrum debitis
-                  neque?
+                  neque? Lorem, ipsum dolor sit amet consectetur adipisicing
+                  elit. Explicabo illum itaque corrupti rerum et veritatis.
+                  Eveniet accusamus vel reiciendis tempora tempore iure, esse
+                  ex. Dolore nulla magni officia commodi rem.
                 </p>
               </div>
             </Comment>
           </div>
           <div>
             <WriteMessage>
-              <h6>我要留言</h6>
+              <h6>撰寫留言</h6>
               <textarea
                 name="comment"
                 id="comment"
                 placeholder="請注意網路禮節，禁止人身攻擊..."
               ></textarea>
-              <Button>送出</Button>
+              <Btn $style="outline">送出留言</Btn>
             </WriteMessage>
           </div>
         </Container>

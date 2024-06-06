@@ -16,6 +16,8 @@ const apiBase = {
   GET_POST_LIST: `/api/postList`,
   GET_HOT_LANGUAGE: `/api/languages/popular`,
   GET_WAITING_FOR_APPROVAL_LIST: `/api/posts/pending`,
+  GET_CHECK_PERMISSION: `/api/Apply`,
+  POST_SEND_APPLY: `/api/applications`,
 };
 
 export default apiBase;
