@@ -4,10 +4,11 @@ import Button from "../../styles/Button";
 interface WrapperProps {
   $isVisible: boolean;
 }
+
 export const Wrapper = styled.div<WrapperProps>`
-  width: 50%;
+  width: 880px;
   height: 100vh;
-  background-color: white;
+  background-color: #fcfcfc;
   position: fixed;
   top: 0;
   right: ${({ $isVisible }) => ($isVisible ? "0" : "-100%")};
@@ -16,36 +17,55 @@ export const Wrapper = styled.div<WrapperProps>`
   border-radius: 4px;
   overflow: hidden;
   overflow-y: auto;
+  z-index: 2;
 `;
 
+//* 控制列
 export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
+  //* 返回按鈕
   & > button:nth-child(1) {
   }
+
+  //* 查看完整貼文
   & > button:nth-child(2) {
     & > p {
     }
   }
 `;
 
+//* 內容區
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  padding: 32px;
+  padding: 2rem;
+  gap: 2rem;
 `;
 
+//* 用戶資料
 export const Header = styled.div`
-  width: 100%;
   display: flex;
+  width: 100%;
   gap: 2rem;
 
-  //* 大頭照
+  //* 大頭照區
   & > div:nth-of-type(1) {
-    & > img {
+    //* 大頭照
+    & > div {
+      width: 60px;
+      height: 60px;
+      border: 1px solid #616161;
+      border-radius: 999px;
+      overflow: hidden;
+
+      & > img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+      }
     }
   }
 
@@ -69,7 +89,7 @@ export const Header = styled.div`
     //* 使用者所在地
     & > div:nth-of-type(2) {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       padding-top: 4px;
       & > p {
       }
@@ -78,7 +98,7 @@ export const Header = styled.div`
     //* 留言數
     & > div:nth-of-type(3) {
       display: flex;
-      gap: 1rem;
+      gap: 0.75rem;
       padding-top: 4px;
       & > p {
         color: #616161;
@@ -87,6 +107,7 @@ export const Header = styled.div`
   }
 `;
 
+//* 關閉按鈕
 export const CloseBtn = styled(Button)`
   border: 0;
   background-color: transparent;
@@ -94,16 +115,5 @@ export const CloseBtn = styled(Button)`
     background-color: #e0e0e0;
   }
 `;
-export const OpenBtn = styled(Button)`
-  display: flex;
-  gap: 0.75rem;
-  border: 0;
-  background-color: transparent;
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
-
-export const Info = styled.div``;
 
 export const Certifications = styled.div``;

@@ -11,26 +11,27 @@ import {
   Header,
   Certifications,
   CloseBtn,
-  OpenBtn,
   ControlBar,
 } from "./styles";
-import { Calendar, Needs, Plans, Tags, Tag } from "../../pages/FullPost/styles";
-import Schedule from "../Schedule";
+import {
+  Calendar,
+  Needs,
+  Plans,
+  Tags,
+  Tag,
+  Certification,
+} from "../../pages/FullPost/styles";
+
 import { PostInterface } from "../../pages/FullPost";
-import { Certification } from "../../pages/FullPost/styles";
+
 //* pictures
 import close from "/close-lg.svg";
 import newPage from "/box-arrow-up-right.svg";
-import avatar from "/avatar-80.svg";
 import location from "/map-pin.svg";
 import comments from "/message.svg";
-import liked from "/profile_box_icons/heart.svg";
+import ApplySchedule from "../ApplySchedule";
+import { Btn } from "../../styles/Btn";
 
-// interface Props {
-//   post: PostInterface;
-//   tags: string;
-//   tagAry: string[];
-// }
 function SlidingPost() {
   //* 設定 redux toolkit
   const navigate = useNavigate();
@@ -96,28 +97,36 @@ function SlidingPost() {
           >
             <img src={close} alt="close" />
           </CloseBtn>
-          <OpenBtn onClick={() => navigate("/home/post")}>
-            <p>觀看完整貼文</p>
+          <Btn
+            $style="primary"
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              textAlign: "center",
+
+              gap: "0.5rem",
+            }}
+            onClick={() => {
+              navigate(`/home/post/${postId}`);
+              dispatch(setSlidingPostState());
+            }}
+          >
+            查看完整貼文
             <img src={newPage} alt="Direct to full post" />
-          </OpenBtn>
+          </Btn>
         </ControlBar>
 
         <Container>
           <Header>
             <div>
-              <img src={avatar} alt="Avatar" />
+              <div>
+                <img src={post?.userAvatar} alt="Avatar" />
+              </div>
             </div>
 
             <div>
               <div>
                 <h2>{post?.userName}</h2>
-                <div>
-                  {post?.isFavorite ? (
-                    <img src={liked} alt="liked" />
-                  ) : (
-                    <img src={liked} alt="liked" />
-                  )}
-                </div>
               </div>
               <div>
                 <div>
@@ -138,44 +147,43 @@ function SlidingPost() {
           </Header>
           <Calendar>
             <div>
-              <h6>可交換時間</h6>
+              <h6>每週可交換時段</h6>
             </div>
             <div>
-              <Schedule />
+              <ApplySchedule timeData={post?.availableHours} />
             </div>
           </Calendar>
           <Needs>
             <div>
-              <h6>{"學習需求"}</h6>
+              <h6>{"想交換的語言"}</h6>
             </div>
             <div>
               <div>
-                <h6>我想學：</h6>
+                <h6>想學語言</h6>
                 <p>{post?.learn?.[0].Name}</p>
               </div>
               <div>
-                <h6>我希望可以：</h6>
+                <h6>學習動機</h6>
                 <p>{post?.learn?.[0].content}</p>
               </div>
             </div>
           </Needs>
           <Plans>
             <div>
-              <h6>你可以學到：</h6>
+              <h6>教學計畫</h6>
             </div>
             <div>
+              <h6>教學語言：</h6>
               <div>
-                <h6>教學語言：</h6>
-                <p>{post.skills?.[0].language}</p>
-              </div>
-
-              <div>
-                {post.skills?.[0].goal?.map((goal, index) => (
-                  <p key={index}>
-                    <span>{index + 1}. </span>
-                    {goal}
-                  </p>
-                ))}
+                <p>{post.skills?.[0].language || ""}</p>
+                <ol>
+                  {post.skills?.[0].goal?.map((goal, index) => (
+                    <li key={index}>
+                      <span>{index + 1}. </span>
+                      {goal}
+                    </li>
+                  ))}
+                </ol>
               </div>
             </div>
           </Plans>
