@@ -6,9 +6,9 @@ interface BtnProps {
 
 //hover樣式變化
 const hover = css`
+  transition: box-shadow 0.3s;
   &:hover {
     box-shadow: 4px 4px 0 #000;
-    transition: all 0.3s;
   }
   &:active {
     box-shadow: 0 0 0;

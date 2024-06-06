@@ -57,7 +57,7 @@ function ProfileBox() {
     {
       icon: apply,
       name: "申請與配對審核區",
-      url: "/user/waiting_list",
+      url: "/user/matching",
     },
     {
       icon: processing,
@@ -87,7 +87,7 @@ function ProfileBox() {
     {
       icon: waiting,
       name: "貼文回覆等待區",
-      url: "/user/matching",
+      url: "/user/waiting_list",
     },
     {
       icon: completed,
