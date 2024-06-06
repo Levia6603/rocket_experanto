@@ -88,7 +88,7 @@ function Matching() {
         })
           .then((res) => {
             setData(res.data);
-            setOpenStates(new Array(res.data.list.length).fill(false)); //* 初始化手風琴陣列的狀態
+            setOpenStates(new Array(res.data.list.length).fill(true)); //* 初始化手風琴陣列的狀態
             dispatch(setPages(res.data.totalPages)); //* 設定總頁數
             setLoading(false);
           })
