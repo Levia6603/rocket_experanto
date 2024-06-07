@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://74.225.130.87", // 後端伺服器網址
+        target: "http://4.213.154.173/", // 後端伺服器網址
         changeOrigin: true,
         rewrite: (path) => path,
         // rewrite: (path) => path.replace(/^\/api/, ""), // 將 /api 代碼去除，但這個專案不需要
