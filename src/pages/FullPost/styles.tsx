@@ -97,7 +97,7 @@ export const Info = styled.div`
 export const Calendar = styled.div`
   width: 100%;
   & > div:nth-child(1) {
-    border-bottom: 1px solid #616161;
+    border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
     & > h6 {
       font-weight: bold;
@@ -112,7 +112,7 @@ export const Needs = styled.div`
   width: 100%;
   //* 標題
   & > div:nth-child(1) {
-    border-bottom: 1px solid #616161;
+    border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
     & > h6 {
       font-weight: bold;
@@ -145,7 +145,7 @@ export const Plans = styled.div`
   width: 100%;
   //* 標題
   & > div:nth-child(1) {
-    border-bottom: 1px solid #616161;
+    border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
     & > h6 {
       font-weight: bold;
@@ -156,7 +156,6 @@ export const Plans = styled.div`
     display: flex;
     gap: 8px;
     padding-top: 12px;
-    font-weight: 700;
     p {
       margin-bottom: 8px;
     }
@@ -176,7 +175,7 @@ export const Certifications = styled.div`
   width: 100%;
   //* 標題
   & > div:nth-child(1) {
-    border-bottom: 1px solid #616161;
+    border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
     & > h6 {
       font-weight: bold;
