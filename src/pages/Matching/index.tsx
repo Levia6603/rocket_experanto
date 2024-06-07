@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
-import { RootStateType } from "../../../redux";
+// import { RootStateType } from "../../../redux";
 import axios from "axios";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import apiBase from "../../Api";
@@ -53,7 +53,7 @@ function Matching() {
   //* 導入 Redux 的 dispatch 用來記錄 offCanvas的狀態
   const dispatch = useDispatch();
   //* 從 redux state 取得總頁數
-  const page = useSelector((state: RootStateType) => state.pages.page);
+  // const page = useSelector((state: RootStateType) => state.pages.page);
 
   //* 設定排序狀態
   const [sort, setSort] = useState("由新到舊");
@@ -136,11 +136,6 @@ function Matching() {
       dispatch(setPostId(exchangeid));
     }
   };
-
-  useEffect(() => {
-    console.log(data);
-    console.log(page);
-  }, [data, page]);
 
   return (
     <>
