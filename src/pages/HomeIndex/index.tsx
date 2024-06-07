@@ -22,6 +22,8 @@ export interface PostListInterface {
 
 function HomeIndex() {
   const dispatch = useDispatch();
+  //* 設定讀取狀態
+  const [loading, setLoading] = useState<boolean>(true);
   //* 從 redux state 取得總頁數
   const page = useSelector((state: RootStateType) => state.pages.page);
   //* 從 redux state 取得被選擇的熱門語言陣列
@@ -50,8 +52,10 @@ function HomeIndex() {
         .catch((err) => console.log(err));
       setPostList(postList);
       dispatch(setPages(postList.totalPages));
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   }
   //* 根據選擇的熱門語言陣列組合query
@@ -72,8 +76,10 @@ function HomeIndex() {
         .catch((err) => console.log(err));
       setPostList(postList);
       dispatch(setPages(postList.totalPages));
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   }
 
@@ -86,17 +92,20 @@ function HomeIndex() {
         Accept: "application/json",
       };
       try {
-        const postList = await axios({
+        await axios({
           method: "GET",
           url: `${apiBase.GET_POST_LIST}`,
           headers: headers,
         })
-          .then((res) => res.data)
+          .then((res) => {
+            setPostList(res.data);
+            dispatch(setPages(res.data.totalPages));
+            setLoading(false);
+          })
           .catch((err) => console.log(err));
-        setPostList(postList);
-        dispatch(setPages(postList.totalPages));
       } catch (error) {
         console.error(error);
+        setLoading(false);
       }
     }
     getPostList();
@@ -105,6 +114,7 @@ function HomeIndex() {
   //* 當page的數字變動時重新渲染畫面
   useEffect(() => {
     getPostListByPage(page);
+    setLoading(false);
   }, [page]);
 
   //* 當選擇語言陣列變動時重新取得API渲染畫面，當陣列為空時執行getPostByPage
@@ -114,14 +124,44 @@ function HomeIndex() {
       : getPostListByPage(page);
   }, [languageIds, page, languageQuery]);
 
+  useEffect(() => {
+    console.log(loading);
+  }, [loading]);
+
   return (
     <>
       <PostCards>
-        {postList?.list?.map((post) => (
-          <PostCard key={post.PostId} {...post} />
-        ))}
+        {loading ? (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <h2 style={{ textAlign: "center", fontWeight: "900" }}>
+              讀取中...
+            </h2>
+          </div>
+        ) : postList?.list ? (
+          postList?.list?.map((post) => (
+            <PostCard key={post.PostId} {...post} />
+          ))
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <h2 style={{ textAlign: "center", fontWeight: "900" }}>
+              讀取中...
+            </h2>
+          </div>
+        )}
       </PostCards>
-      <PageBar />
+      {postList?.list && <PageBar />}
     </>
   );
 }
