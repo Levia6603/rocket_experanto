@@ -83,10 +83,6 @@ function SlidingMatching() {
     }
   }, [isVisible, postId]);
 
-  useEffect(() => {
-    console.log(post);
-  }, [post]);
-
   return (
     <>
       {post && (
