@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPages } from "../../../redux/pages/pagesSlice";
+import { setPostId } from "../../../redux/postId/postIdSlice";
 import { RootStateType } from "../../../redux";
 import axios from "axios";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
@@ -121,6 +122,21 @@ function Matching() {
     }
   );
 
+  //* 點擊卡片後叫出offCanvas，做一系列動作
+  const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
+    //* 找到包含 data-postid 属性的元素
+    let targetElement = el.target as HTMLElement;
+    while (targetElement && !targetElement.dataset.exchangeid) {
+      targetElement = targetElement.parentElement as HTMLElement;
+    }
+    //* 如果找到了 exchangeid 執行以下動作
+    if (targetElement) {
+      const exchangeid = targetElement.dataset.exchangeid;
+      dispatch(setSlidingPostState());
+      dispatch(setPostId(exchangeid));
+    }
+  };
+
   useEffect(() => {
     console.log(data);
     console.log(page);
@@ -194,7 +210,8 @@ function Matching() {
                           return (
                             <Candidate
                               key={index}
-                              onClick={() => dispatch(setSlidingPostState())}
+                              onClickCapture={handleClick}
+                              data-exchangeid={item.ExchangeId}
                             >
                               <div>
                                 <div>
