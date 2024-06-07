@@ -39,6 +39,7 @@ function SlidingPost() {
   const isVisible = useSelector(
     (state: RootStateType) => state.sliding.slidingPostState
   );
+  //* 接回指定 postId
   const postId = useSelector((state: RootStateType) => state.postId.postId);
 
   //* 寫入資料
