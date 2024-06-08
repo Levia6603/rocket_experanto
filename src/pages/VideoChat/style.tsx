@@ -60,7 +60,7 @@ export const EnterPage = styled.div`
 
 export const CallPage = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: center;
   position: relative;
   height: 100vh;
   padding: 30px 40px;
@@ -79,9 +79,12 @@ export const Label = styled.div`
 `;
 
 const LocalUser = css`
+  position: absolute;
+  right: 18px;
+  top: 12px;
   z-index: 1;
-  width: 300px;
-  height: 200px;
+  width: 208px;
+  height: 208px;
   border-radius: 10px;
   object-fit: cover;
   cursor: pointer;
@@ -103,6 +106,22 @@ export const Video = styled.video<VideoProps>`
 `;
 
 export const BtnGroup = styled.ul`
+  display: flex;
+  gap: 16px;
   position: absolute;
-  bottom: 10px;
+  bottom: 27px;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 40px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    &:hover {
+      background-color: #bbbaba;
+    }
+  }
 `;

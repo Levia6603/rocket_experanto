@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CallPage, EnterPage, Label, Video } from "./style";
+import { BtnGroup, CallPage, EnterPage, Label, Video } from "./style";
 import {
   addDoc,
   collection,
@@ -12,6 +12,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { firestore, pc } from "../../firebase/firebase";
+import mute from "/mic-mute.svg";
+import mic from "/mic.svg";
+import cameraOff from "/camera-video-off.svg";
+import camera from "/camera-video.svg";
 
 interface RefProps {
   srcObject: MediaStream;
@@ -22,6 +26,8 @@ function VideoChat() {
   const [current, setCurrent] = useState(true);
   const [roomId, setRoomId] = useState("");
   const [enterText, setEnterText] = useState("");
+  const [audioState, setAudioState] = useState(true);
+  const [videoState, setVideoState] = useState(true);
   const localRef = useRef<RefProps>();
   const remoteRef = useRef<RefProps>();
 
@@ -172,6 +178,14 @@ function VideoChat() {
               setCurrent(true);
             }}
           />
+          <BtnGroup>
+            <button>
+              <img src={mute} alt="" />
+            </button>
+            <button>
+              <img src={camera} alt="" />
+            </button>
+          </BtnGroup>
         </CallPage>
       ) : (
         <EnterPage>

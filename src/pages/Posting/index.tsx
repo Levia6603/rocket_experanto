@@ -113,6 +113,7 @@ function Posting() {
   const [selectTimeData, setSelectTime] = useState<SetTimeData>(deafaultTime);
 
   const [motivation, setMotivation] = useState("");
+
   const [inputGoal, setInputGoal] = useState("");
   const [goalList, setGoalList] = useState<string[]>([]);
 
