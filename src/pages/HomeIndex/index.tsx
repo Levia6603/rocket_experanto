@@ -124,10 +124,6 @@ function HomeIndex() {
       : getPostListByPage(page);
   }, [languageIds, page, languageQuery]);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
-
   return (
     <>
       <PostCards>

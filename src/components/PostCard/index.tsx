@@ -22,7 +22,7 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
   //* 設定dispatch
   const dispatch = useDispatch();
 
-  //* 點擊卡片的一系列動作
+  //* 點擊卡片後叫出offCanvas，做一系列動作
   const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
     //* 找到包含 data-postid 属性的元素
     let targetElement = el.target as HTMLElement;

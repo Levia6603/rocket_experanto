@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setPages } from "../../../redux/pages/pagesSlice";
-import { RootStateType } from "../../../redux";
+import { setPostId } from "../../../redux/postId/postIdSlice";
+// import { RootStateType } from "../../../redux";
 import axios from "axios";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import apiBase from "../../Api";
@@ -52,7 +53,7 @@ function Matching() {
   //* 導入 Redux 的 dispatch 用來記錄 offCanvas的狀態
   const dispatch = useDispatch();
   //* 從 redux state 取得總頁數
-  const page = useSelector((state: RootStateType) => state.pages.page);
+  // const page = useSelector((state: RootStateType) => state.pages.page);
 
   //* 設定排序狀態
   const [sort, setSort] = useState("由新到舊");
@@ -121,10 +122,20 @@ function Matching() {
     }
   );
 
-  useEffect(() => {
-    console.log(data);
-    console.log(page);
-  }, [data, page]);
+  //* 點擊卡片後叫出offCanvas，做一系列動作
+  const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
+    //* 找到包含 data-postid 属性的元素
+    let targetElement = el.target as HTMLElement;
+    while (targetElement && !targetElement.dataset.exchangeid) {
+      targetElement = targetElement.parentElement as HTMLElement;
+    }
+    //* 如果找到了 exchangeid 執行以下動作
+    if (targetElement) {
+      const exchangeid = targetElement.dataset.exchangeid;
+      dispatch(setSlidingPostState());
+      dispatch(setPostId(exchangeid));
+    }
+  };
 
   return (
     <>
@@ -194,7 +205,8 @@ function Matching() {
                           return (
                             <Candidate
                               key={index}
-                              onClick={() => dispatch(setSlidingPostState())}
+                              onClickCapture={handleClick}
+                              data-exchangeid={item.ExchangeId}
                             >
                               <div>
                                 <div>
