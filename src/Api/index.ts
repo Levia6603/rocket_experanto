@@ -14,6 +14,7 @@ const apiBase = {
   POST_POST: `/api/post`,
   GET_CHECK_POST: `/api/checkPost`,
   GET_POST_LIST: `/api/postList`,
+  GET_POST_LIST_LOGIN: `/api/UserPostList`,
   GET_HOT_LANGUAGE: `/api/languages/popular`,
   GET_WAITING_FOR_APPROVAL_LIST: `/api/posts/pending`,
   GET_CHECK_PERMISSION: `/api/Apply`,
