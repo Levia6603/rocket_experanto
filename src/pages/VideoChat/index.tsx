@@ -153,11 +153,19 @@ function VideoChat() {
   }
 
   function micStateToggle() {
-    setAudioState(false);
+    const audioTracks = localRef.current?.srcObject.getAudioTracks();
+    if (audioTracks && audioTracks.length > 1) {
+      audioTracks[0].enabled = !audioTracks[0].enabled;
+    }
+    setAudioState((prev) => !prev);
   }
 
   function videoStateToggle() {
-    setVideoState(false);
+    const videoTracks = localRef.current?.srcObject.getVideoTracks();
+    if (videoTracks && videoTracks.length > 1) {
+      videoTracks[0].enabled = !videoTracks[0].enabled;
+    }
+    setVideoState((prev) => !prev);
   }
 
   return (
