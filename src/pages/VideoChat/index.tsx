@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { CallPage, EnterPage, Label, Video } from "./style";
+import { BtnGroup, CallPage, EnterPage, Label, Video } from "./style";
 import {
   addDoc,
   collection,
@@ -12,6 +12,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { firestore, pc } from "../../firebase/firebase";
+import mute from "/mic-mute.svg";
+import mic from "/mic.svg";
+import cameraOff from "/camera-video-off.svg";
+import camera from "/camera-video.svg";
 
 interface RefProps {
   srcObject: MediaStream;
@@ -22,6 +26,8 @@ function VideoChat() {
   const [current, setCurrent] = useState(true);
   const [roomId, setRoomId] = useState("");
   const [enterText, setEnterText] = useState("");
+  const [audioState, setAudioState] = useState(true);
+  const [videoState, setVideoState] = useState(true);
   const localRef = useRef<RefProps>();
   const remoteRef = useRef<RefProps>();
 
@@ -146,6 +152,22 @@ function VideoChat() {
     });
   }
 
+  function micStateToggle() {
+    const audioTracks = localRef.current?.srcObject.getAudioTracks();
+    if (audioTracks && audioTracks.length > 1) {
+      audioTracks[0].enabled = !audioTracks[0].enabled;
+    }
+    setAudioState((prev) => !prev);
+  }
+
+  function videoStateToggle() {
+    const videoTracks = localRef.current?.srcObject.getVideoTracks();
+    if (videoTracks && videoTracks.length > 1) {
+      videoTracks[0].enabled = !videoTracks[0].enabled;
+    }
+    setVideoState((prev) => !prev);
+  }
+
   return (
     <>
       {callStart ? (
@@ -172,6 +194,14 @@ function VideoChat() {
               setCurrent(true);
             }}
           />
+          <BtnGroup>
+            <button onClick={micStateToggle}>
+              <img src={audioState ? mic : mute} alt="" />
+            </button>
+            <button onClick={videoStateToggle}>
+              <img src={videoState ? camera : cameraOff} alt="" />
+            </button>
+          </BtnGroup>
         </CallPage>
       ) : (
         <EnterPage>
