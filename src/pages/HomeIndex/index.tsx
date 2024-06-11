@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 import { setPages } from "../../../redux/pages/pagesSlice";
+import { SimplifiedPostInterface } from "../../components/PostCard";
+import { RootStateType } from "../../../redux";
+import apiBase from "../../Api";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
-
-import apiBase from "../../Api";
-import axios from "axios";
-import { SimplifiedPostInterface } from "../../components/PostCard";
-import { RootStateType } from "../../../redux";
 
 export interface PostListInterface {
   Code?: number;
@@ -36,16 +35,23 @@ function HomeIndex() {
     {} as PostListInterface
   );
 
+  //* 取得 token
+  const token = localStorage.getItem("token");
+
   //* 根據頁碼傳回指定頁數的內容
   async function getPostListByPage(index: number) {
-    const headers = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
+    //* 如果有token就把token放入header
+    token ? (headers["Authorization"] = `Bearer ${token}`) : null;
     try {
       const postList = await axios({
         method: "GET",
-        url: `${apiBase.GET_POST_LIST}?page=${index}`,
+        url: token
+          ? `${apiBase.GET_POST_LIST_LOGIN}?page=${index}`
+          : `${apiBase.GET_POST_LIST}?page=${index}`,
         headers: headers,
       })
         .then((res) => res.data)
@@ -62,14 +68,18 @@ function HomeIndex() {
   const languageQuery = languageIds.map((id) => `languageId=${id}`).join("&");
   //* 根據選擇的語言傳回指定語言的內容
   async function getPostListByLanguage(index: number, languageQuery: string) {
-    const headers = {
+    const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
+    //* 如果有token就把token放入header
+    token ? (headers["Authorization"] = `Bearer ${token}`) : null;
     try {
       const postList = await axios({
         method: "GET",
-        url: `${apiBase.GET_POST_LIST}?page=${index}&${languageQuery}`,
+        url: token
+          ? `${apiBase.GET_POST_LIST_LOGIN}?page=${index}&${languageQuery}`
+          : `${apiBase.GET_POST_LIST}?page=${index}&${languageQuery}`,
         headers: headers,
       })
         .then((res) => res.data)
@@ -87,14 +97,19 @@ function HomeIndex() {
   useEffect(() => {
     //*取得 Post List的函式，利用把函式建立在useEffect內可以減少不必要的依賴管理
     async function getPostList() {
-      const headers = {
+      const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
+      //* 如果有token就把token放入header
+      token ? (headers["Authorization"] = `Bearer ${token}`) : null;
+
       try {
         await axios({
           method: "GET",
-          url: `${apiBase.GET_POST_LIST}`,
+          url: token
+            ? `${apiBase.GET_POST_LIST_LOGIN}`
+            : `${apiBase.GET_POST_LIST}`,
           headers: headers,
         })
           .then((res) => {
@@ -123,6 +138,10 @@ function HomeIndex() {
       ? getPostListByLanguage(page, languageQuery)
       : getPostListByPage(page);
   }, [languageIds, page, languageQuery]);
+
+  useEffect(() => {
+    console.log(postList);
+  }, [postList]);
 
   return (
     <>
