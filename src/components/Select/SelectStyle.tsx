@@ -24,7 +24,7 @@ export const Label = styled.label<SelectProps>`
     top: 40px;
     display: none;
     flex-direction: column;
-    overflow-x: scroll;
+    overflow-y: scroll;
     z-index: 1;
     width: 100%;
     max-height: 200px;
