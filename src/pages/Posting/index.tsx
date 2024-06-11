@@ -70,10 +70,10 @@ function Posting() {
   const [selectFluent, setFluent] = useState({ Id: 0, Name: "" });
 
   //*設定想學的語言
-
   const [wanted, setWanted] = useState<apiList>([]);
   const [selectedWanted, setSelectedWanted] = useState({ Id: 0, Name: "" });
 
+  //時間列表
   const timeList = [
     { Id: 0, Name: "0:00" },
     { Id: 1, Name: "1:00" },
@@ -101,6 +101,7 @@ function Posting() {
     { Id: 23, Name: "23:00" },
     { Id: 24, Name: "24:00" },
   ];
+  //預設值（拿來render畫面用)
   const deafaultTime: SetTimeData = {
     Sun: [{ start: 9, end: 12 }],
     Mon: [{ start: 9, end: 12 }],
@@ -110,6 +111,7 @@ function Posting() {
     Fri: [{ start: 9, end: 12 }],
     Sat: [{ start: 9, end: 12 }],
   };
+  //設定被選擇起來的時間
   const [selectTimeData, setSelectTime] = useState<SetTimeData>(deafaultTime);
 
   const [motivation, setMotivation] = useState("");
@@ -134,7 +136,15 @@ function Posting() {
     };
     const skills: SkillType = await axios
       .get(apiBase.GET_PROFILE, { headers })
-      .then((res) => res.data.skills);
+      .then((res) => {
+        console.log(res);
+        if (res.data.Message === "請重新登入") {
+          alert("登入逾時，請重新登入");
+          navigate("/login");
+          return [];
+        }
+        return res.data.skills;
+      });
     const skillList = skills.map((obj) => {
       const { language, languageId } = obj;
       return { Id: languageId, Name: language };
@@ -225,7 +235,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Mon![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
@@ -322,7 +334,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Tue![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
@@ -419,7 +433,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Wed![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
@@ -516,7 +532,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Thu![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
@@ -613,7 +631,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Fri![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
@@ -710,7 +730,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Sat![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
@@ -807,7 +829,9 @@ function Posting() {
                             />
                             <Select
                               width="180px"
-                              list={timeList}
+                              list={timeList.filter(
+                                (el) => el.Id > selectTimeData.Sun![i].start
+                              )}
                               currentValue={timeList[obj.end].Name}
                               setValue={(el: { Id: number; Name: string }) => {
                                 const newData = { ...selectTimeData };
