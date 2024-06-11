@@ -1,9 +1,11 @@
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import axios from "axios";
 import apiBase from "../../Api";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
+import { setFavoriteList } from "../../../redux/favoriteList/favoriteListSlice";
+import { RootStateType } from "../../../redux";
 import { Wrapper, Header, Content, HashTagSection, HashTag } from "./styles";
 import liked from "/profile_box_icons/heart.svg";
 import solidLiked from "/solid-heart.svg";
@@ -21,15 +23,13 @@ export interface SimplifiedPostInterface {
   userName?: string;
 }
 
-type favorite = {
-  postId: number;
-};
-
 function PostCard({ ...props }: SimplifiedPostInterface) {
   //* 設定dispatch
   const dispatch = useDispatch();
-
-  const [favoriteList, setFavoriteList] = useState<favorite[]>([]);
+  //* 從 redux state 取得收藏清單
+  const favoriteList = useSelector(
+    (state: RootStateType) => state.favoriteList.favoriteList
+  );
 
   //* 點擊卡片後叫出offCanvas，做一系列動作
   const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
@@ -48,8 +48,11 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
 
   //* 點擊收藏、取消收藏
   const handleFavorite = (el: React.MouseEvent<HTMLDivElement>) => {
+    //* 阻止事件冒泡
+    el.stopPropagation();
+
     //* 點擊收藏、取消收藏的 API
-    async function isFavorite(postId: number) {
+    async function isFavorite(postId: number, isFavorited: boolean) {
       const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -58,18 +61,28 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
 
       try {
         await axios({
-          //* 用使 some 來檢查是否有收藏，some 會在物件的postId中檢查是否有收藏，有找到的話就回傳true，沒有就回傳false
-          method: favoriteList.some((favorite) => favorite.postId === postId)
-            ? "DELETE"
-            : "POST",
-          //* 如果沒有收藏就POST，有收藏就DELETE，因為filter會產生出一個新的物件陣列，但即使用空陣列，它還是一個物件，所以根據判斷，這個陣列會永遠為true，因此改檢查它的長度
-          url:
-            favoriteList.filter((favorite) => favorite.postId === postId)
-              .length > 0
-              ? `${apiBase.DELETE_FAVORITE_LIST}/${postId}`
-              : `${apiBase.POST_FAVORITE_LIST}/${postId}`,
+          //* 判斷是POST還是DELETE
+          method: isFavorited ? "DELETE" : "POST",
+          url: isFavorited
+            ? `${apiBase.DELETE_FAVORITE_LIST}/${postId}`
+            : `${apiBase.POST_FAVORITE_LIST}/${postId}`,
           headers: headers,
-        });
+        })
+          .then(() => {
+            // 更新 favoriteList 狀態
+            if (isFavorited) {
+              // 如果已經收藏，則移除
+              dispatch(
+                setFavoriteList(
+                  favoriteList.filter((favorite) => favorite.postId !== postId)
+                )
+              );
+            } else {
+              // 如果未收藏，則新增
+              dispatch(setFavoriteList([...favoriteList, { postId }]));
+            }
+          })
+          .catch((err) => console.log(err));
       } catch (error) {
         console.error(error);
       }
@@ -84,38 +97,44 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
     if (targetElement) {
       //* 因為從props傳過來的PostId是字串，要先轉成數字
       const postId = Number(targetElement.dataset.postid);
-      postId && isFavorite(postId);
+
+      //* 判斷是postId是否存在，如果存在則執行 some 來確認是否已經收藏
+      if (postId) {
+        const isFavorited = favoriteList.some(
+          (favorite) => favorite.postId === postId
+        );
+        isFavorite(postId, isFavorited);
+      }
     }
   };
 
-  //* 取得收藏清單
-  async function getFavoriteList() {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
-    try {
-      await axios({
-        method: "GET",
-        url: apiBase.GET_FAVORITE_LIST,
-        headers: headers,
-      })
-        .then((res) => {
-          setFavoriteList(res.data.list);
-        })
-        .catch((err) => console.log(err));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {
+    //* 取得收藏清單
+    async function getFavoriteList() {
+      const headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
+      try {
+        await axios({
+          method: "GET",
+          url: apiBase.GET_FAVORITE_LIST,
+          headers: headers,
+        })
+          .then((res) => {
+            dispatch(setFavoriteList(res.data.list));
+          })
+          .catch((err) => console.log(err));
+      } catch (error) {
+        console.error(error);
+      }
+    }
     getFavoriteList();
   }, []);
 
   return (
-    <Wrapper data-postid={props?.PostId || ""} onClickCapture={handleClick}>
+    <Wrapper data-postid={props?.PostId || ""} onClick={handleClick}>
       <div>
         <Header>
           <div>
@@ -124,7 +143,7 @@ function PostCard({ ...props }: SimplifiedPostInterface) {
             </div>
             <h6>{props.userName}</h6>
           </div>
-          <div onClickCapture={handleFavorite}>
+          <div onClick={handleFavorite}>
             {props.isFavorite ? (
               <img src={solidLiked} alt="solidLiked" />
             ) : (

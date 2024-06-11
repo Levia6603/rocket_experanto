@@ -35,6 +35,11 @@ function HomeIndex() {
     {} as PostListInterface
   );
 
+  //* 從 redux state 取得收藏清單
+  const favoriteList = useSelector(
+    (state: RootStateType) => state.favoriteList
+  );
+
   //* 取得 token
   const token = localStorage.getItem("token");
 
@@ -124,7 +129,7 @@ function HomeIndex() {
       }
     }
     getPostList();
-  }, [dispatch]);
+  }, [dispatch, favoriteList, token]);
 
   //* 當page的數字變動時重新渲染畫面
   useEffect(() => {
@@ -138,10 +143,6 @@ function HomeIndex() {
       ? getPostListByLanguage(page, languageQuery)
       : getPostListByPage(page);
   }, [languageIds, page, languageQuery]);
-
-  useEffect(() => {
-    console.log(postList);
-  }, [postList]);
 
   return (
     <>
