@@ -152,6 +152,14 @@ function VideoChat() {
     });
   }
 
+  function micStateToggle() {
+    setAudioState(false);
+  }
+
+  function videoStateToggle() {
+    setVideoState(false);
+  }
+
   return (
     <>
       {callStart ? (
@@ -179,11 +187,11 @@ function VideoChat() {
             }}
           />
           <BtnGroup>
-            <button>
-              <img src={mute} alt="" />
+            <button onClick={micStateToggle}>
+              <img src={audioState ? mic : mute} alt="" />
             </button>
-            <button>
-              <img src={camera} alt="" />
+            <button onClick={videoStateToggle}>
+              <img src={videoState ? camera : cameraOff} alt="" />
             </button>
           </BtnGroup>
         </CallPage>
