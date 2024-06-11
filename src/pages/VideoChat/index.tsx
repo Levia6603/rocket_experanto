@@ -154,7 +154,7 @@ function VideoChat() {
 
   function micStateToggle() {
     const audioTracks = localRef.current?.srcObject.getAudioTracks();
-    if (audioTracks && audioTracks.length > 1) {
+    if (audioTracks && audioTracks.length > 0) {
       audioTracks[0].enabled = !audioTracks[0].enabled;
     }
     setAudioState((prev) => !prev);
@@ -162,7 +162,7 @@ function VideoChat() {
 
   function videoStateToggle() {
     const videoTracks = localRef.current?.srcObject.getVideoTracks();
-    if (videoTracks && videoTracks.length > 1) {
+    if (videoTracks && videoTracks.length > 0) {
       videoTracks[0].enabled = !videoTracks[0].enabled;
     }
     setVideoState((prev) => !prev);
