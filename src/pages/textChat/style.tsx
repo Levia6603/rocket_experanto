@@ -59,6 +59,7 @@ export const Chat = styled.div`
     flex-direction: column;
     flex-grow: 1;
     gap: 16px;
+    overflow-y: scroll;
     border: 0;
     padding: 16px 12px;
     justify-content: flex-end;
@@ -68,6 +69,7 @@ export const Chat = styled.div`
 export const User = styled.div`
   display: flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 16px;
   width: 100%;
   height: 68px;
