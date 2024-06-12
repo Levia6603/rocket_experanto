@@ -110,3 +110,28 @@ export const Message = styled.li<MessageProps>`
   }
   ${({ $idenity }) => ($idenity ? currentUser : remoteUser)}
 `;
+
+export const InputGroup = styled.form`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 16px;
+  input {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #5e5e5e;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+  }
+  button {
+    height: 24px;
+    border: 0;
+    background-color: transparent;
+  }
+  img {
+    width: 24px;
+    height: 24px;
+  }
+`;

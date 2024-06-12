@@ -87,7 +87,7 @@ const ProfileIndex = () => {
             </li>
             <li>
               <p>{profile?.location}</p>
-              <h3>所在堿市</h3>
+              <h3>所在城市</h3>
             </li>
             <li>
               <p>4.5 (1)</p>

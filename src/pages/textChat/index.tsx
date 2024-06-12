@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
-import { Chat, Container, Label, List, Message, User, Wrapper } from "./style";
+import {
+  Chat,
+  Container,
+  InputGroup,
+  Label,
+  List,
+  Message,
+  User,
+  Wrapper,
+} from "./style";
 import axios from "axios";
 import apiBase from "../../Api";
+import send from "/sendIcon.svg";
 
 type ChatList = {
   RoomId: number;
@@ -16,6 +26,7 @@ type ChatList = {
 
 function TextChat() {
   const [chatList, setChatList] = useState<ChatList>([]);
+  const [message, setMessage] = useState("");
 
   //得到聊天室列表
   async function getChatList() {
@@ -40,13 +51,12 @@ function TextChat() {
       <Container>
         <ul>
           <Label>Conversations</Label>
-          <List></List>
-          {/* {chatList.map((el, i) => (
+          {chatList.map((el, i) => (
             <List key={i}>
               <img src={el.receiverAvatar} alt="" />
               {el.receiverName}
             </List>
-          ))} */}
+          ))}
         </ul>
         <Chat>
           <User>
@@ -73,6 +83,24 @@ function TextChat() {
               </Message>
             </ul>
           </ul>
+          <InputGroup
+            onSubmit={(e) => {
+              e.preventDefault();
+              console.log(message);
+              setMessage("");
+            }}
+          >
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+              }}
+            />
+            <button>
+              <img src={send} alt="" />
+            </button>
+          </InputGroup>
         </Chat>
       </Container>
     </Wrapper>
