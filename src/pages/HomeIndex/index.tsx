@@ -19,38 +19,35 @@ export interface PostListInterface {
 }
 [];
 
+type Favorite = {
+  postId: number;
+};
+
 function HomeIndex() {
   const dispatch = useDispatch();
-  //* 設定讀取狀態
-  const [loading, setLoading] = useState<boolean>(true);
-  //* 從 redux state 取得總頁數
-  const page = useSelector((state: RootStateType) => state.pages.page);
-  //* 從 redux state 取得被選擇的熱門語言陣列
-  const languageIds = useSelector(
-    (state: RootStateType) => state.pages.languageIds
-  );
 
-  //* 把資料存入 Post List
+  const [loading, setLoading] = useState<boolean>(true);
+  const [prevFavoriteList, setPrevFavoriteList] = useState<Favorite[]>([]);
   const [postList, setPostList] = useState<PostListInterface | null>(
     {} as PostListInterface
   );
+  const token = localStorage.getItem("token");
 
-  //* 從 redux state 取得收藏清單
+  const page = useSelector((state: RootStateType) => state.pages.page);
+  const languageIds = useSelector(
+    (state: RootStateType) => state.pages.languageIds
+  );
   const favoriteList = useSelector(
     (state: RootStateType) => state.favoriteList
   );
 
-  //* 取得 token
-  const token = localStorage.getItem("token");
-
-  //* 根據頁碼傳回指定頁數的內容
   async function getPostListByPage(index: number) {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
-    //* 如果有token就把token放入header
     token ? (headers["Authorization"] = `Bearer ${token}`) : null;
+
     try {
       const postList = await axios({
         method: "GET",
@@ -69,15 +66,14 @@ function HomeIndex() {
       setLoading(false);
     }
   }
-  //* 根據選擇的熱門語言陣列組合query
+
   const languageQuery = languageIds.map((id) => `languageId=${id}`).join("&");
-  //* 根據選擇的語言傳回指定語言的內容
   async function getPostListByLanguage(index: number, languageQuery: string) {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
-    //* 如果有token就把token放入header
+
     token ? (headers["Authorization"] = `Bearer ${token}`) : null;
     try {
       const postList = await axios({
@@ -98,15 +94,13 @@ function HomeIndex() {
     }
   }
 
-  //* 接回 Post List
   useEffect(() => {
-    //*取得 Post List的函式，利用把函式建立在useEffect內可以減少不必要的依賴管理
     async function getPostList() {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
       };
-      //* 如果有token就把token放入header
+
       token ? (headers["Authorization"] = `Bearer ${token}`) : null;
 
       try {
@@ -129,20 +123,24 @@ function HomeIndex() {
       }
     }
     getPostList();
-  }, [dispatch, favoriteList, token]);
+  }, [dispatch]);
 
-  //* 當page的數字變動時重新渲染畫面
   useEffect(() => {
     getPostListByPage(page);
     setLoading(false);
   }, [page]);
 
-  //* 當選擇語言陣列變動時重新取得API渲染畫面，當陣列為空時執行getPostByPage
   useEffect(() => {
     languageIds.length > 0
       ? getPostListByLanguage(page, languageQuery)
       : getPostListByPage(page);
   }, [languageIds, page, languageQuery]);
+
+  useEffect(() => {
+    favoriteList["favoriteList"].length !== prevFavoriteList.length &&
+      getPostListByPage(page);
+    setPrevFavoriteList(favoriteList["favoriteList"]);
+  }, [favoriteList["favoriteList"]]);
 
   return (
     <>
