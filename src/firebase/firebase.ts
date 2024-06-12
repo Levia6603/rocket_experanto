@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getDatabase, ref } from "firebase/database";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -9,10 +10,14 @@ const firebaseConfig = {
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGINGSENDERID,
   appId: import.meta.env.VITE_FIREBASE_APPID,
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENTID,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASEURL,
 };
 
 const app = initializeApp(firebaseConfig);
 export const firestore = getFirestore(app);
+const db = getDatabase(app);
+
+export const dbRef = ref(db);
 
 const config = {
   iceServers: [

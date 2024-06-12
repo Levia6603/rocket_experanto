@@ -20,6 +20,7 @@ const apiBase = {
   GET_CHECK_PERMISSION: `/api/Apply`,
   POST_SEND_APPLY: `/api/applications`,
   GET_MATCHING_LIST: `/api/applylist`,
+  GET_CHATLIST: `/api/chatroom`,
   //* 收藏清單
   GET_FAVORITE_LIST: `/api/favorites`,
   POST_FAVORITE_LIST: `/api/favorites`,
