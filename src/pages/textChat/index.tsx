@@ -25,16 +25,21 @@ type ChatList = {
 }[];
 
 function TextChat() {
+  const [roomId, setRoomId] = useState("");
   const [chatList, setChatList] = useState<ChatList>([]);
   const [message, setMessage] = useState("");
+  const roomref = roomId;
 
+  useEffect(() => {
+    console.log(roomref);
+  }, [roomId]);
   //得到聊天室列表
   async function getChatList() {
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     };
     try {
-      const list = await axios
+      const list: ChatList = await axios
         .get(apiBase.GET_CHATLIST, { headers })
         .then((res) => res.data.chatlist);
 
@@ -52,7 +57,12 @@ function TextChat() {
         <ul>
           <Label>Conversations</Label>
           {chatList.map((el, i) => (
-            <List key={i}>
+            <List
+              key={i}
+              onClick={() => {
+                setRoomId(el.RoomNumber);
+              }}
+            >
               <img src={el.receiverAvatar} alt="" />
               {el.receiverName}
             </List>
