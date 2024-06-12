@@ -4,6 +4,7 @@ import checkProfileSlice from "./checkProfile/checkProfileSlice";
 import postIdSlice from "./postId/postIdSlice";
 import pagesSlice from "./pages/pagesSlice";
 import profileStateSlice from "./profileState/profileState";
+import favoriteListSlice from "./favoriteList/favoriteListSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     postId: postIdSlice,
     pages: pagesSlice,
     profileState: profileStateSlice,
+    favoriteList: favoriteListSlice,
   },
 });
 

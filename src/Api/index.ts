@@ -20,7 +20,15 @@ const apiBase = {
   GET_CHECK_PERMISSION: `/api/Apply`,
   POST_SEND_APPLY: `/api/applications`,
   GET_MATCHING_LIST: `/api/applylist`,
+<<<<<<< HEAD
   GET_CHATLIST: `/api/chatroom`,
+=======
+  //* 收藏清單
+  GET_FAVORITE_LIST: `/api/favorites`,
+  POST_FAVORITE_LIST: `/api/favorites`,
+  DELETE_FAVORITE_LIST: `/api/favorites`,
+  POST_AGREE_APPLY: `/api/applications/isAgree`, //* 同意申請
+>>>>>>> dev
 };
 
 export default apiBase;

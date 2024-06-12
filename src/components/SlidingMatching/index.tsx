@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
 import { useSelector, useDispatch } from "react-redux";
@@ -43,6 +44,8 @@ type MatchingPost = {
 };
 
 function SlidingMatching() {
+  //* 路由
+  const navigate = useNavigate();
   //* 設定Redux toolkit，控制是否顯示 offcanvas
   const dispatch = useDispatch();
   const isVisible = useSelector(
@@ -75,6 +78,44 @@ function SlidingMatching() {
       setLoading(false);
     }
   }
+
+  //* 同意申請 POST
+  async function agreeExchange(id: number) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      setLoading(true); //* 設定 loading 狀態，當取得資料完成後會設定為 false
+      await axios({
+        method: "POST",
+        url: `${apiBase.POST_AGREE_APPLY}`,
+        headers: headers,
+        data: {
+          ApplicationId: id,
+          isApproved: true,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //* 同意交換
+  const handleAgreeExchange = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    agreeExchange(post.ApplicationId);
+    dispatch(setSlidingPostState());
+    navigate(`/user/exchanging/${post.ApplicationId}`);
+  };
 
   //* 監聽是否可見，當可見時取得資料
   useEffect(() => {
@@ -175,7 +216,9 @@ function SlidingMatching() {
             </Certifications>
             <div>
               <Btn $style="outline">拒絕申請</Btn>
-              <Btn $style="primary">同意申請</Btn>
+              <Btn $style="primary" onClick={handleAgreeExchange}>
+                同意申請
+              </Btn>
             </div>
           </Container>
         </Wrapper>
