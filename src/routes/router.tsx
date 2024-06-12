@@ -18,6 +18,7 @@ import Matching from "../pages/Matching";
 import SignUpEdit from "../pages/SignUpEdit";
 import FullReview from "../pages/FullReview";
 import VideoChat from "../pages/VideoChat";
+import TextChat from "../pages/textChat";
 
 export const router = createBrowserRouter([
   {
@@ -87,5 +88,6 @@ export const router = createBrowserRouter([
   },
   { path: "posting", element: <Posting /> },
   { path: "videocall", element: <VideoChat /> },
+  { path: "message", element: <TextChat /> },
   { path: "*", element: <div>Not Found</div> },
 ]);
