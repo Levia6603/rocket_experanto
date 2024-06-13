@@ -4,6 +4,12 @@ interface VideoProps {
   readonly $current: boolean;
 }
 
+export const Container = styled.section`
+  display: flex;
+  height: 100vh;
+  background-color: #000;
+`;
+
 export const EnterPage = styled.div`
   display: flex;
   justify-content: center;
@@ -61,6 +67,7 @@ export const EnterPage = styled.div`
 export const CallPage = styled.div`
   display: flex;
   justify-content: center;
+  flex-grow: 1;
   position: relative;
   height: 100vh;
   padding: 30px 40px;
@@ -123,5 +130,29 @@ export const BtnGroup = styled.ul`
     &:hover {
       background-color: #bbbaba;
     }
+  }
+`;
+
+export const Chat = styled.div`
+  width: 416px;
+  height: 100vh;
+  padding: 8px;
+  div {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+`;
+
+export const User = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 68px;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
   }
 `;

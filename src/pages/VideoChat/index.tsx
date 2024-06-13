@@ -1,5 +1,13 @@
 import { useRef, useState } from "react";
-import { BtnGroup, CallPage, EnterPage, Label, Video } from "./style";
+import {
+  BtnGroup,
+  CallPage,
+  Chat,
+  Container,
+  EnterPage,
+  Label,
+  Video,
+} from "./style";
 import {
   addDoc,
   collection,
@@ -16,6 +24,7 @@ import mute from "/mic-mute.svg";
 import mic from "/mic.svg";
 import cameraOff from "/camera-video-off.svg";
 import camera from "/camera-video.svg";
+import chatIcon from "/chat-text.svg";
 
 interface RefProps {
   srcObject: MediaStream;
@@ -30,6 +39,11 @@ function VideoChat() {
   const [videoState, setVideoState] = useState(true);
   const localRef = useRef<RefProps>();
   const remoteRef = useRef<RefProps>();
+
+  // async function getChatRoom() {
+  //   const url = new URLSearchParams(window.location.search);
+  //   const chatId = url.get("roomid");
+  // }
 
   async function collectIceCandidate(
     roomRef: DocumentReference<DocumentData, DocumentData>,
@@ -171,38 +185,46 @@ function VideoChat() {
   return (
     <>
       {callStart ? (
-        <CallPage>
-          <Label onClick={copyText}>
-            <p>{roomId}</p>
-          </Label>
-          <Video
-            ref={localRef as React.LegacyRef<HTMLVideoElement>}
-            $current={current}
-            autoPlay
-            playsInline
-            muted
-            onClick={() => {
-              setCurrent(false);
-            }}
-          />
-          <Video
-            ref={remoteRef as React.LegacyRef<HTMLVideoElement>}
-            $current={!current}
-            autoPlay
-            playsInline
-            onClick={() => {
-              setCurrent(true);
-            }}
-          />
-          <BtnGroup>
-            <button onClick={micStateToggle}>
-              <img src={audioState ? mic : mute} alt="" />
-            </button>
-            <button onClick={videoStateToggle}>
-              <img src={videoState ? camera : cameraOff} alt="" />
-            </button>
-          </BtnGroup>
-        </CallPage>
+        <Container>
+          <CallPage>
+            <Label onClick={copyText}>
+              <p>{roomId}</p>
+            </Label>
+            <Video
+              ref={localRef as React.LegacyRef<HTMLVideoElement>}
+              $current={current}
+              autoPlay
+              playsInline
+              muted
+              onClick={() => {
+                setCurrent(false);
+              }}
+            />
+            <Video
+              ref={remoteRef as React.LegacyRef<HTMLVideoElement>}
+              $current={!current}
+              autoPlay
+              playsInline
+              onClick={() => {
+                setCurrent(true);
+              }}
+            />
+            <BtnGroup>
+              <button onClick={micStateToggle}>
+                <img src={audioState ? mic : mute} alt="mic" />
+              </button>
+              <button onClick={videoStateToggle}>
+                <img src={videoState ? camera : cameraOff} alt="camera" />
+              </button>
+              <button>
+                <img src={chatIcon} alt="chatroomIcon" />
+              </button>
+            </BtnGroup>
+          </CallPage>
+          <Chat>
+            <div></div>
+          </Chat>
+        </Container>
       ) : (
         <EnterPage>
           <div>
