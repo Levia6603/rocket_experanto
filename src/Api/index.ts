@@ -30,6 +30,7 @@ const apiBase = {
 
   GET_CHANGE_LIST: `/api/changelist`,
   GET_CHANGE_DATA: `/api/change`,
+  GET_EXCHANGING_LIST: `/api/changelist`,
 };
 
 export default apiBase;
