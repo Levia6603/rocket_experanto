@@ -137,7 +137,7 @@ function HomeIndex() {
   }, [languageIds, page, languageQuery]);
 
   useEffect(() => {
-    favoriteList["favoriteList"].length !== prevFavoriteList.length &&
+    favoriteList["favoriteList"]?.length !== prevFavoriteList.length &&
       getPostListByPage(page);
     setPrevFavoriteList(favoriteList["favoriteList"]);
   }, [favoriteList["favoriteList"]]);

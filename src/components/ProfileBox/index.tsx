@@ -62,7 +62,7 @@ function ProfileBox() {
     {
       icon: processing,
       name: "已配對貼文交換區",
-      url: "/user/exchanging/:id",
+      url: "/user/exchanging_list",
     },
     {
       icon: personal,

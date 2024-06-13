@@ -19,6 +19,7 @@ import SignUpEdit from "../pages/SignUpEdit";
 import FullReview from "../pages/FullReview";
 import VideoChat from "../pages/VideoChat";
 import TextChat from "../pages/textChat";
+import ExchangingList from "../pages/ExchangingList";
 
 export const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
       {
         path: "notifications",
         element: <Notifications />,
+      },
+      {
+        path: "exchanging_list",
+        element: <ExchangingList />,
       },
       {
         path: "exchanging/:id",
