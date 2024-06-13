@@ -3,6 +3,9 @@ import styled, { css } from "styled-components";
 interface MessageProps {
   readonly $idenity: boolean;
 }
+interface ListProps {
+  readonly $current: boolean;
+}
 
 export const Wrapper = styled.section`
   padding: 0;
@@ -30,7 +33,7 @@ export const Label = styled.li`
   font-weight: 700;
 `;
 
-export const List = styled.li`
+export const List = styled.li<ListProps>`
   display: flex;
   align-items: center;
   gap: 16px;
@@ -48,6 +51,12 @@ export const List = styled.li`
   &:hover {
     background-color: #f1f1f1;
   }
+
+  ${({ $current }) =>
+    $current &&
+    css`
+      background-color: #ffce26;
+    `}
 `;
 
 export const Chat = styled.div`
