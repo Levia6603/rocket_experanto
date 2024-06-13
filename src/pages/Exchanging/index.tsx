@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import apiBase from "../../Api";
 import {
@@ -43,6 +44,7 @@ function Exchanging() {
   const [exchangeData, setExchangeData] = useState<ExchangeData>();
   const [currentData, setCurrentData] = useState<CurrentUserData>();
   const [remoteData, setRemoteData] = useState<RemoteUserData>();
+  const navigate = useNavigate();
 
   async function getList() {
     const headers = {
@@ -87,6 +89,26 @@ function Exchanging() {
     }
   }
 
+  async function createRoom(type: string) {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    const roomId = uuidv4().substring(0, 8);
+    const data = { ExchangeId: id, RoomNumberGuid: roomId };
+    const res = await axios
+      .post(apiBase.POST_CHATROOM, data, { headers })
+      .then((res) => {
+        if (res.data.Message === "請重新登入") {
+          alert("登入逾時，請重新登入");
+          navigate("/login");
+        } else {
+          return res.data.RoomNumber;
+        }
+      })
+      .catch((err) => err.response.data.RoomNumber);
+    window.open(`http://localhost:5173/${type}?roomid=${res}`, "_blank");
+  }
+
   useEffect(() => {
     getList();
   }, []);
@@ -103,11 +125,23 @@ function Exchanging() {
                 <p>Duration: {exchangeData?.duration}</p>
               </div>
               <div>
-                <Btn $style="primary" type="button">
+                <Btn
+                  $style="primary"
+                  type="button"
+                  onClick={() => {
+                    createRoom("message");
+                  }}
+                >
                   <img src={chatIcon} alt="chatIcon" />
                   私訊交談
                 </Btn>
-                <Btn $style="primary" type="button">
+                <Btn
+                  $style="primary"
+                  type="button"
+                  onClick={() => {
+                    createRoom("videocall");
+                  }}
+                >
                   <img src={videoIcon} alt="videoIcon" />
                   視訊教學
                 </Btn>

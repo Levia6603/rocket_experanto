@@ -21,6 +21,7 @@ const apiBase = {
   POST_SEND_APPLY: `/api/applications`,
   GET_MATCHING_LIST: `/api/applylist`,
   GET_CHATLIST: `/api/chatroom`,
+  POST_CHATROOM: `/api/chatroom`,
   //* 收藏清單
   GET_FAVORITE_LIST: `/api/favorites`,
   POST_FAVORITE_LIST: `/api/favorites`,
