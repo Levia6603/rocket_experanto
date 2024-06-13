@@ -43,10 +43,6 @@ function TextChat() {
   const [messageList, setMessageList] = useState<MessageList>([]);
   const [remoteData, setRemote] = useState<UserData>({ name: "", avatar: "" });
   const roomref = child(dbRef, roomId || "room");
-
-  useEffect(() => {
-    console.log(roomref);
-  }, [roomId]);
   //得到聊天室列表
   async function getChatList() {
     const headers = {
@@ -92,7 +88,7 @@ function TextChat() {
       onValue(roomref, async (snap) => {
         const data = await snap.val();
         const list: MessageList = Object.values(data);
-        setMessageList(list);
+        data && setMessageList(list);
       });
   }, [roomId]);
   return (
@@ -100,18 +96,33 @@ function TextChat() {
       <Container>
         <ul>
           <Label>Conversations</Label>
-          {chatList.map((el, i) => (
-            <List
-              key={i}
-              onClick={() => {
-                setRoomId(el.RoomNumber);
-                getUserData(el.RoomId);
-              }}
-            >
-              <img src={el.receiverAvatar} alt="" />
-              {el.receiverName}
-            </List>
-          ))}
+          {chatList.map((el, i) =>
+            el.initiatorName === localStorage.getItem("name") ? (
+              <List
+                key={i}
+                onClick={() => {
+                  setMessageList([]);
+                  setRoomId(el.RoomNumber);
+                  getUserData(el.RoomId);
+                }}
+              >
+                <img src={el.receiverAvatar} alt="" />
+                {el.receiverName}
+              </List>
+            ) : (
+              <List
+                key={i}
+                onClick={() => {
+                  setMessageList([]);
+                  setRoomId(el.RoomNumber);
+                  getUserData(el.RoomId);
+                }}
+              >
+                <img src={el.initiatorAvatar} alt="" />
+                {el.initiatorName}
+              </List>
+            )
+          )}
         </ul>
         {roomId ? (
           <Chat>
@@ -143,7 +154,6 @@ function TextChat() {
             <InputGroup
               onSubmit={(e) => {
                 e.preventDefault();
-                console.log(message);
                 sendMessage();
                 setMessage("");
               }}
