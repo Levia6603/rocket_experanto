@@ -80,6 +80,9 @@ function TextChat() {
   }
 
   useEffect(() => {
+    const url = new URLSearchParams(window.location.search);
+    const id = url.get("roomid");
+    id && setRoomId(id);
     getChatList();
   }, []);
 
@@ -100,6 +103,7 @@ function TextChat() {
             el.initiatorName === localStorage.getItem("name") ? (
               <List
                 key={i}
+                $current={el.RoomNumber === roomId}
                 onClick={() => {
                   setMessageList([]);
                   setRoomId(el.RoomNumber);
@@ -112,6 +116,7 @@ function TextChat() {
             ) : (
               <List
                 key={i}
+                $current={el.RoomNumber === roomId}
                 onClick={() => {
                   setMessageList([]);
                   setRoomId(el.RoomNumber);
