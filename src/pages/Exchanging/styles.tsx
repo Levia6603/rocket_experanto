@@ -1,147 +1,119 @@
-import { styled } from "styled-components";
-import Button from "../../styles/Button";
+import styled, { css } from "styled-components";
 
 export const Wrapper = styled.section`
   width: 100%;
 `;
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
+  max-width: 966px;
+  h2 {
+    margin-bottom: 36px;
+    font-size: 32px;
+    font-weight: 700;
+  }
 `;
 
-export const Title = styled.h2`
-  font-weight: 900;
-  padding-bottom: 2rem;
+export const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #5e5e5e;
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+  p {
+    color: #919191;
+    font-weight: 40;
+  }
+  & > div:nth-child(2) {
+    display: flex;
+    gap: 8px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+    button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
 `;
 
-//* 內容區
-export const Content = styled.div`
+export const CardAlbum = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  gap: 12px;
+  margin-bottom: 32px;
   padding: 12px;
 `;
 
-//* 內容上
-export const Header = styled.nav`
+const card = css`
   display: flex;
-  align-items: center;
-  padding: 0.5rem;
-  & > div:nth-child(1) {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    gap: 0.25rem;
-    & > h5 {
-      font-weight: 900;
-    }
-    & > p {
-      color: #616161;
-    }
-  }
-  & > div:nth-child(2) {
-  }
-`;
-
-//* 內容中
-export const Body = styled.div`
-  display: flex;
-  gap: 1.5rem;
-  padding: 0.5rem;
-`;
-
-export const Card = styled.div`
+  overflow: hidden;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-
-  //* 上半部
+  padding: 0;
+  border: 1px solid #5e5e5e;
+  border-radius: 4px;
+  background-color: #fcfcfccc;
+  img {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #000;
+    border-radius: 70px;
+  }
   & > div:nth-child(1) {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 0.5rem;
-    background-color: #bdbdbd;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    padding: 1rem;
-
-    //* 大頭貼
-    & > div {
-      display: flex;
-      align-items: center;
-      flex-grow: 1;
-      margin: 0 auto;
-      & > img {
-        width: 80px;
-        height: 80px;
-      }
-    }
-    //* 名字
-    & > h6 {
-      font-weight: 900;
+    gap: 8px;
+    width: 180px;
+    padding: 10px;
+    p {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
     }
   }
-
-  //* 下半部
-  & > div:nth-child(2) {
+  ul {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 0.5rem;
-
-    //* 項次
-    & > label {
-      display: flex;
-      gap: 0.5rem;
-      & > input {
-      }
-      & > p {
-      }
-    }
+    justify-content: center;
+    gap: 10px;
+  }
+  li {
+    padding: 6px 12px;
   }
 `;
 
-//* 內容下
-export const Footer = styled.div`
+export const CurrentCard = styled.div`
+  ${card}
+
+  &>div:nth-child(1) {
+    background-color: #fff;
+  }
+`;
+
+export const RemoteCard = styled.div`
+  ${card}
+
+  &>div:nth-child(1) {
+    background-color: #ffefcb;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+`;
+
+export const BtnGroup = styled.div`
   display: flex;
   justify-content: space-between;
-  & > div {
-    padding: 0 0.5rem;
-  }
-`;
-
-//* 終止按鈕
-export const DeterminationButton = styled(Button)`
-  border: 0;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  &:hover {
-    background-color: #e0e0e0;
-  }
-`;
-
-export const CompleteButton = styled(Button)`
-  border: 0;
-  background-color: e0e0e0;
-  border-radius: 0.5rem;
-  &:hover {
-    background-color: #dbdbdb;
-  }
-`;
-
-export const ReviewButton = styled(Button)`
-  border: 0;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  &:hover {
-    background-color: #e0e0e0;
-  }
+  align-items: center;
+  padding: 12px;
 `;

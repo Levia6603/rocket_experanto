@@ -26,6 +26,9 @@ const apiBase = {
   POST_FAVORITE_LIST: `/api/favorites`,
   DELETE_FAVORITE_LIST: `/api/favorites`,
   POST_AGREE_APPLY: `/api/applications/isAgree`, //* 同意申請
+
+  GET_CHANGE_LIST: `/api/changelist`,
+  GET_CHANGE_DATA: `/api/change`,
 };
 
 export default apiBase;
