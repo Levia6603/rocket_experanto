@@ -116,4 +116,12 @@ export const BtnGroup = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px;
+  & > button:nth-child(1) {
+    border: 0;
+    background-color: transparent;
+    color: #454545;
+    font-size: 16px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;

@@ -143,6 +143,7 @@ function Exchanging() {
               </CurrentCard>
             </CardAlbum>
             <BtnGroup>
+              <button>終止交換</button>
               <Btn $style="disable">完成交換</Btn>
             </BtnGroup>
           </div>
