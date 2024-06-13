@@ -53,6 +53,7 @@ function Exchanging() {
     const data = await axios
       .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
       .then((res) => res.data.list[0]);
+
     const exData: ExchangeData = {
       exchangeId: data.exchangeId,
       duration: data.duration,
@@ -77,13 +78,13 @@ function Exchanging() {
         id: data.receiverId,
         name: data.receiverName,
         avatar: data.receiverAvatar,
-        plan: data.initiatorToTeach[0].plan,
+        plan: data.receiverPlan[0].plan,
       });
       setRemoteData({
         id: data.initiatorId,
         name: data.initiatorName,
         avatar: data.initiatorAvatar,
-        plan: data.receiverPlan[0].plan,
+        plan: data.initiatorToteach[0].plan,
       });
     }
   }
