@@ -31,6 +31,7 @@ const apiBase = {
   GET_CHANGE_LIST: `/api/changelist`,
   GET_CHANGE_DATA: `/api/change`,
   GET_EXCHANGING_LIST: `/api/changelist`,
+  POST_ACCOMPLISH_SINGLE_GOAL: `/api/finish`,
 };
 
 export default apiBase;

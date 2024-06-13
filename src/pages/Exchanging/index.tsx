@@ -53,7 +53,6 @@ function Exchanging() {
     const data = await axios
       .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
       .then((res) => res.data.list[0]);
-    console.log(data);
     const exData: ExchangeData = {
       exchangeId: data.exchangeId,
       duration: data.duration,
@@ -109,6 +108,33 @@ function Exchanging() {
     window.open(`http://localhost:5173/${type}?roomid=${res}`, "_blank");
   }
 
+  async function accomplishSingleGoal(id: number) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+
+    try {
+      await axios({
+        method: "POST",
+        url: `${apiBase.POST_ACCOMPLISH_SINGLE_GOAL}/${id}`,
+        headers: headers,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function handleAccomplish(id: number) {
+    accomplishSingleGoal(id);
+    getList();
+  }
+
   useEffect(() => {
     getList();
   }, []);
@@ -156,8 +182,14 @@ function Exchanging() {
                 <ul>
                   {remoteData?.plan.map((obj, i) => (
                     <li key={i}>
-                      <input type="checkbox" checked={obj.status} />
-                      {obj.content}
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={obj.status}
+                          onChange={() => handleAccomplish(obj.goalId)}
+                        />
+                        {obj.content}
+                      </label>
                     </li>
                   ))}
                 </ul>
@@ -178,7 +210,11 @@ function Exchanging() {
             </CardAlbum>
             <BtnGroup>
               <button>終止交換</button>
-              <Btn $style="disable">完成交換</Btn>
+              {remoteData?.plan.every((item) => item.status) ? (
+                <Btn $style="primary">完成交換</Btn>
+              ) : (
+                <Btn $style="disable">完成交換</Btn>
+              )}
             </BtnGroup>
           </div>
         </Container>
