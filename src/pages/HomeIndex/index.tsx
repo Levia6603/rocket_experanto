@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { SimplifiedPostInterface } from "../../components/PostCard";
@@ -11,11 +12,12 @@ import PageBar from "../../components/PageBar";
 
 export interface PostListInterface {
   Code?: number;
-  Status?: string;
+  Status?: string | boolean;
   list?: SimplifiedPostInterface[];
   page?: number;
   totalPage?: number;
   totalPost?: number;
+  Message: string;
 }
 [];
 
@@ -25,6 +27,7 @@ type Favorite = {
 
 function HomeIndex() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [prevFavoriteList, setPrevFavoriteList] = useState<Favorite[]>([]);
@@ -41,6 +44,7 @@ function HomeIndex() {
     (state: RootStateType) => state.favoriteList
   );
 
+  // 依據頁數取得文章
   async function getPostListByPage(index: number) {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -49,7 +53,7 @@ function HomeIndex() {
     token ? (headers["Authorization"] = `Bearer ${token}`) : null;
 
     try {
-      const postList = await axios({
+      const fetchedPostList = await axios({
         method: "GET",
         url: token
           ? `${apiBase.GET_POST_LIST_LOGIN}?page=${index}`
@@ -58,8 +62,8 @@ function HomeIndex() {
       })
         .then((res) => res.data)
         .catch((err) => console.log(err));
-      setPostList(postList);
-      dispatch(setPages(postList.totalPages));
+      setPostList(fetchedPostList);
+      dispatch(setPages(fetchedPostList.totalPages));
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -67,6 +71,7 @@ function HomeIndex() {
     }
   }
 
+  // 依據語言編號取得文章
   const languageQuery = languageIds.map((id) => `languageId=${id}`).join("&");
   async function getPostListByLanguage(index: number, languageQuery: string) {
     const headers: Record<string, string> = {
@@ -76,7 +81,7 @@ function HomeIndex() {
 
     token ? (headers["Authorization"] = `Bearer ${token}`) : null;
     try {
-      const postList = await axios({
+      const fetchedPostList = await axios({
         method: "GET",
         url: token
           ? `${apiBase.GET_POST_LIST_LOGIN}?page=${index}&${languageQuery}`
@@ -85,8 +90,8 @@ function HomeIndex() {
       })
         .then((res) => res.data)
         .catch((err) => console.log(err));
-      setPostList(postList);
-      dispatch(setPages(postList.totalPages));
+      setPostList(fetchedPostList);
+      dispatch(setPages(fetchedPostList.totalPages));
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -141,6 +146,10 @@ function HomeIndex() {
       getPostListByPage(page);
     setPrevFavoriteList(favoriteList["favoriteList"]);
   }, [favoriteList["favoriteList"]]);
+
+  useEffect(() => {
+    postList?.Status === false && navigate("/login");
+  }, [postList?.Status, navigate]);
 
   return (
     <>
