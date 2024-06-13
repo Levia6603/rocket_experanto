@@ -21,11 +21,15 @@ const apiBase = {
   POST_SEND_APPLY: `/api/applications`,
   GET_MATCHING_LIST: `/api/applylist`,
   GET_CHATLIST: `/api/chatroom`,
+  POST_CHATROOM: `/api/chatroom`,
   //* 收藏清單
   GET_FAVORITE_LIST: `/api/favorites`,
   POST_FAVORITE_LIST: `/api/favorites`,
   DELETE_FAVORITE_LIST: `/api/favorites`,
   POST_AGREE_APPLY: `/api/applications/isAgree`, //* 同意申請
+
+  GET_CHANGE_LIST: `/api/changelist`,
+  GET_CHANGE_DATA: `/api/change`,
   GET_EXCHANGING_LIST: `/api/changelist`,
 };
 

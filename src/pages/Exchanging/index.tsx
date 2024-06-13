@@ -1,151 +1,186 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import apiBase from "../../Api";
 import {
-  Wrapper,
+  BtnGroup,
+  CardAlbum,
   Container,
+  CurrentCard,
+  RemoteCard,
   Title,
-  Content,
-  Header,
-  Body,
-  Footer,
-  Card,
-  DeterminationButton,
-  CompleteButton,
-  ReviewButton,
+  Wrapper,
 } from "./styles";
-import ButtonPair from "../../components/ButtonPair";
+import { Btn } from "../../styles/Btn";
+import chatIcon from "/chat.svg";
+import videoIcon from "/camera-video.svg";
+
+interface ExchangeData {
+  exchangeId: number;
+  tittle: string;
+  duration: string;
+}
+
+interface CurrentUserData {
+  id: number;
+  name: string;
+  avatar: string;
+  plan: string[];
+}
+interface RemoteUserData {
+  id: number;
+  name: string;
+  avatar: string;
+  plan: {
+    goalId: number;
+    status: boolean;
+    content: string;
+  }[];
+}
 
 function Exchanging() {
-  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const { id } = useParams();
+  const [exchangeData, setExchangeData] = useState<ExchangeData>();
+  const [currentData, setCurrentData] = useState<CurrentUserData>();
+  const [remoteData, setRemoteData] = useState<RemoteUserData>();
+  const navigate = useNavigate();
 
-  const toggle = () => {
-    setIsCompleted((isCompleted) => (isCompleted = !isCompleted));
-  };
+  async function getList() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    const data = await axios
+      .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
+      .then((res) => res.data.list[0]);
+    console.log(data);
+    const exData: ExchangeData = {
+      exchangeId: data.exchangeId,
+      duration: data.duration,
+      tittle: data.tittle,
+    };
+    setExchangeData(exData);
+    if (data.initiatorName === localStorage.getItem("name")) {
+      setCurrentData({
+        id: data.initiatorId,
+        name: data.initiatorName,
+        avatar: data.initiatorAvatar,
+        plan: data.initiatorPlan[0].plan,
+      });
+      setRemoteData({
+        id: data.receiverId,
+        name: data.receiverName,
+        avatar: data.receiverAvatar,
+        plan: data.receiverToteach[0].plan,
+      });
+    } else {
+      setCurrentData({
+        id: data.receiverId,
+        name: data.receiverName,
+        avatar: data.receiverAvatar,
+        plan: data.initiatorToTeach[0].plan,
+      });
+      setRemoteData({
+        id: data.initiatorId,
+        name: data.initiatorName,
+        avatar: data.initiatorAvatar,
+        plan: data.receiverPlan[0].plan,
+      });
+    }
+  }
+
+  async function createRoom(type: string) {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    const roomId = uuidv4().substring(0, 8);
+    const data = { ExchangeId: id, RoomNumberGuid: roomId };
+    const res = await axios
+      .post(apiBase.POST_CHATROOM, data, { headers })
+      .then((res) => {
+        if (res.data.Message === "請重新登入") {
+          alert("登入逾時，請重新登入");
+          navigate("/login");
+        } else {
+          return res.data.RoomNumber;
+        }
+      })
+      .catch((err) => err.response.data.RoomNumber);
+    window.open(`http://localhost:5173/${type}?roomid=${res}`, "_blank");
+  }
+
+  useEffect(() => {
+    getList();
+  }, []);
 
   return (
     <>
       <Wrapper>
         <Container>
-          <Title>交換中...</Title>
-          <Content>
-            <Header>
+          <h2>開始交換</h2>
+          <div>
+            <Title>
               <div>
-                <h5>我是真的很想學好英文</h5>
-                <p>
-                  有效期間：
-                  <span>
-                    {"2024/05/20"} - <span>{"2024/06/20"}</span>
-                  </span>
-                </p>
+                <h3>{exchangeData?.tittle}</h3>
+                <p>Duration: {exchangeData?.duration}</p>
               </div>
               <div>
-                <ButtonPair
-                  left="開啟視訊"
-                  right="開啟對話"
-                  backgroundColorLeft=""
-                  backgroundColorRight=""
-                ></ButtonPair>
+                <Btn
+                  $style="primary"
+                  type="button"
+                  onClick={() => {
+                    createRoom("message");
+                  }}
+                >
+                  <img src={chatIcon} alt="chatIcon" />
+                  私訊交談
+                </Btn>
+                <Btn
+                  $style="primary"
+                  type="button"
+                  onClick={() => {
+                    createRoom("videocall");
+                  }}
+                >
+                  <img src={videoIcon} alt="videoIcon" />
+                  視訊教學
+                </Btn>
               </div>
-            </Header>
-            <Body>
-              <Card>
+            </Title>
+            <CardAlbum>
+              <RemoteCard>
                 <div>
-                  <div>
-                    <img src="/avatar-80.svg" alt="大頭站" />
-                  </div>
-                  <h6>Ella Dowson</h6>
+                  <img src={remoteData?.avatar} alt="avatar" />
+                  <p>{remoteData?.name}</p>
                 </div>
+                <ul>
+                  {remoteData?.plan.map((obj, i) => (
+                    <li key={i}>
+                      <input type="checkbox" checked={obj.status} />
+                      {obj.content}
+                    </li>
+                  ))}
+                </ul>
+              </RemoteCard>
+              <CurrentCard>
                 <div>
-                  <label>
-                    <input type="checkbox" />
-                    <p>
-                      {
-                        "奠定基礎：學生將學習基本的英語文法、詞彙和常見句子結構。"
-                      }
-                    </p>
-                  </label>
-                  <label>
-                    <input type="checkbox" />
-                    <p>
-                      {
-                        "增強口語表達：透過角色扮演、小組討論和其他活動，學生將獲得用英語進行口語交流的信心。"
-                      }
-                    </p>
-                  </label>
-                  <label>
-                    <input type="checkbox" />
-                    <p>
-                      {
-                        "提升聽力技能：透過聽力練習，學生將加深對英語聽力的理解並提高他們的反應速度。"
-                      }
-                    </p>
-                  </label>
-                  <label>
-                    <input type="checkbox" />
-                    <p>
-                      {
-                        "書面表達技巧：學生將學習基本的寫作技巧，包括句子結構、段落組織和常用表達。"
-                      }
-                    </p>
-                  </label>
+                  <img src={currentData?.avatar} alt="avatar" />
+                  <p>{currentData?.name}</p>
                 </div>
-              </Card>
-
-              <Card>
-                <div>
-                  <div>
-                    <img src="/avatar-80.svg" alt="大頭站" />
-                  </div>
-                  <h6>Ella Dowson</h6>
-                </div>
-                <div>
-                  <label>
-                    <p>{"1"}</p>
-
-                    <p>
-                      {
-                        "奠定基礎：學生將學習基本的英語文法、詞彙和常見句子結構。"
-                      }
-                    </p>
-                  </label>
-                  <label>
-                    <p>{"2"}</p>
-
-                    <p>
-                      {
-                        "增強口語表達：透過角色扮演、小組討論和其他活動，學生將獲得用英語進行口語交流的信心。"
-                      }
-                    </p>
-                  </label>
-                  <label>
-                    <p>{"3"}</p>
-                    <p>
-                      {
-                        "提升聽力技能：透過聽力練習，學生將加深對英語聽力的理解並提高他們的反應速度。"
-                      }
-                    </p>
-                  </label>
-                  <label>
-                    <p>{"4"}</p>
-                    <p>
-                      {
-                        "書面表達技巧：學生將學習基本的寫作技巧，包括句子結構、段落組織和常用表達。"
-                      }
-                    </p>
-                  </label>
-                </div>
-              </Card>
-            </Body>
-            <Footer>
-              <DeterminationButton>終止交換</DeterminationButton>
-              <div>
-                {(isCompleted && (
-                  <ReviewButton onClick={toggle}>前往評價</ReviewButton>
-                )) || (
-                  <CompleteButton onClick={toggle}>完成交換</CompleteButton>
-                )}
-              </div>
-            </Footer>
-          </Content>
+                <ul>
+                  {currentData?.plan.map((el, i) => (
+                    <li key={i}>
+                      {i + 1}. {el}
+                    </li>
+                  ))}
+                </ul>
+              </CurrentCard>
+            </CardAlbum>
+            <BtnGroup>
+              <button>終止交換</button>
+              <Btn $style="disable">完成交換</Btn>
+            </BtnGroup>
+          </div>
         </Container>
       </Wrapper>
     </>
