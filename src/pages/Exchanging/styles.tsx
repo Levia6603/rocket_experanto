@@ -50,20 +50,19 @@ export const CardAlbum = styled.div`
   padding: 12px;
 `;
 
-const card = css`
+const grayScale = css<{ checked?: boolean }>`
+  ${({ checked = false }) => (checked ? "color: #C6C6C6;" : "#454545")}
+`;
+const card = css<{ checked?: boolean }>`
   display: flex;
-  overflow: hidden;
+
   width: 100%;
   padding: 0;
   border: 1px solid #5e5e5e;
   border-radius: 4px;
   background-color: #fcfcfccc;
-  img {
-    width: 70px;
-    height: 70px;
-    border: 1px solid #000;
-    border-radius: 70px;
-  }
+  position: relative;
+
   & > div:nth-child(1) {
     display: flex;
     flex-direction: column;
@@ -72,6 +71,14 @@ const card = css`
     gap: 8px;
     width: 180px;
     padding: 10px;
+
+    & > img {
+      width: 70px;
+      height: 70px;
+      border: 1px solid #000;
+      border-radius: 70px;
+      ${({ checked = false }) => (checked ? "margin-top: 4rem;" : "")}
+    }
     p {
       text-align: center;
       font-size: 20px;
@@ -83,23 +90,57 @@ const card = css`
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+    ${grayScale}
   }
   li {
     padding: 6px 12px;
   }
 `;
 
-export const CurrentCard = styled.div`
-  ${card}
+const tag = css<{ checked?: boolean }>`
+  & > div:nth-of-type(2) {
+    display: ${({ checked = false }) => (checked ? "flex" : "none")};
+    gap: 0.5rem;
+    align-items: center;
+    background-color: #777777;
+    position: absolute;
+    z-index: 1;
+    left: -0.75rem;
+    top: 1.25rem;
+    padding: 0.5rem;
+    //* icon
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      & > img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+    //* 文字
+    & > p {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffce26;
+    }
+  }
+`;
 
-  &>div:nth-child(1) {
+export const CurrentCard = styled.div<{ checked?: boolean }>`
+  ${card}
+  ${tag}
+  
+
+  & > div:nth-child(1) {
     background-color: #fff;
   }
 `;
 
-export const RemoteCard = styled.div`
+export const RemoteCard = styled.div<{ checked?: boolean }>`
   ${card}
-
+  ${tag}
+  
   &>div:nth-child(1) {
     background-color: #ffefcb;
   }
