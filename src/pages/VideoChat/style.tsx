@@ -134,6 +134,9 @@ export const BtnGroup = styled.ul`
       background-color: #bbbaba;
     }
   }
+  & > button:nth-child(4) {
+    background-color: #eb5045;
+  }
 `;
 
 const showChat = () => keyframes`

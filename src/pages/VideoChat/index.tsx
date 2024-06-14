@@ -20,6 +20,8 @@ import {
   doc,
   getDoc,
   updateDoc,
+  getDocs,
+  deleteDoc,
 } from "firebase/firestore";
 import { dbRef, firestore, pc } from "../../firebase/firebase";
 import { child, onValue, push } from "firebase/database";
@@ -29,6 +31,7 @@ import cameraOff from "/camera-video-off.svg";
 import camera from "/camera-video.svg";
 import chatIcon from "/chat-text.svg";
 import sendIcon from "/sendIcon.svg";
+import hangupIcon from "/hangup.svg";
 
 interface RefProps {
   srcObject: MediaStream;
@@ -194,6 +197,31 @@ function VideoChat() {
     setChatState((prev) => !prev);
   }
 
+  async function hangUp() {
+    localRef.current?.srcObject.getTracks().forEach((track) => track.stop());
+    remoteRef.current?.srcObject.getTracks().forEach((track) => track.stop());
+
+    pc.close();
+    setRoomId("");
+    if (roomId) {
+      const roomRef = doc(firestore, "rooms", roomId);
+      const guestCandidateRef = collection(roomRef, "guestCandidate");
+      const hostCandidateRef = collection(roomRef, "hostCandidate");
+
+      const hostCandidate = await getDocs(hostCandidateRef);
+      hostCandidate.forEach(async (candidate) => {
+        await deleteDoc(candidate.ref);
+      });
+      const guestCandidate = await getDocs(guestCandidateRef);
+      guestCandidate.forEach(async (candidate) => {
+        await deleteDoc(candidate.ref);
+      });
+
+      await deleteDoc(roomRef);
+    }
+    window.close();
+  }
+
   useEffect(() => {
     chatId &&
       onValue(roomRef, async (snap) => {
@@ -239,6 +267,9 @@ function VideoChat() {
               <button onClick={toggleChat}>
                 <img src={chatIcon} alt="chatroomIcon" />
               </button>
+              <button onClick={hangUp}>
+                <img src={hangupIcon} alt="hangUpIcon" />
+              </button>
             </BtnGroup>
           </CallPage>
           {chatState && (
@@ -257,6 +288,7 @@ function VideoChat() {
                 <InputGroup
                   onSubmit={(e) => {
                     e.preventDefault();
+                    if (!inputChat) return;
                     push(roomRef, {
                       name: localStorage.getItem("name"),
                       message: inputChat,

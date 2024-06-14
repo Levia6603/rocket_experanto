@@ -101,6 +101,7 @@ function Exchanging() {
         if (res.data.Message === "請重新登入") {
           alert("登入逾時，請重新登入");
           navigate("/login");
+          return;
         } else {
           return res.data.RoomNumber;
         }
