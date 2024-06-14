@@ -33,6 +33,7 @@ interface Props {
   };
   setSelectTime: any;
   setApplyState: any;
+  exchangeLanguage: { post: string; apply: string };
 }
 
 interface Data {
@@ -51,7 +52,12 @@ interface ApplyData {
   SelectedTimes: Data;
 }
 
-function Apply({ selectTime, setSelectTime, setApplyState }: Props) {
+function Apply({
+  exchangeLanguage,
+  selectTime,
+  setSelectTime,
+  setApplyState,
+}: Props) {
   const avatar = localStorage.getItem("avatar");
   const name = localStorage.getItem("name");
   const [certification, setCertification] = useState<string[]>([]);
@@ -109,11 +115,11 @@ function Apply({ selectTime, setSelectTime, setApplyState }: Props) {
         <Info>
           <div>
             <h6>擅長語言</h6>
-            <input type="text" disabled value={"中文"} />
+            <input type="text" disabled value={exchangeLanguage.post} />
           </div>
           <div>
             <h6>想學語言</h6>
-            <input type="text" disabled value={"英文"} />
+            <input type="text" disabled value={exchangeLanguage.apply} />
           </div>
           <div>
             <h6>學習動機</h6>
@@ -305,6 +311,7 @@ function Apply({ selectTime, setSelectTime, setApplyState }: Props) {
                 PostId: Number(id),
                 LearnMotivation: learnMotivation,
                 SelectedTimes: select,
+                ExchangeImages: certification,
               };
               sendApply(data);
             }}
