@@ -1,8 +1,17 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 interface VideoProps {
   readonly $current: boolean;
 }
+interface MessageProps {
+  readonly $idenity: boolean;
+}
+
+export const Container = styled.section`
+  display: flex;
+  height: 100vh;
+  background-color: #000;
+`;
 
 export const EnterPage = styled.div`
   display: flex;
@@ -61,6 +70,7 @@ export const EnterPage = styled.div`
 export const CallPage = styled.div`
   display: flex;
   justify-content: center;
+  flex-grow: 1;
   position: relative;
   height: 100vh;
   padding: 30px 40px;
@@ -123,5 +133,107 @@ export const BtnGroup = styled.ul`
     &:hover {
       background-color: #bbbaba;
     }
+  }
+`;
+
+const showChat = () => keyframes`
+  from{
+    transform: translateX(416px);
+  }
+  to{
+    transform: translateX(0);
+  }
+`;
+
+export const Chat = styled.div`
+  position: relative;
+  z-index: 2;
+  width: 416px;
+  height: 100vh;
+  padding: 8px;
+  animation: ${() => showChat()} 0.3s ease-in;
+  div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    background-color: #fff;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    flex-grow: 1;
+    gap: 16px;
+    overflow: scroll;
+    padding: 16px 0;
+  }
+  ul::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 68px;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 700;
+  }
+`;
+
+const remote = css`
+  align-self: start;
+  background-color: #ffce26;
+`;
+
+const current = css`
+  align-self: flex-end;
+  background-color: #f1f1f1;
+`;
+
+export const Message = styled.li<MessageProps>`
+  max-width: 280px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+
+  ${({ $idenity }) => ($idenity ? current : remote)}
+`;
+
+export const InputGroup = styled.form`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  button {
+    width: 30px;
+    height: 24px;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  img {
+    width: 24px;
+    height: 24px;
+  }
+  input {
+    width: 90%;
+    padding: 8px;
+    font-size: 16px;
+    line-height: 1.5;
+    border: 1px solid #5e5e5e;
+    border-radius: 4px;
+    outline: none;
   }
 `;

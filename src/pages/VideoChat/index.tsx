@@ -1,5 +1,15 @@
-import { useRef, useState } from "react";
-import { BtnGroup, CallPage, EnterPage, Label, Video } from "./style";
+import { useEffect, useRef, useState } from "react";
+import {
+  BtnGroup,
+  CallPage,
+  Chat,
+  Container,
+  EnterPage,
+  InputGroup,
+  Label,
+  Message,
+  Video,
+} from "./style";
 import {
   addDoc,
   collection,
@@ -11,23 +21,35 @@ import {
   getDoc,
   updateDoc,
 } from "firebase/firestore";
-import { firestore, pc } from "../../firebase/firebase";
+import { dbRef, firestore, pc } from "../../firebase/firebase";
+import { child, onValue, push } from "firebase/database";
 import mute from "/mic-mute.svg";
 import mic from "/mic.svg";
 import cameraOff from "/camera-video-off.svg";
 import camera from "/camera-video.svg";
+import chatIcon from "/chat-text.svg";
+import sendIcon from "/sendIcon.svg";
 
 interface RefProps {
   srcObject: MediaStream;
 }
 
+type MessageList = { name: string; message: string }[];
+
 function VideoChat() {
+  const url = new URLSearchParams(window.location.search);
+  const chatId = url.get("roomid");
+  const roomRef = child(dbRef, chatId || "rooms");
+
   const [callStart, setCallStart] = useState(false);
   const [current, setCurrent] = useState(true);
   const [roomId, setRoomId] = useState("");
   const [enterText, setEnterText] = useState("");
   const [audioState, setAudioState] = useState(true);
   const [videoState, setVideoState] = useState(true);
+  const [inputChat, setInputChat] = useState("");
+  const [messageList, setMessageList] = useState<MessageList>([]);
+  const [chatState, setChatState] = useState(false);
   const localRef = useRef<RefProps>();
   const remoteRef = useRef<RefProps>();
 
@@ -168,41 +190,95 @@ function VideoChat() {
     setVideoState((prev) => !prev);
   }
 
+  function toggleChat() {
+    setChatState((prev) => !prev);
+  }
+
+  useEffect(() => {
+    chatId &&
+      onValue(roomRef, async (snap) => {
+        const data = await snap.val();
+        setMessageList(Object.values(data));
+      });
+  }, []);
+
   return (
     <>
       {callStart ? (
-        <CallPage>
-          <Label onClick={copyText}>
-            <p>{roomId}</p>
-          </Label>
-          <Video
-            ref={localRef as React.LegacyRef<HTMLVideoElement>}
-            $current={current}
-            autoPlay
-            playsInline
-            muted
-            onClick={() => {
-              setCurrent(false);
-            }}
-          />
-          <Video
-            ref={remoteRef as React.LegacyRef<HTMLVideoElement>}
-            $current={!current}
-            autoPlay
-            playsInline
-            onClick={() => {
-              setCurrent(true);
-            }}
-          />
-          <BtnGroup>
-            <button onClick={micStateToggle}>
-              <img src={audioState ? mic : mute} alt="" />
-            </button>
-            <button onClick={videoStateToggle}>
-              <img src={videoState ? camera : cameraOff} alt="" />
-            </button>
-          </BtnGroup>
-        </CallPage>
+        <Container>
+          <CallPage>
+            <Label onClick={copyText}>
+              <p>{roomId}</p>
+            </Label>
+            <Video
+              ref={localRef as React.LegacyRef<HTMLVideoElement>}
+              $current={current}
+              autoPlay
+              playsInline
+              muted
+              onClick={() => {
+                setCurrent(false);
+              }}
+            />
+            <Video
+              ref={remoteRef as React.LegacyRef<HTMLVideoElement>}
+              $current={!current}
+              autoPlay
+              playsInline
+              onClick={() => {
+                setCurrent(true);
+              }}
+            />
+            <BtnGroup>
+              <button onClick={micStateToggle}>
+                <img src={audioState ? mic : mute} alt="mic" />
+              </button>
+              <button onClick={videoStateToggle}>
+                <img src={videoState ? camera : cameraOff} alt="camera" />
+              </button>
+              <button onClick={toggleChat}>
+                <img src={chatIcon} alt="chatroomIcon" />
+              </button>
+            </BtnGroup>
+          </CallPage>
+          {chatState && (
+            <Chat>
+              <div>
+                <ul>
+                  {messageList.map((obj, i) => (
+                    <Message
+                      key={i}
+                      $idenity={obj.name === localStorage.getItem("name")}
+                    >
+                      {obj.message}
+                    </Message>
+                  ))}
+                </ul>
+                <InputGroup
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    push(roomRef, {
+                      name: localStorage.getItem("name"),
+                      message: inputChat,
+                    });
+                    setInputChat("");
+                  }}
+                >
+                  <input
+                    type="text"
+                    value={inputChat}
+                    onChange={(e) => {
+                      setInputChat(e.target.value);
+                    }}
+                  />
+                  <button>
+                    <img src={sendIcon} alt="send" />
+                  </button>
+                </InputGroup>
+              </div>
+            </Chat>
+          )}
+        </Container>
       ) : (
         <EnterPage>
           <div>
