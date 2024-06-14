@@ -15,6 +15,7 @@ import {
 import { Btn } from "../../styles/Btn";
 import chatIcon from "/chat.svg";
 import videoIcon from "/camera-video.svg";
+import checkedIcon from "/check-circle-fill.svg";
 
 interface ExchangeData {
   exchangeId: number;
@@ -27,6 +28,7 @@ interface CurrentUserData {
   name: string;
   avatar: string;
   plan: string[];
+  status: boolean;
 }
 interface RemoteUserData {
   id: number;
@@ -37,6 +39,7 @@ interface RemoteUserData {
     status: boolean;
     content: string;
   }[];
+  status: boolean;
 }
 
 function Exchanging() {
@@ -60,18 +63,21 @@ function Exchanging() {
       tittle: data.tittle,
     };
     setExchangeData(exData);
+
     if (data.initiatorName === localStorage.getItem("name")) {
       setCurrentData({
         id: data.initiatorId,
         name: data.initiatorName,
         avatar: data.initiatorAvatar,
         plan: data.initiatorPlan[0].plan,
+        status: data.initiatorTeachIsCompleted,
       });
       setRemoteData({
         id: data.receiverId,
         name: data.receiverName,
         avatar: data.receiverAvatar,
         plan: data.receiverToteach[0].plan,
+        status: data.receiverTeachIsCompleted,
       });
     } else {
       setCurrentData({
@@ -79,12 +85,14 @@ function Exchanging() {
         name: data.receiverName,
         avatar: data.receiverAvatar,
         plan: data.receiverPlan[0].plan,
+        status: data.receiverTeachIsCompleted,
       });
       setRemoteData({
         id: data.initiatorId,
         name: data.initiatorName,
         avatar: data.initiatorAvatar,
         plan: data.initiatorToteach[0].plan,
+        status: data.initiatorTeachIsCompleted,
       });
     }
   }
@@ -131,8 +139,35 @@ function Exchanging() {
     }
   }
 
+  async function accomplishAllGoal(id: number) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+
+    try {
+      await axios({
+        method: "POST",
+        url: `${apiBase.POST_ACCOMPLISH_ALL_GOALS}/${id}`,
+        headers: headers,
+      })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   function handleAccomplish(id: number) {
     accomplishSingleGoal(id);
+    getList();
+  }
+
+  function handleAccomplishAll(id: number) {
+    accomplishAllGoal(id);
     getList();
   }
 
@@ -175,9 +210,9 @@ function Exchanging() {
               </div>
             </Title>
             <CardAlbum>
-              <RemoteCard>
+              <RemoteCard checked={remoteData?.status}>
                 <div>
-                  <img src={remoteData?.avatar} alt="avatar" />
+                  <img src={remoteData?.avatar} alt="remote avatar" />
                   <p>{remoteData?.name}</p>
                 </div>
                 <ul>
@@ -188,16 +223,23 @@ function Exchanging() {
                           type="checkbox"
                           checked={obj.status}
                           onChange={() => handleAccomplish(obj.goalId)}
+                          disabled={remoteData?.status}
                         />
                         {obj.content}
                       </label>
                     </li>
                   ))}
                 </ul>
-              </RemoteCard>
-              <CurrentCard>
                 <div>
-                  <img src={currentData?.avatar} alt="avatar" />
+                  <div>
+                    <img src={checkedIcon} alt="" />
+                  </div>
+                  <p>{"已確認完成"}</p>
+                </div>
+              </RemoteCard>
+              <CurrentCard checked={currentData?.status}>
+                <div>
+                  <img src={currentData?.avatar} alt="current avatar" />
                   <p>{currentData?.name}</p>
                 </div>
                 <ul>
@@ -207,12 +249,35 @@ function Exchanging() {
                     </li>
                   ))}
                 </ul>
+                <div>
+                  <div>
+                    <img src={checkedIcon} alt="" />
+                  </div>
+                  <p>{"已確認完成"}</p>
+                </div>
               </CurrentCard>
             </CardAlbum>
             <BtnGroup>
               <button>終止交換</button>
-              {remoteData?.plan.every((item) => item.status) ? (
-                <Btn $style="primary">完成交換</Btn>
+              {currentData?.status === true || remoteData?.status === true ? (
+                <Btn
+                  $style="primary"
+                  onClick={() =>
+                    navigate(`/user/commenting/${exchangeData?.exchangeId}`)
+                  }
+                >
+                  前往評價
+                </Btn>
+              ) : remoteData?.plan.every((item) => item.status) ? (
+                <Btn
+                  $style="primary"
+                  onClick={() =>
+                    exchangeData?.exchangeId &&
+                    handleAccomplishAll(exchangeData.exchangeId)
+                  }
+                >
+                  完成交換
+                </Btn>
               ) : (
                 <Btn $style="disable">完成交換</Btn>
               )}
