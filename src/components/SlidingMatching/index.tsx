@@ -4,7 +4,7 @@ import axios from "axios";
 import apiBase from "../../Api";
 import { useSelector, useDispatch } from "react-redux";
 import { RootStateType } from "../../../redux";
-import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
+import { setSlidingMatchingState } from "../../../redux/slidingState/slidingSlice";
 import {
   Wrapper,
   Container,
@@ -49,7 +49,7 @@ function SlidingMatching() {
   //* 設定Redux toolkit，控制是否顯示 offcanvas
   const dispatch = useDispatch();
   const isVisible = useSelector(
-    (state: RootStateType) => state.sliding.slidingPostState
+    (state: RootStateType) => state.sliding.slidingMatchingState
   );
   //* loading 狀態
   const [loading, setLoading] = useState(false);
@@ -113,7 +113,7 @@ function SlidingMatching() {
     e.preventDefault();
     e.stopPropagation();
     agreeExchange(post.ApplicationId);
-    dispatch(setSlidingPostState());
+    dispatch(setSlidingMatchingState());
     navigate(`/user/exchanging/${post.ApplicationId}`);
   };
 
@@ -132,7 +132,7 @@ function SlidingMatching() {
           <ControlBar>
             <CloseBtn
               onClick={() => {
-                dispatch(setSlidingPostState());
+                dispatch(setSlidingMatchingState());
               }}
             >
               <img src={close} alt="close" />

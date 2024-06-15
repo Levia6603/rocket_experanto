@@ -4,7 +4,7 @@ import { setPages } from "../../../redux/pages/pagesSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
 // import { RootStateType } from "../../../redux";
 import axios from "axios";
-import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
+import { setSlidingMatchingState } from "../../../redux/slidingState/slidingSlice";
 import apiBase from "../../Api";
 import {
   Wrapper,
@@ -132,7 +132,7 @@ function Matching() {
     //* 如果找到了 exchangeid 執行以下動作
     if (targetElement) {
       const exchangeid = targetElement.dataset.exchangeid;
-      dispatch(setSlidingPostState());
+      dispatch(setSlidingMatchingState());
       dispatch(setPostId(exchangeid));
     }
   };

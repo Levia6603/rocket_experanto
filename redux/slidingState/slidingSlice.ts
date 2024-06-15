@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   slidingPostState: false,
+  slidingMatchingState: false,
 };
 
 const slidingStateSlice = createSlice({
@@ -11,8 +12,12 @@ const slidingStateSlice = createSlice({
     setSlidingPostState: (state) => {
       state.slidingPostState = !state.slidingPostState;
     },
+    setSlidingMatchingState: (state) => {
+      state.slidingMatchingState = !state.slidingMatchingState;
+    },
   },
 });
 
-export const { setSlidingPostState } = slidingStateSlice.actions;
+export const { setSlidingPostState, setSlidingMatchingState } =
+  slidingStateSlice.actions;
 export default slidingStateSlice.reducer;
