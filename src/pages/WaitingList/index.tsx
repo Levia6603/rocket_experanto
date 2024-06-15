@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { Wrapper, Container, Title, SortWrapper, List, Item } from "./styles";
+import { useDispatch } from "react-redux";
+import { setPages } from "../../../redux/pages/pagesSlice";
+import { setPostId } from "../../../redux/postId/postIdSlice";
 import axios from "axios";
 import apiBase from "../../Api";
 import PageBar from "../../components/PageBar";
 import { Btn } from "../../styles/Btn";
+import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 
 type WaitingListInterface = {
   ExchangesId: number;
-  PostId: string;
+  PostId: number;
   ExchangeStatus: boolean;
   PosterName: string;
   PosterAvatar: string;
@@ -16,7 +20,18 @@ type WaitingListInterface = {
   PostExpirationDate: string;
 };
 
+type data = {
+  Code: number;
+  Status: string | boolean;
+  data: WaitingListInterface[];
+  message: string;
+  page: number;
+  total: number;
+  totalPages: number;
+};
+
 function WaitingList() {
+  const dispatch = useDispatch();
   const [sort, setSort] = useState("由新到舊");
   const handleChange = (sort: string) => {
     setSort(sort);
@@ -24,6 +39,7 @@ function WaitingList() {
 
   //* 儲存等待回覆列表
   const [list, setList] = useState<WaitingListInterface[]>([]);
+  const [data, setData] = useState<data>({} as data);
 
   useEffect(() => {
     //* 接回等待回覆列表
@@ -41,7 +57,9 @@ function WaitingList() {
           headers: headers,
         })
           .then((res) => {
+            setData(res.data);
             Array.isArray(res.data.data) && setList(res.data.data);
+            dispatch(setPages(res.data.totalPages));
           })
           .catch((err) => console.log(err));
       } catch (error) {
@@ -66,6 +84,16 @@ function WaitingList() {
       }
     }
   );
+
+  function handleShowDetails(
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setSlidingPostState());
+    dispatch(setPostId(id));
+  }
 
   return (
     <>
@@ -99,7 +127,14 @@ function WaitingList() {
                       </div>
                       <div>
                         <Btn $style="outline">取消申請</Btn>
-                        <Btn $style="outline">詳細內容</Btn>
+                        <Btn
+                          $style="outline"
+                          onClick={(e) => {
+                            handleShowDetails(e, item.PostId);
+                          }}
+                        >
+                          詳細內容
+                        </Btn>
                       </div>
                     </Item>
                   </li>
@@ -111,7 +146,7 @@ function WaitingList() {
               </h2>
             )}
           </List>
-          <PageBar />
+          {data.totalPages && <PageBar />}
         </Container>
       </Wrapper>
     </>
