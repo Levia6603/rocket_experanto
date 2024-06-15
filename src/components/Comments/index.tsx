@@ -1,61 +1,85 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
+import axios from "axios";
+import apiBase from "../../Api";
 import { Wrapper, Container, Title, Comment, WriteMessage } from "./styles";
 import three_dots_vertical from "/three-dots-vertical.svg";
 import { Btn } from "../../styles/Btn";
 
+type Comment = {
+  content: string;
+  createdAt: string;
+  userAvatar: string;
+  userId: number;
+  userName: string;
+};
+
+type Comments = {
+  Status: string;
+  Code: number;
+  message: string;
+  comments: Comment[];
+};
+
 function Comments() {
+  const [comments, setComments] = useState<Comments>({} as Comments);
+
+  function getComments(id: number) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      axios({
+        method: "GET",
+        url: `${apiBase.GET_COMMENT_LIST}/${id}`,
+        headers: headers,
+      })
+        .then((res) => {
+          setComments(res.data);
+          console.log(res.data);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const postId = useSelector((state: RootStateType) => state.postId.postId);
+
+  useEffect(() => {
+    getComments(postId);
+  }, []);
+
   return (
     <>
       <Wrapper>
         <Container>
           <Title>留言版</Title>
           <div>
-            <Comment>
-              <div>
-                <div>
-                  <img src="/avatar-80.svg" alt="" />
-                </div>
-                <p>2024 / 05 / 14</p>
-              </div>
-              <div>
-                <div>
-                  <h5>Jane Doe</h5>
-                  <div>
-                    <img src={three_dots_vertical} alt="" />
-                  </div>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-                  illo at, non tempora eum unde sed accusamus deleniti fugit est
-                  asperiores dicta ad. Earum quisquam porro quae nostrum debitis
-                  neque?
-                </p>
-              </div>
-            </Comment>
-            <Comment>
-              <div>
-                <div>
-                  <img src="/avatar-80.svg" alt="" />
-                </div>
-                <p>2024 / 05 / 14</p>
-              </div>
-              <div>
-                <div>
-                  <h5>Jane Doe</h5>
-                  <div>
-                    <img src={three_dots_vertical} alt="" />
-                  </div>
-                </div>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum
-                  illo at, non tempora eum unde sed accusamus deleniti fugit est
-                  asperiores dicta ad. Earum quisquam porro quae nostrum debitis
-                  neque? Lorem, ipsum dolor sit amet consectetur adipisicing
-                  elit. Explicabo illum itaque corrupti rerum et veritatis.
-                  Eveniet accusamus vel reiciendis tempora tempore iure, esse
-                  ex. Dolore nulla magni officia commodi rem.
-                </p>
-              </div>
-            </Comment>
+            {comments &&
+              comments.comments.map((comment) => {
+                return (
+                  <Comment>
+                    <div>
+                      <div>
+                        <img src={comment.userAvatar} alt="" />
+                      </div>
+                      <p>{comment.createdAt}</p>
+                    </div>
+                    <div>
+                      <div>
+                        <h5>{comment.userName}</h5>
+                        <div>
+                          <img src={three_dots_vertical} alt="" />
+                        </div>
+                      </div>
+                      <p>{comment.content}</p>
+                    </div>
+                  </Comment>
+                );
+              })}
           </div>
           <div>
             <WriteMessage>
