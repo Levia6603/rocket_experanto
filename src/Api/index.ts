@@ -35,6 +35,7 @@ const apiBase = {
   POST_ACCOMPLISH_ALL_GOALS: `/api/complete`,
 
   GET_COMMENT_LIST: `/api/comments`, //* 取得留言
+  POST_COMMENT: `/api/comments`, //* 新增留言
 };
 
 export default apiBase;
