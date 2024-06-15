@@ -33,6 +33,8 @@ const apiBase = {
   GET_EXCHANGING_LIST: `/api/changelist`,
   POST_ACCOMPLISH_SINGLE_GOAL: `/api/finish`,
   POST_ACCOMPLISH_ALL_GOALS: `/api/complete`,
+
+  GET_COMMENT_LIST: `/api/comments`, //* 取得留言
 };
 
 export default apiBase;

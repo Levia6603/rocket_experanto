@@ -56,6 +56,7 @@ export const Comment = styled.div`
     & > p {
       font-size: 14px;
       color: #919191;
+      white-space: nowrap;
     }
   }
 
