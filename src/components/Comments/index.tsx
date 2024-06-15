@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootStateType } from "../../../redux";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
 import { Wrapper, Container, Title, Comment, WriteMessage } from "./styles";
@@ -23,13 +23,17 @@ type Comments = {
 };
 
 function Comments() {
+  const navigate = useNavigate();
   const [comments, setComments] = useState<Comments>({} as Comments);
+  const { id } = useParams();
+  const postIdNum = Number(id);
+  const token = localStorage.getItem("token");
 
   function getComments(id: number) {
     const headers = {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${token}`,
     };
     try {
       axios({
@@ -39,17 +43,56 @@ function Comments() {
       })
         .then((res) => {
           setComments(res.data);
-          console.log(res.data);
         })
         .catch((err) => console.log(err));
     } catch (error) {
       console.error(error);
     }
   }
-  const postId = useSelector((state: RootStateType) => state.postId.postId);
+
+  function postComment(id: number, comment: string) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    const data = { PostComment: comment, PostId: id };
+    try {
+      axios({
+        method: "POST",
+        url: `${apiBase.POST_COMMENT}`,
+        headers: headers,
+        data: data,
+      })
+        .then(() => {
+          getComments(id);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleComment = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const textarea = e.currentTarget
+      .previousElementSibling as HTMLTextAreaElement;
+
+    function isLoggedIn(): void {
+      alert("請先登入");
+      navigate("/login");
+      return;
+    }
+    function isTextareaEmpty(): void {
+      textarea.value
+        ? postComment(postIdNum, textarea.value)
+        : alert("請輸入內容");
+      textarea.value = "";
+    }
+    !token ? isLoggedIn() : isTextareaEmpty();
+  };
 
   useEffect(() => {
-    getComments(postId);
+    getComments(postIdNum);
   }, []);
 
   return (
@@ -59,9 +102,10 @@ function Comments() {
           <Title>留言版</Title>
           <div>
             {comments &&
-              comments.comments.map((comment) => {
+              comments.comments &&
+              comments.comments.map((comment, index) => {
                 return (
-                  <Comment>
+                  <Comment key={index}>
                     <div>
                       <div>
                         <img src={comment.userAvatar} alt="" />
@@ -89,7 +133,9 @@ function Comments() {
                 id="comment"
                 placeholder="請注意網路禮節，禁止人身攻擊..."
               ></textarea>
-              <Btn $style="outline">送出留言</Btn>
+              <Btn $style="outline" onClick={handleComment}>
+                送出留言
+              </Btn>
             </WriteMessage>
           </div>
         </Container>
