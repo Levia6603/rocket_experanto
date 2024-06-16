@@ -30,7 +30,7 @@ type MatchingPost = {
   ReceiverAvatar: string;
   ReceiverLocation: string;
   ReceiverName: string;
-  Status: string;
+  Status: string | boolean;
   TeachLanguageId: number;
   TeachLanguageName: string;
   WantToLanguageId: number;
@@ -56,6 +56,11 @@ function SlidingMatching() {
   const postId = useSelector((state: RootStateType) => state.postId.postId);
   const [post, setPost] = useState({} as MatchingPost);
 
+  function isLogin() {
+    alert(`操作逾時，請重新登入`);
+    navigate("/login");
+  }
+
   //* 取得指定 Post
   async function getPost(id: number) {
     const headers = {
@@ -71,6 +76,8 @@ function SlidingMatching() {
       })
         .then((res) => res.data)
         .catch((err) => console.log(err));
+
+      post.Status === false && isLogin();
       setPost(post);
     } catch (error) {
       console.error(error);
@@ -80,7 +87,7 @@ function SlidingMatching() {
   }
 
   //* 同意申請 POST
-  async function agreeExchange(id: number) {
+  async function acceptExchange(id: number) {
     const headers = {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -90,14 +97,45 @@ function SlidingMatching() {
       setLoading(true); //* 設定 loading 狀態，當取得資料完成後會設定為 false
       await axios({
         method: "POST",
-        url: `${apiBase.POST_AGREE_APPLY}`,
+        url: `${apiBase.POST_ACCEPT_APPLY}`,
         headers: headers,
         data: {
           ApplicationId: id,
-          isApproved: true,
+          Accept: true,
         },
       })
         .then((res) => {
+          res.data.Status === false && isLogin();
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //* 拒絕申請 POST
+  async function rejectExchange(id: number) {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      setLoading(true); //* 設定 loading 狀態，當取得資料完成後會設定為 false
+      await axios({
+        method: "POST",
+        url: `${apiBase.POST_REJECT_APPLY}`,
+        headers: headers,
+        data: {
+          ApplicationId: id,
+          Reject: false,
+        },
+      })
+        .then((res) => {
+          res.data.Status === false && isLogin();
           console.log(res);
         })
         .catch((err) => console.log(err));
@@ -109,12 +147,20 @@ function SlidingMatching() {
   }
 
   //* 同意交換
-  const handleAgreeExchange = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAcceptExchange = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    agreeExchange(post.ApplicationId);
+    acceptExchange(post.ApplicationId);
     dispatch(setSlidingMatchingState());
     navigate(`/user/exchanging/${post.ApplicationId}`);
+  };
+
+  //* 拒絕交換
+  const handleRejectExchange = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    rejectExchange(post.ApplicationId);
+    dispatch(setSlidingMatchingState());
   };
 
   //* 監聽是否可見，當可見時取得資料
@@ -215,8 +261,10 @@ function SlidingMatching() {
               </div>
             </Certifications>
             <div>
-              <Btn $style="outline">拒絕申請</Btn>
-              <Btn $style="primary" onClick={handleAgreeExchange}>
+              <Btn $style="outline" onClick={handleRejectExchange}>
+                拒絕申請
+              </Btn>
+              <Btn $style="primary" onClick={handleAcceptExchange}>
                 同意申請
               </Btn>
             </div>
