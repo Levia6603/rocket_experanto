@@ -41,6 +41,7 @@ type MatchingData = {
       ApplyContent: string;
       LanguageToLearn: string;
       LanguageToTeach: string;
+      Status: boolean;
     }[];
   }[];
   message: string;
@@ -111,7 +112,7 @@ function Matching() {
       }
     }
     getMatchingList();
-  }, [dispatch]);
+  }, []);
 
   //* 排序用的變數，排序依據是最新申請時間，下方render的 list 就會使用這組新的陣列
   const sortedList = data.list?.sort(
@@ -173,7 +174,14 @@ function Matching() {
             ) : sortedList ? (
               sortedList?.map((item, index) => {
                 const isOpen = openStates[index];
-                return (
+                const shouldNotRender =
+                  item.Applications.every(
+                    (application) => application.Status === false
+                  ) ||
+                  item.Applications.some(
+                    (application) => application.Status === true
+                  );
+                return shouldNotRender ? null : (
                   <CardWrapper $isOpen={isOpen} key={index}>
                     <Card $isOpen={isOpen}>
                       <div>
@@ -186,7 +194,14 @@ function Matching() {
                               <img src={person} alt="" />
                             </div>
                             <p>
-                              <span>{item.ApplicationsCount}</span>人
+                              <span>
+                                {
+                                  item?.Applications.filter(
+                                    (item) => item.Status !== false
+                                  ).length
+                                }
+                              </span>
+                              人
                             </p>
                           </div>
                           <div>
@@ -210,7 +225,7 @@ function Matching() {
                     <Candidates $isOpen={!isOpen}>
                       {data?.list[index]?.Applications?.map(
                         (item, index: number) => {
-                          return (
+                          return item.Status === false ? null : (
                             <Candidate
                               key={index}
                               onClickCapture={handleClick}
@@ -222,7 +237,8 @@ function Matching() {
                                 </div>
                                 <h5>{item.ReceiverUserName}</h5>
                                 <p>
-                                  提出申請時間<span>{item.ApplyCreatedAt}</span>
+                                  提出申請時間
+                                  <span>{item.ApplyCreatedAt}</span>
                                 </p>
                               </div>
                               <div>
@@ -257,7 +273,16 @@ function Matching() {
               </div>
             )}
           </Cards>
-          {sortedList && <PageBar />}
+          {sortedList?.filter((item) => {
+            const shouldNotRender =
+              item.Applications.every(
+                (application) => application.Status === false
+              ) ||
+              item.Applications.some(
+                (application) => application.Status === true
+              );
+            shouldNotRender && null;
+          }).length !== 0 && <PageBar />}
         </Container>
       </Wrapper>
     </>
