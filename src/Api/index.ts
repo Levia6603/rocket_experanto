@@ -26,7 +26,8 @@ const apiBase = {
   GET_FAVORITE_LIST: `/api/favorites`,
   POST_FAVORITE_LIST: `/api/favorites`,
   DELETE_FAVORITE_LIST: `/api/favorites`,
-  POST_AGREE_APPLY: `/api/applications/isAgree`, //* 同意申請
+  POST_ACCEPT_APPLY: `/api/applications/accept`, //* 同意申請
+  POST_REJECT_APPLY: `/api/applications/reject`, //* 拒絕申請
 
   GET_CHANGE_LIST: `/api/changelist`,
   GET_CHANGE_DATA: `/api/change`,
