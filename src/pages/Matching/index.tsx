@@ -171,7 +171,17 @@ function Matching() {
                   讀取中...
                 </h2>
               </div>
-            ) : sortedList ? (
+            ) : sortedList &&
+              sortedList.filter((item) => {
+                const shouldNotRender =
+                  item.Applications.every(
+                    (application) => application.Status === false
+                  ) ||
+                  item.Applications.some(
+                    (application) => application.Status === true
+                  );
+                return !shouldNotRender;
+              }).length !== 0 ? (
               sortedList?.map((item, index) => {
                 const isOpen = openStates[index];
                 const shouldNotRender =
@@ -282,7 +292,8 @@ function Matching() {
                 (application) => application.Status === true
               );
             shouldNotRender && null;
-          }).length !== 0 && <PageBar />}
+          }).length !== 0 ||
+            (data.Status === "Error" && <PageBar />)}
         </Container>
       </Wrapper>
     </>
