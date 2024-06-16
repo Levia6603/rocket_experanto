@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
-// import { RootStateType } from "../../../redux";
 import axios from "axios";
 import { setSlidingMatchingState } from "../../../redux/slidingState/slidingSlice";
 import apiBase from "../../Api";
@@ -25,7 +25,7 @@ import exchange from "/exchange_icon.svg";
 
 type MatchingData = {
   Code: number;
-  Status: string;
+  Status: string | boolean;
   list: {
     PostId: number;
     PostTitle: string;
@@ -50,11 +50,15 @@ type MatchingData = {
 };
 
 function Matching() {
+  const navigate = useNavigate();
   //* 導入 Redux 的 dispatch 用來記錄 offCanvas的狀態
   const dispatch = useDispatch();
-  //* 從 redux state 取得總頁數
-  // const page = useSelector((state: RootStateType) => state.pages.page);
 
+  const token = localStorage.getItem("token");
+  function isLogin() {
+    alert(`操作逾時，請重新登入`);
+    navigate("/login");
+  }
   //* 設定排序狀態
   const [sort, setSort] = useState("由新到舊");
   const handleChange = (sort: string) => {
@@ -79,15 +83,19 @@ function Matching() {
       const headers = {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       };
+
       try {
+        setLoading(true);
         await axios({
           method: "GET",
           url: apiBase.GET_MATCHING_LIST,
           headers: headers,
         })
           .then((res) => {
+            res.data.Status === false && isLogin();
+
             setData(res.data);
             setOpenStates(new Array(res.data.list.length).fill(true)); //* 初始化手風琴陣列的狀態
             dispatch(setPages(res.data.totalPages)); //* 設定總頁數
