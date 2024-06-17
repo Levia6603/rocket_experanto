@@ -140,7 +140,7 @@ function SlidingPost() {
                   <img src={comments} alt="comments" />
                 </div>
                 <p>
-                  <span> 5 </span>
+                  <span> {post?.commentsCount} </span>
                   則留言
                 </p>
               </div>
