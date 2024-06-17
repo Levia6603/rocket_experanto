@@ -55,7 +55,7 @@ function Exchanging() {
     };
     const data = await axios
       .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
-      .then((res) => res.data.list[0]);
+      .then((res) => res.data[0]);
 
     console.log(data);
 
@@ -132,11 +132,7 @@ function Exchanging() {
         method: "POST",
         url: `${apiBase.POST_ACCOMPLISH_SINGLE_GOAL}/${id}`,
         headers: headers,
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => console.log(err));
+      }).catch((err) => console.log(err));
     } catch (error) {
       console.error(error);
     }
@@ -154,11 +150,7 @@ function Exchanging() {
         method: "POST",
         url: `${apiBase.POST_ACCOMPLISH_ALL_GOALS}/${id}`,
         headers: headers,
-      })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => console.log(err));
+      }).catch((err) => console.log(err));
     } catch (error) {
       console.error(error);
     }
