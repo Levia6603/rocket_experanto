@@ -281,9 +281,8 @@ function Matching() {
               item.Applications.some(
                 (application) => application.Status === true
               );
-            shouldNotRender && null;
-          }).length !== 0 ||
-            (data.Status === "ok" && <PageBar />)}
+            return !shouldNotRender;
+          }).length !== 0 && <PageBar />}
         </Container>
       </Wrapper>
     </>
