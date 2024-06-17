@@ -6,6 +6,7 @@ import { setPostId } from "../../../redux/postId/postIdSlice";
 import axios from "axios";
 import apiBase from "../../Api";
 import PageBar from "../../components/PageBar";
+import EmptyData from "../../components/EmptyData";
 import { Btn } from "../../styles/Btn";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 
@@ -141,9 +142,7 @@ function WaitingList() {
                 );
               })
             ) : (
-              <h2 style={{ textAlign: "center", fontWeight: "900" }}>
-                目前沒有資料
-              </h2>
+              <EmptyData />
             )}
           </List>
           {data.totalPages && <PageBar />}

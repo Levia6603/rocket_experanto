@@ -19,6 +19,7 @@ import {
 } from "./styles";
 import { SortWrapper } from "../WaitingList/styles";
 import PageBar from "../../components/PageBar";
+import EmptyData from "../../components/EmptyData";
 import person from "../../../public/profile_box_icons/person.svg";
 import dropdownIcon from "/chevron-down-white.svg";
 import exchange from "/exchange_icon.svg";
@@ -270,17 +271,7 @@ function Matching() {
                 );
               })
             ) : (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <h2 style={{ textAlign: "center", fontWeight: "900" }}>
-                  目前沒有資料
-                </h2>
-              </div>
+              <EmptyData />
             )}
           </Cards>
           {sortedList?.filter((item) => {
