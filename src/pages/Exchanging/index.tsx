@@ -57,6 +57,8 @@ function Exchanging() {
       .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
       .then((res) => res.data.list[0]);
 
+    console.log(data);
+
     const exData: ExchangeData = {
       exchangeId: data.exchangeId,
       duration: data.duration,
@@ -260,7 +262,7 @@ function Exchanging() {
             </CardAlbum>
             <BtnGroup>
               <button>終止交換</button>
-              {currentData?.status === true || remoteData?.status === true ? (
+              {currentData?.status === true && remoteData?.status === true ? (
                 <Btn
                   $style="primary"
                   onClick={() =>
@@ -272,10 +274,10 @@ function Exchanging() {
               ) : remoteData?.plan.every((item) => item.status) ? (
                 <Btn
                   $style="primary"
-                  onClick={() =>
+                  onClick={() => {
                     exchangeData?.exchangeId &&
-                    handleAccomplishAll(exchangeData.exchangeId)
-                  }
+                      handleAccomplishAll(exchangeData.exchangeId);
+                  }}
                 >
                   完成交換
                 </Btn>
