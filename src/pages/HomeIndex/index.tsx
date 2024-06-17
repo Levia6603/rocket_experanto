@@ -117,21 +117,48 @@ function HomeIndex() {
           headers: headers,
         })
           .then((res) => {
+            if (res.data.Status === false) {
+              throw new Error(res.data.Message);
+            }
             setPostList(res.data);
             dispatch(setPages(res.data.totalPages));
             setLoading(false);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+          })
+          .finally(() => {
+            const headers = {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            };
+            try {
+              axios({
+                method: "GET",
+                url: `${apiBase.GET_POST_LIST}`,
+                headers: headers,
+              })
+                .then((res) => {
+                  setPostList(res.data);
+                  dispatch(setPages(res.data.totalPages));
+                  setLoading(false);
+                })
+                .catch((err) => console.log(err));
+            } catch (error) {
+              console.error(error);
+              setLoading(false);
+            }
+            setLoading(false);
+          });
       } catch (error) {
-        console.error(error);
-        setLoading(false);
+        console.log(error);
       }
     }
     getPostList();
   }, [dispatch]);
 
   useEffect(() => {
-    getPostListByPage(page);
+    page !== 1 && getPostListByPage(page);
     setLoading(false);
   }, [page]);
 
@@ -142,14 +169,15 @@ function HomeIndex() {
   }, [languageIds, page, languageQuery]);
 
   useEffect(() => {
-    favoriteList["favoriteList"]?.length !== prevFavoriteList.length &&
+    favoriteList["favoriteList"]?.length &&
+      favoriteList["favoriteList"]?.length !== prevFavoriteList.length &&
       getPostListByPage(page);
     setPrevFavoriteList(favoriteList["favoriteList"]);
   }, [favoriteList["favoriteList"]]);
 
   useEffect(() => {
-    postList?.Status === false && navigate("/login");
-  }, [postList?.Status, navigate]);
+    console.log(postList);
+  }, [postList]);
 
   return (
     <>
@@ -178,9 +206,7 @@ function HomeIndex() {
               justifyContent: "center",
             }}
           >
-            <h2 style={{ textAlign: "center", fontWeight: "900" }}>
-              讀取中...
-            </h2>
+            <h2 style={{ textAlign: "center", fontWeight: "900" }}>無文章</h2>
           </div>
         )}
       </PostCards>
