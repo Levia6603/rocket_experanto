@@ -154,11 +154,16 @@ export const LinkItem = styled(NavLink)`
 export const NavBtn = styled(Button)`
   padding: 0.5rem 1rem;
   border-radius: 4px;
-  background-color: #919191;
-  color: #fcfcfc;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #ffce26;
+  background-color: #ffce26;
+  color: #000;
   &:hover {
-    background-color: #e0e0e0;
+    box-shadow: 4px 4px 0 #000;
+    transition: box-shadow 0.3s;
+  }
+  &:active {
+    box-shadow: 0 0 0;
+    transition: all 0s;
   }
 `;
 
