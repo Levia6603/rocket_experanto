@@ -130,6 +130,10 @@ function FullPost() {
       {applyState && (
         <PopUp>
           <Apply
+            exchangeLanguage={{
+              post: post.skills?.[0].language || "",
+              apply: post.learn?.[0].Name || "",
+            }}
             selectTime={selectTime}
             setSelectTime={setSelectTime}
             setApplyState={setApplyState}
