@@ -27,7 +27,6 @@ type Favorite = {
 
 function HomeIndex() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [prevFavoriteList, setPrevFavoriteList] = useState<Favorite[]>([]);
