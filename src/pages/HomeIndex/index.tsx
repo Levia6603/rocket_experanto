@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { SimplifiedPostInterface } from "../../components/PostCard";
