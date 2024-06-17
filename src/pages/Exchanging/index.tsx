@@ -135,7 +135,11 @@ function Exchanging() {
         method: "POST",
         url: `${apiBase.POST_ACCOMPLISH_SINGLE_GOAL}/${id}`,
         headers: headers,
-      }).catch((err) => console.log(err));
+      })
+        .then(() => {
+          getList();
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
       console.error(error);
     }
@@ -153,7 +157,11 @@ function Exchanging() {
         method: "POST",
         url: `${apiBase.POST_ACCOMPLISH_ALL_GOALS}/${id}`,
         headers: headers,
-      }).catch((err) => console.log(err));
+      })
+        .then(() => {
+          getList();
+        })
+        .catch((err) => console.log(err));
     } catch (error) {
       console.error(error);
     }
@@ -161,17 +169,20 @@ function Exchanging() {
 
   function handleAccomplish(id: number) {
     accomplishSingleGoal(id);
-    getList();
   }
 
   function handleAccomplishAll(id: number) {
     accomplishAllGoal(id);
-    getList();
   }
 
   useEffect(() => {
     getList();
   }, []);
+
+  useEffect(() => {
+    console.log(currentData);
+    console.log(remoteData);
+  }, [currentData, remoteData]);
 
   return (
     <>
