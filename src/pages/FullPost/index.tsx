@@ -23,6 +23,7 @@ import ApplySchedule from "../../components/ApplySchedule";
 import { Btn } from "../../styles/Btn";
 import Apply from "../../components/Apply";
 import { useNavigate, useParams } from "react-router-dom";
+import { ProfileType } from "../../pages/ProfileIndex";
 
 export interface PostInterface {
   userName?: string;
@@ -36,7 +37,8 @@ export interface PostInterface {
   endDate?: string;
   availableHours?: any;
   images?: string[];
-  isFavorite?: boolean;
+  isFavorite?: boolean | undefined;
+  commentsCount: number;
 }
 interface TimeData {
   Sun?: { start: string; end: string }[];
@@ -65,6 +67,7 @@ function FullPost() {
   const [selectTime, setSelectTime] = useState<SelectTimeData>({});
   const [applyState, setApplyState] = useState(false);
   const navigate = useNavigate();
+  const [profile, setProfile] = useState({} as ProfileType);
 
   const { id } = useParams();
 
@@ -84,6 +87,7 @@ function FullPost() {
         .catch((err) => console.log(err));
       setPost(post);
       setTags(post.tags || "");
+      console.log(post);
 
       const availableTime: TimeData = post.availableHours;
       setTimeData(availableTime);
@@ -115,9 +119,33 @@ function FullPost() {
     }
   }
 
+  async function getProfile() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+
+    try {
+      const profile: ProfileType = await axios({
+        method: "GET",
+        url: apiBase.GET_PROFILE,
+        headers: headers,
+      })
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => console.log(err));
+      setProfile(profile);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   //*接回 Post List
   useEffect(() => {
     getPost(id || "");
+    getProfile();
   }, []);
 
   useEffect(() => {
@@ -156,11 +184,11 @@ function FullPost() {
                     <img src={star} alt="stars" />
                   </div>
                   <p>
-                    5.0 <span>(1)</span>
+                    {profile?.Score} <span>({profile?.ScoreCount})</span>
                   </p>
                 </div>
 
-                <div title="收藏">
+                <div>
                   <div>
                     {post?.isFavorite ? (
                       <img src={like} alt="liked" />
