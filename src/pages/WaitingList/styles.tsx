@@ -7,9 +7,9 @@ export const Wrapper = styled.section`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 25px;
+
   max-width: 1320px;
-  padding: 0.5rem;
+  padding: 0 12px;
   margin: 0 auto;
 `;
 

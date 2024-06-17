@@ -12,7 +12,6 @@ export const Wrapper = styled.section`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 25px;
   max-width: 1320px;
   padding: 0 12px;
   margin: 0 auto;
@@ -20,7 +19,7 @@ export const Container = styled.div`
 
 export const Title = styled.h2`
   font-weight: 900;
-  padding-bottom: 2rem;
+  padding-bottom: 2.25rem;
 `;
 
 export const Cards = styled.div`
