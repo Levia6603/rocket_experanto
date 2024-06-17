@@ -97,7 +97,6 @@ function Matching() {
         })
           .then((res) => {
             res.data.Status === false && isLogin();
-
             setData(res.data);
             setOpenStates(new Array(res.data.list.length).fill(true)); //* 初始化手風琴陣列的狀態
             dispatch(setPages(res.data.totalPages)); //* 設定總頁數
@@ -284,7 +283,7 @@ function Matching() {
               );
             shouldNotRender && null;
           }).length !== 0 ||
-            (data.Status === "Error" && <PageBar />)}
+            (data.Status === "ok" && <PageBar />)}
         </Container>
       </Wrapper>
     </>
