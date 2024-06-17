@@ -70,10 +70,6 @@ function ExchangingList() {
     getExchangingList();
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log(exchangingList);
-  }),
-    [exchangingList];
   return (
     <Wrapper>
       <Container>
