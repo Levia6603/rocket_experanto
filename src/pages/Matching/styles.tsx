@@ -26,6 +26,7 @@ export const Cards = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  padding-bottom: 1.75rem;
 `;
 
 //* 請求卡片的最外層

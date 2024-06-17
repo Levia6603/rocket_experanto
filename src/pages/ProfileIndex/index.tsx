@@ -21,7 +21,12 @@ import axios from "axios";
 import apiBase from "../../Api";
 import badge from "/badge.png";
 
-type ProfileType = {
+export type ProfileType = {
+  Code: number;
+  Status: string | boolean;
+  message: string;
+  ScoreCount: number;
+  Score: number;
   avatar: string;
   gender: string;
   gendersId: number;
@@ -49,6 +54,8 @@ const ProfileIndex = () => {
         headers: headers,
       })
         .then((res) => {
+          console.log(res.data);
+
           return res.data;
         })
         .catch((err) => console.log(err));
@@ -90,7 +97,9 @@ const ProfileIndex = () => {
               <h3>所在城市</h3>
             </li>
             <li>
-              <p>4.5 (1)</p>
+              <p>
+                {profile?.Score} ({profile?.ScoreCount})
+              </p>
               <h3>評價</h3>
             </li>
           </ul>

@@ -18,6 +18,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStateType } from "../../../redux";
 import { setShowAll } from "../../../redux/profileState/profileState";
 import { useState, useEffect } from "react";
+import { ProfileType } from "../../pages/ProfileIndex";
+import axios from "axios";
+import apiBase from "../../Api";
 
 interface listInterface {
   icon: string;
@@ -28,6 +31,7 @@ interface listInterface {
 function ProfileBox() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [profile, setProfile] = useState({} as ProfileType);
 
   //* 把目前的功能選單長度狀態存到redux
   const showAll = useSelector(
@@ -40,6 +44,33 @@ function ProfileBox() {
   useEffect(() => {
     const isToken = localStorage.getItem("token");
     setLogin(isToken ? true : false);
+  }, []);
+
+  async function getProfile() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+
+    try {
+      const profile: ProfileType = await axios({
+        method: "GET",
+        url: apiBase.GET_PROFILE,
+        headers: headers,
+      })
+        .then((res) => {
+          return res.data;
+        })
+        .catch((err) => console.log(err));
+      setProfile(profile);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getProfile();
   }, []);
 
   //* 設定選單
@@ -128,14 +159,14 @@ function ProfileBox() {
             <h5>{userName}</h5>
             <div>
               <div>
-                <p>Taipei</p>
+                <p>{profile?.location}</p>
                 <p>縣市區域</p>
               </div>
               <div>
                 <div>
                   <img src={star} alt="" />
                   <p>
-                    5.0 <span> (1)</span>
+                    {profile?.Score} <span> ({profile?.ScoreCount})</span>
                   </p>
                 </div>
                 <p>評價</p>

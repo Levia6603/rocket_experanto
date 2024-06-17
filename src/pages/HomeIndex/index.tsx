@@ -174,10 +174,6 @@ function HomeIndex() {
     setPrevFavoriteList(favoriteList["favoriteList"]);
   }, [favoriteList["favoriteList"]]);
 
-  useEffect(() => {
-    console.log(postList);
-  }, [postList]);
-
   return (
     <>
       <PostCards>

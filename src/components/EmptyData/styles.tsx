@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import empty from "/emptyData_no_color.svg";
+import empty from "/emptyData.svg";
 
 export const Wrapper = styled.div`
   width: 100%;
