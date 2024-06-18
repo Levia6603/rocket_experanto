@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setLanguage } from "../../../redux/i18n/i18nSlice";
 import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSlice";
+import { useTranslation } from "react-i18next";
+import { RootStateType } from "../../../redux";
 
 import {
   Section,
@@ -34,6 +36,7 @@ interface ProfileType {
 
 function Nav() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
 
   const languages = ["English", "中文"];
   const defaultValue = "中文";
@@ -53,6 +56,7 @@ function Nav() {
 
   //* redux toolkit
   const dispatch = useDispatch();
+  const language = useSelector((state: RootStateType) => state.i18n.language);
 
   //* 發文前確認個人資料是否填寫完成
   async function checkProfile() {
@@ -89,6 +93,10 @@ function Nav() {
     navigate("/login");
   }
 
+  useEffect(() => {
+    i18n.changeLanguage(language);
+  }, [language]);
+
   return (
     <>
       <Section>
@@ -98,7 +106,7 @@ function Nav() {
               <img src={logo} alt="experanto logo" />
             </Logo>
             <SearchBar>
-              <input type="text" placeholder="您今天想要搜尋什麼語言？" />
+              <input type="text" placeholder={t("nav_search_placeholder")} />
               <button type="button">
                 <svg
                   width="20"
@@ -130,7 +138,7 @@ function Nav() {
                     isCompleted.Code !== 200 ? "/posting" : "/user/profile/edit"
                   }
                 >
-                  <NavBtn onClick={handlePost}>發表貼文</NavBtn>
+                  <NavBtn onClick={handlePost}>{t("nav_post")}</NavBtn>
                 </LinkItem>
               </li>
               <li>
@@ -169,12 +177,12 @@ function Nav() {
               </li>
               <li>
                 <Btn $style={"outline"} onClick={handleLogin}>
-                  登入
+                  {t("nav_login")}
                 </Btn>
               </li>
               <li>
                 <Btn $style={"outline"} onClick={handleRegister}>
-                  註冊
+                  {t("nav_signUp")}
                 </Btn>
               </li>
             </NavbarNotLoggedIn>

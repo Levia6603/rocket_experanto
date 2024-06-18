@@ -18,5 +18,10 @@
 
   "last_title": "Ready to join the exchange?",
   "last_describe": "Expand your world through language.",
-  "last_button": "JOIN US NOW"
+  "last_button": "JOIN US NOW",
+
+  "nav_login": "Login",
+  "nav_signUp": "Sign Up",
+  "nav_search_placeholder": "Find a Language to make a connection with the world",
+  "nav_post": "Post"
 }

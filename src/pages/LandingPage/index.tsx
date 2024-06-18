@@ -38,6 +38,8 @@ function LandingPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
+  const lang = useSelector((state: RootStateType) => state.i18n.language);
+
   //* processes intro
   const processes: Process = [
     {
@@ -86,8 +88,6 @@ function LandingPage() {
   useEffect(() => {
     getLanguageList();
   }, []);
-
-  const lang = useSelector((state: RootStateType) => state.i18n.language);
 
   useEffect(() => {
     i18n.changeLanguage(lang);

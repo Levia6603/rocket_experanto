@@ -18,5 +18,10 @@
 
   "last_title": "準備好要加入語言交換的行列了嗎？",
   "last_describe": "透過語言連結，拓展你的世界。",
-  "last_button": "現在就加入"
+  "last_button": "現在就加入",
+
+  "nav_login": "登入",
+  "nav_signUp": "註冊",
+  "nav_search_placeholder": "尋找語言來建立與世界的連結",
+  "nav_post": "發文"
 }
