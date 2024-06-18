@@ -20,4 +20,22 @@ export const Title = styled.h2`
 export const List = styled.ul`
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 4px;
+  }
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+  }
+  p {
+    color: #919191;
+    font-size: 16px;
+  }
 `;
