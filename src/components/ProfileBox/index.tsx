@@ -123,7 +123,7 @@ function ProfileBox() {
     {
       icon: completed,
       name: "交換完成區",
-      url: "/user/commenting/:id",
+      url: "/user/commenting",
     },
     {
       icon: logout,

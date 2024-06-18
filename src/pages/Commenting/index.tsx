@@ -7,11 +7,117 @@ import {
   Review,
   ReviewItem,
   TextAreaWrapper,
-  SubmitButton,
 } from "./styles";
-import star from "../../../public/profile_box_icons/star-yellow.svg";
+import star from "/profile_box_icons/star-yellow.svg";
+import starOutline from "/profile_box_icons/star.svg";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
+import apiBase from "../../Api";
+import { useEffect, useState } from "react";
+import { Btn } from "../../styles/Btn";
+
+interface RemoteData {
+  name: string;
+  avatar: string;
+  plan: { goalId: number; status: boolean; content: string }[];
+}
+interface ExchangeData {
+  title: string;
+  duration: string;
+  id: number;
+}
+interface RatingData {
+  PlanningScore: number;
+  TeachingScore: number;
+  OverallScore: number;
+  Comment: string;
+}
 
 function Commenting() {
+  const defaultRate: RatingData = {
+    PlanningScore: 0,
+    TeachingScore: 0,
+    OverallScore: 0,
+    Comment: "",
+  };
+  const { id } = useParams();
+  const [remoteData, setRemoteData] = useState<RemoteData>({
+    name: "",
+    avatar: "",
+    plan: [],
+  });
+  const [exchangeData, setExchangeData] = useState<ExchangeData>({
+    title: "",
+    duration: "",
+    id: 0,
+  });
+  const [rate, setRate] = useState<RatingData>(defaultRate);
+
+  const navigate = useNavigate();
+
+  async function getData() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      const data = await axios
+        .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
+        .then((res) => {
+          if (res.data.Message === "請重新登入") {
+            alert("登入逾時，請重新登入");
+            navigate("/login");
+            return;
+          }
+          return res.data[0];
+        });
+      console.log(data);
+
+      setExchangeData({
+        title: data.tittle,
+        duration: data.duration,
+        id: data.exchangeId,
+      });
+
+      if (data.initiatorName === localStorage.getItem("name")) {
+        setRemoteData({
+          name: data.receiverName,
+          avatar: data.receiverAvatar,
+          plan: data.receiverToteach[0].plan,
+        });
+      } else {
+        setRemoteData({
+          name: data.initiatorName,
+          avatar: data.initiatorAvatar,
+          plan: data.initiatorToteach[0].plan,
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function Submit() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
+    try {
+      await axios
+        .post(`${apiBase.POST_RATING}`, rate, { headers })
+        .then((res) => {
+          if (res.data.message === "新增成功") {
+            alert("新增成功");
+            navigate("/home/index");
+          }
+        });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <>
       <Wrapper>
@@ -19,62 +125,96 @@ function Commenting() {
           <Title>填寫評價</Title>
           <div>
             <Header>
-              <h5>我真的好想學好英文啊</h5>{" "}
+              <h5>{exchangeData.title}</h5>
               <p>
-                完成日期: <span>{"2022/01/01 19:00"}</span>
+                完成日期: <span>{exchangeData.duration}</span>
               </p>
             </Header>
             <Course>
               <div>
-                <div>
-                  <img src="/avatar-80.svg" alt="" />
-                </div>
+                <img src={remoteData.avatar} alt="avatar" />
+                <p>{remoteData.name}</p>
               </div>
-              <div>
-                <h6>教學計劃</h6>
-                <div>
-                  <p>
-                    <span>1. </span>
-                    奠定基礎：學生將學習基本的英語文法、詞彙和常見句子結構。
-                  </p>
-                  <p>
-                    <span>2.</span>
-                    提升聽力技能：透過聽力練習，學生將加深對英語聽力的理解並提高他們的反應速度。
-                  </p>
-                  <p>
-                    <span>3.</span>
-                    增強口語表達：透過角色扮演、小組討論和其他活動，學生將獲得用英語進行口語交流的信心。
-                  </p>
-                  <p>
-                    <span>4.</span>
-                    書面表達技巧：學生將學習基本的寫作技巧，包括句子結構、段落組織和常用表達。
-                  </p>
-                </div>
-              </div>
+              <ul>
+                <li>教學規劃:</li>
+                {remoteData.plan.map((obj, i) => {
+                  const { goalId, content } = obj;
+                  return (
+                    <li key={goalId}>
+                      {i + 1} . {content}
+                    </li>
+                  );
+                })}
+              </ul>
             </Course>
           </div>
           <div>
+            <h5>評價內容</h5>
             <Review>
-              <h6>評價內容</h6>
               <ReviewItem>
                 <p>
                   <span>1. </span> 您認為對方的教學規劃對您的幫助如何：
                 </p>
                 <ul>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, PlanningScore: 1 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.PlanningScore > 0 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, PlanningScore: 2 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.PlanningScore > 1 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, PlanningScore: 3 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.PlanningScore > 2 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, PlanningScore: 4 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.PlanningScore > 3 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, PlanningScore: 5 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.PlanningScore > 4 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
                 </ul>
               </ReviewItem>
@@ -83,20 +223,65 @@ function Commenting() {
                   <span>2. </span> 您認為對方的教學方式對您的幫助如何：
                 </p>
                 <ul>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, TeachingScore: 1 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.TeachingScore > 0 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, TeachingScore: 2 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.TeachingScore > 1 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, TeachingScore: 3 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.TeachingScore > 2 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, TeachingScore: 4 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.TeachingScore > 3 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, TeachingScore: 5 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.TeachingScore > 4 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
                 </ul>
               </ReviewItem>
@@ -105,34 +290,85 @@ function Commenting() {
                   <span>3. </span> 您認為這次的交換整體感受如何：
                 </p>
                 <ul>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, OverallScore: 1 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.OverallScore > 0 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, OverallScore: 2 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.OverallScore > 1 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, OverallScore: 3 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.OverallScore > 2 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, OverallScore: 4 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.OverallScore > 3 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
-                  <li>
-                    <img src={star} alt="star" />
+                  <li
+                    onClick={() => {
+                      setRate((prev) => {
+                        return { ...prev, OverallScore: 5 };
+                      });
+                    }}
+                  >
+                    <img
+                      src={rate.OverallScore > 4 ? star : starOutline}
+                      alt="star"
+                    />
                   </li>
                 </ul>
               </ReviewItem>
               <TextAreaWrapper>
-                <p>留下您的評論</p>
+                <p>您的評價內容</p>
                 <textarea
                   name="comment"
                   id="comment"
                   placeholder="請留下您的評論⋯⋯"
+                  value={rate.Comment}
+                  onChange={(e) => {
+                    setRate((prev) => {
+                      return { ...prev, Comment: e.target.value };
+                    });
+                  }}
                 ></textarea>
+                <Btn $style="primary" type="button" onClick={Submit}>
+                  送出評價
+                </Btn>
               </TextAreaWrapper>
-              <div>
-                <SubmitButton>送出評價</SubmitButton>
-              </div>
             </Review>
           </div>
         </Container>
