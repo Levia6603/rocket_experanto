@@ -82,6 +82,8 @@ export const Languages = styled.section`
     //* card
     & > div:nth-child(2) {
       display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 1.5rem;
     }
   }
