@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import apiBase from "../../Api";
 import {
   Wrapper,
   Landing,
@@ -22,9 +25,15 @@ type Process = {
   description: string;
 }[];
 
+type Language = {
+  Name: string;
+  Count: number;
+  LanguageId: number;
+};
+
 function LandingPage() {
   const navigate = useNavigate();
-
+  //* processes intro
   const processes: Process = [
     {
       image: step1,
@@ -47,6 +56,35 @@ function LandingPage() {
       description: "You can start exchange now!!",
     },
   ];
+
+  const [languageList, setLanguageList] = useState<Language[]>([]);
+
+  //* get popular languages
+  async function getLanguageList() {
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    try {
+      await axios({
+        method: "GET",
+        url: `${apiBase.GET_HOT_LANGUAGE}`,
+        headers: headers,
+      })
+        .then((res) => setLanguageList(res.data.data))
+        .catch((err) => console.log(err));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getLanguageList();
+  }, []);
+
+  useEffect(() => {
+    console.log(languageList);
+  }, [languageList]);
 
   return (
     <Wrapper>
@@ -77,12 +115,16 @@ function LandingPage() {
             <p>{"Explore the world's most popular languages."}</p>
           </div>
           <div>
-            <LanguageCard>
-              <h4>{"English"}</h4>
-              <p>
-                {"1234"} <span>{"posts"}</span>
-              </p>
-            </LanguageCard>
+            {languageList.map((item, index) =>
+              index < 8 ? (
+                <LanguageCard key={index}>
+                  <h4>{item.Name}</h4>
+                  <p>
+                    {item.Count} <span>{"posts"}</span>
+                  </p>
+                </LanguageCard>
+              ) : null
+            )}
           </div>
         </div>
       </Languages>
