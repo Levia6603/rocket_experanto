@@ -8,6 +8,7 @@ interface props {
   currentValue: string;
   setValue: (parms: string) => void;
   className?: string;
+  onChange?: (() => void) | void;
 }
 
 function Selector({

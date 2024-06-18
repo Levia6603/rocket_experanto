@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setLanguage } from "../../../redux/i18n/i18nSlice";
 import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSlice";
+
 import {
   Section,
   Container,
@@ -32,6 +34,7 @@ interface ProfileType {
 
 function Nav() {
   const navigate = useNavigate();
+
   const languages = ["English", "中文"];
   const defaultValue = "中文";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
@@ -42,6 +45,11 @@ function Nav() {
   }
 
   const isLoggedIn = localStorage.getItem("token") ? true : false;
+
+  //* 切換語言 i18n
+  function handleLanguage(lang: string) {
+    dispatch(setLanguage(lang));
+  }
 
   //* redux toolkit
   const dispatch = useDispatch();
@@ -141,6 +149,7 @@ function Nav() {
                   languageList={languages}
                   currentValue={selectLanguage}
                   setValue={handleSelect}
+                  onChange={() => handleLanguage(selectLanguage)}
                 />
               </li>
             </NavbarLoggedIn>
@@ -155,6 +164,7 @@ function Nav() {
                   languageList={languages}
                   currentValue={selectLanguage}
                   setValue={handleSelect}
+                  onChange={handleLanguage(selectLanguage)}
                 />
               </li>
               <li>
