@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import apiBase from "../../Api";
+import { RootStateType } from "../../../redux";
 import {
   Wrapper,
   Landing,
@@ -33,27 +36,31 @@ type Language = {
 
 function LandingPage() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
+  const lang = useSelector((state: RootStateType) => state.i18n.language);
+
   //* processes intro
   const processes: Process = [
     {
       image: step1,
-      title: "Fill out Profile and plan study plan",
-      description: "Fill out Profile and plan study plan",
+      title: t("process_step_1"),
+      description: t("process_step_1"),
     },
     {
       image: step2,
-      title: "Search and select exchange languages",
-      description: "Search and select exchange languages",
+      title: t("process_step_2"),
+      description: t("process_step_2"),
     },
     {
       image: step3,
-      title: "Submit your request to the other people",
-      description: "Submit your request to the other people",
+      title: t("process_step_3"),
+      description: t("process_step_3"),
     },
     {
       image: step4,
-      title: "Match successful!!",
-      description: "You can start exchange now!!",
+      title: t("process_step_4"),
+      description: t("process_step_4"),
     },
   ];
 
@@ -83,22 +90,18 @@ function LandingPage() {
   }, []);
 
   useEffect(() => {
-    console.log(languageList);
-  }, [languageList]);
+    i18n.changeLanguage(lang);
+  }, [lang]);
 
   return (
     <Wrapper>
       <Landing>
         <div>
           <div>
-            <h1>{"Explore languages, Connect the world."}</h1>
-            <p>
-              {
-                "Mutual learning to break language barriers, creating a borderless communication platform that makes language learning easy and fun. "
-              }
-            </p>
+            <h1>{t("landing_title")}</h1>
+            <p>{t("landing_describe")}</p>
             <Btn $style={"primary"} onClick={() => navigate("/home/index")}>
-              JOIN NOW
+              {t("landing_button")}
             </Btn>
           </div>
           <div>
@@ -111,8 +114,8 @@ function LandingPage() {
       <Languages>
         <div>
           <div>
-            <h2>{"Popular languages"}</h2>
-            <p>{"Explore the world's most popular languages."}</p>
+            <h2>{t("language_title")}</h2>
+            <p>{t("language_describe")}</p>
           </div>
           <div>
             {languageList.map((item, index) =>
@@ -120,7 +123,7 @@ function LandingPage() {
                 <LanguageCard key={index}>
                   <h4>{item.Name}</h4>
                   <p>
-                    {item.Count} <span>{"posts"}</span>
+                    {item.Count} <span>{t("language_posts")}</span>
                   </p>
                 </LanguageCard>
               ) : null
@@ -131,8 +134,8 @@ function LandingPage() {
       <Video>
         <div>
           <div>
-            <h2>{"Ｗatch Our Intro Video"}</h2>
-            <p>{"Grasp website design and concept."}</p>
+            <h2>{t("video_title")}</h2>
+            <p>{t("video_describe")}</p>
           </div>
           <div>
             <iframe
@@ -149,7 +152,7 @@ function LandingPage() {
       <Processes>
         <div>
           <div>
-            <h2>{"Website Tutorial Process"}</h2>
+            <h2>{t("process_title")}</h2>
             <div>
               {processes.map((item, index) => (
                 <ProcessCard key={index}>
@@ -171,12 +174,12 @@ function LandingPage() {
       <FinalGreetings>
         <div>
           <div>
-            <p>Ready to join the exchange?</p>
-            <p>Expand your world through language.</p>
+            <p>{t("last_title")}</p>
+            <p>{t("last_describe")}</p>
 
             <div>
               <Btn $style={"primary"} onClick={() => navigate("/home/index")}>
-                JOIN US NOW <span>→</span>
+                {t("last_button")} <span>→</span>
               </Btn>
             </div>
           </div>
