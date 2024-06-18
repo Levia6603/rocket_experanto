@@ -20,6 +20,7 @@ import FullReview from "../pages/FullReview";
 import VideoChat from "../pages/VideoChat";
 import TextChat from "../pages/textChat";
 import ExchangingList from "../pages/ExchangingList";
+import CommentList from "../pages/CommentList";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
         element: <Exchanging />,
       },
       {
+        path: "commenting",
+        element: <CommentList />,
+      },
+      {
         path: "commenting/:id",
         element: <Commenting />,
       },
@@ -76,6 +81,7 @@ export const router = createBrowserRouter([
         path: "matching",
         element: <Matching />,
       },
+
       {
         path: "full_review/:id",
         element: <FullReview />,

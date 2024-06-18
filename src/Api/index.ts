@@ -37,6 +37,8 @@ const apiBase = {
 
   GET_COMMENT_LIST: `/api/comments`, //* 取得留言
   POST_COMMENT: `/api/comments`, //* 新增留言
+
+  GET_RATING_LIST: `/api/ratingslist`,
 };
 
 export default apiBase;
