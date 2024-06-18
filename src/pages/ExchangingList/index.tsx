@@ -7,11 +7,12 @@ import { setPages } from "../../../redux/pages/pagesSlice";
 import { Title, Cards, Card, Wrapper, Container } from "./style";
 import { Btn } from "../../styles/Btn";
 import PageBar from "../../components/PageBar";
+import EmptyData from "../../components/EmptyData";
 
 type ExchangingObject = {
   code: number;
   message: string;
-  status: string;
+  Status: string | boolean;
   page: number;
   totalPages: number;
   total: number;
@@ -70,10 +71,6 @@ function ExchangingList() {
     getExchangingList();
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log(exchangingList);
-  }),
-    [exchangingList];
   return (
     <Wrapper>
       <Container>
@@ -119,10 +116,10 @@ function ExchangingList() {
               );
             })
           ) : (
-            <div style={{ textAlign: "center" }}>{"沒有資料"}</div>
+            <EmptyData />
           )}
         </Cards>
-        <PageBar />
+        {exchangingList?.Status === "ok" && <PageBar />}
       </Container>
     </Wrapper>
   );

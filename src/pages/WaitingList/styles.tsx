@@ -7,7 +7,6 @@ export const Wrapper = styled.section`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   max-width: 1320px;
   padding: 0 12px;
   margin: 0 auto;
@@ -22,6 +21,7 @@ export const SortWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  padding-bottom: 1.75rem;
   & > p {
   }
   & > select {
@@ -45,6 +45,7 @@ export const List = styled.ul`
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
+  padding-bottom: 1.75rem;
 `;
 
 export const Item = styled.div`
