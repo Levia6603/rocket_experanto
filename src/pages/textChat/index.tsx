@@ -90,44 +90,52 @@ function TextChat() {
     roomId &&
       onValue(roomref, async (snap) => {
         const data = await snap.val();
-        const list: MessageList = Object.values(data);
-        data && setMessageList(list);
+        if (data) {
+          const list: MessageList = Object.values(data);
+          setMessageList(list);
+        }
       });
   }, [roomId]);
+
+  useEffect(() => {
+    console.log(chatList);
+    console.log(messageList);
+  }, [chatList, messageList]);
   return (
     <Wrapper>
       <Container>
         <ul>
           <Label>Conversations</Label>
-          {chatList.map((el, i) =>
-            el.initiatorName === localStorage.getItem("name") ? (
-              <List
-                key={i}
-                $current={el.RoomNumber === roomId}
-                onClick={() => {
-                  setMessageList([]);
-                  setRoomId(el.RoomNumber);
-                  getUserData(el.RoomId);
-                }}
-              >
-                <img src={el.receiverAvatar} alt="" />
-                {el.receiverName}
-              </List>
-            ) : (
-              <List
-                key={i}
-                $current={el.RoomNumber === roomId}
-                onClick={() => {
-                  setMessageList([]);
-                  setRoomId(el.RoomNumber);
-                  getUserData(el.RoomId);
-                }}
-              >
-                <img src={el.initiatorAvatar} alt="" />
-                {el.initiatorName}
-              </List>
-            )
-          )}
+          {chatList &&
+            chatList.map((el, i) =>
+              el.initiatorName === localStorage.getItem("name") ? (
+                <List
+                  key={i}
+                  $current={el.RoomNumber === roomId}
+                  onClick={() => {
+                    setMessageList([]);
+                    setRoomId(el.RoomNumber);
+                    getUserData(el.RoomId);
+                  }}
+                >
+                  <img src={el.receiverAvatar} alt="" />
+                  {el.receiverName}
+                </List>
+              ) : (
+                <List
+                  key={i}
+                  $current={el.RoomNumber === roomId}
+                  onClick={() => {
+                    setMessageList([]);
+                    setRoomId(el.RoomNumber);
+                    getUserData(el.RoomId);
+                  }}
+                >
+                  <img src={el.initiatorAvatar} alt="" />
+                  {el.initiatorName}
+                </List>
+              )
+            )}
         </ul>
         {roomId ? (
           <Chat>
@@ -137,23 +145,24 @@ function TextChat() {
             </User>
             <ul>
               <ul>
-                {messageList.map((el, i) => {
-                  const { name, message } = el;
-                  const idenity = name === localStorage.getItem("name");
-                  return (
-                    <Message key={i} $idenity={idenity}>
-                      <img
-                        src={
-                          idenity
-                            ? localStorage.getItem("avatar") || ""
-                            : remoteData.avatar
-                        }
-                        alt=""
-                      />
-                      <p>{message}</p>
-                    </Message>
-                  );
-                })}
+                {messageList &&
+                  messageList.map((el, i) => {
+                    const { name, message } = el;
+                    const idenity = name === localStorage.getItem("name");
+                    return (
+                      <Message key={i} $idenity={idenity}>
+                        <img
+                          src={
+                            idenity
+                              ? localStorage.getItem("avatar") || ""
+                              : remoteData.avatar
+                          }
+                          alt=""
+                        />
+                        <p>{message}</p>
+                      </Message>
+                    );
+                  })}
               </ul>
             </ul>
             <InputGroup
