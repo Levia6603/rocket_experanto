@@ -29,6 +29,8 @@ function CommentList() {
       const data: ExchangeData[] = await axios
         .get(apiBase.GET_RATING_LIST, { headers })
         .then((res) => {
+          console.log(res.data);
+
           if (res.data.Message === "請重新登入") {
             alert("登入逾時，請重新登入");
             navigate("/login");

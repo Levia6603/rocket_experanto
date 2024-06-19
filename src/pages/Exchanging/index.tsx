@@ -117,10 +117,9 @@ function Exchanging() {
         }
       })
       .catch((err) => err.response.data.RoomNumber);
-    window.open(
-      `https://rocket-experanto.vercel.app/${type}?roomid=${res}`,
-      "_blank"
-    );
+    console.log(res);
+
+    window.open(`http://localhost:5173/${type}?roomid=${res}`, "_blank");
   }
 
   async function accomplishSingleGoal(id: number) {

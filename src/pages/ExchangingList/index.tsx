@@ -9,34 +9,36 @@ import { Btn } from "../../styles/Btn";
 import PageBar from "../../components/PageBar";
 import EmptyData from "../../components/EmptyData";
 
-type ExchangingObject = {
-  code: number;
-  message: string;
-  Status: string | boolean;
-  page: number;
-  totalPages: number;
-  total: number;
-  list: ExchangingList[];
-};
-type ExchangingList = {
+interface ApiData {
   duration: string;
   exchangeId: number;
   initiatorAvatar: string;
+  initiatorId: number;
   initiatorName: string;
-  intiatorId: number;
   receiverAvatar: string;
-  receiverName: string;
   receiverId: number;
+  receiverName: string;
+  tittle: string;
+}
+
+interface ExchangeData {
+  name: string;
+  avatar: string;
   title: string;
-};
+  duration: string;
+  id: number;
+}
 
 function ExchangingList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [exchangingList, setExchangingList] = useState<ExchangingObject>(
-    {} as ExchangingObject
-  );
+  const [exchangeList, setExchangeList] = useState<ExchangeData[]>([]);
+  const [pageStatus, setPageStatus] = useState({
+    status: "",
+    totalPages: 0,
+    currentPage: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ function ExchangingList() {
 
       try {
         setLoading(true);
-        const exchangingList = await axios({
+        const data = await axios({
           method: "GET",
           url: apiBase.GET_EXCHANGING_LIST,
           headers: headers,
@@ -58,8 +60,46 @@ function ExchangingList() {
             return res.data;
           })
           .catch((err) => console.log(err));
-        dispatch(setPages(exchangingList.totalPages));
-        setExchangingList(exchangingList);
+        setPageStatus({
+          status: data.Status,
+          totalPages: data.totalPages,
+          currentPage: data.page,
+        });
+        const dataList: ApiData[] = data.list;
+        const list = dataList.map((obj) => {
+          if (obj.initiatorName === localStorage.getItem("name")) {
+            const {
+              receiverName,
+              receiverAvatar,
+              tittle,
+              exchangeId,
+              duration,
+            } = obj;
+            return {
+              id: exchangeId,
+              title: tittle,
+              avatar: receiverAvatar,
+              name: receiverName,
+              duration,
+            };
+          } else {
+            const {
+              initiatorAvatar,
+              initiatorName,
+              tittle,
+              exchangeId,
+              duration,
+            } = obj;
+            return {
+              id: exchangeId,
+              title: tittle,
+              avatar: initiatorAvatar,
+              name: initiatorName,
+              duration,
+            };
+          }
+        });
+        setExchangeList(list);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -69,7 +109,11 @@ function ExchangingList() {
     }
 
     getExchangingList();
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    dispatch(setPages(pageStatus.totalPages));
+  }, [pageStatus]);
 
   return (
     <Wrapper>
@@ -78,36 +122,35 @@ function ExchangingList() {
         <Cards>
           {loading ? (
             <div style={{ textAlign: "center" }}>{"載入中"}</div>
-          ) : exchangingList?.list ? (
-            exchangingList?.list?.map((item: ExchangingList, index: number) => {
+          ) : exchangeList ? (
+            exchangeList.map((obj, i) => {
+              const { avatar, name, duration, title, id } = obj;
               return (
-                <Card key={index}>
+                <Card key={i}>
                   <div>
                     <div>
-                      <img src={item.receiverAvatar} alt="" />
+                      <img src={avatar} alt="" />
                     </div>
                   </div>
                   <div>
                     <div>
-                      <h4>{"貼文標題"}</h4>
+                      <h4>{title}</h4>
                       <h4>
                         {"貼文者名稱: "}
-                        <span>{item.initiatorName}</span>
+                        <span>{name}</span>
                       </h4>
                     </div>
                     <div>
                       <p>
                         {"有效時間: "}
-                        <span>{`${item.duration}`}</span>
+                        <span>{`${duration}`}</span>
                       </p>
                     </div>
                   </div>
                   <div>
                     <Btn
                       $style="outline"
-                      onClick={() =>
-                        navigate(`/user/exchanging/${item.exchangeId}`)
-                      }
+                      onClick={() => navigate(`/user/exchanging/${id}`)}
                     >
                       詳細內容
                     </Btn>
@@ -119,7 +162,7 @@ function ExchangingList() {
             <EmptyData />
           )}
         </Cards>
-        {exchangingList?.Status === "ok" && <PageBar />}
+        {pageStatus.status === "ok" && <PageBar />}
       </Container>
     </Wrapper>
   );
