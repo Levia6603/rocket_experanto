@@ -39,7 +39,7 @@ function Nav() {
   const { t, i18n } = useTranslation();
 
   const languages = ["English", "中文"];
-  const defaultValue = "中文";
+  const defaultValue = "English";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
   //* 發文前確是否已完成個人資料
   const [isCompleted, setIsCompleted] = useState({} as ProfileType);
