@@ -158,23 +158,21 @@ function LandingPage() {
       </Video>
       <Processes>
         <div>
+          <h2>{t("process_title")}</h2>
           <div>
-            <h2>{t("process_title")}</h2>
-            <div>
-              {processes.map((item, index) => (
-                <ProcessCard key={index}>
+            {processes.map((item, index) => (
+              <ProcessCard key={index}>
+                <div>
+                  <img src={item.image} alt={item.description} />
+                </div>
+                <div>
                   <div>
-                    <img src={item.image} alt={item.description} />
+                    <p>{index + 1}</p>
                   </div>
-                  <div>
-                    <div>
-                      <p>{index + 1}</p>
-                    </div>
-                    <h5>{item.title}</h5>
-                  </div>
-                </ProcessCard>
-              ))}
-            </div>
+                  <h5>{item.title}</h5>
+                </div>
+              </ProcessCard>
+            ))}
           </div>
         </div>
       </Processes>

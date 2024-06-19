@@ -18,7 +18,7 @@ import {
   NavbarNotLoggedIn,
 } from "./navStyle";
 import { Btn } from "../../styles/Btn";
-import logo from "/logo_full.png";
+import logo from "/logo_full.svg";
 import bell from "/profile_box_icons/bell.svg";
 import global from "/global.svg";
 import apiBase from "../../Api";

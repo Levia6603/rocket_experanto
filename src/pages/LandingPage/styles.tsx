@@ -10,7 +10,7 @@ export const Wrapper = styled.section`
 
 export const Landing = styled.section`
   width: 100%;
-  background-color: #fff9eb;
+  background-color: #fffbf2;
   display: flex;
   justify-content: center;
 
@@ -59,8 +59,8 @@ export const Languages = styled.section`
   justify-content: center;
   gap: 30px;
   background-color: #fff;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 3.75rem;
+  padding-bottom: 3.75rem;
 
   //* container
   & > div {
@@ -116,6 +116,8 @@ export const Video = styled.section`
   display: flex;
   justify-content: center;
   background-color: #fff3d2;
+  padding-top: 60px;
+  padding-bottom: 60px;
   //* container
   & > div {
     width: 1320px;
@@ -145,38 +147,33 @@ export const Video = styled.section`
 
 export const Processes = styled.section`
   width: 100%;
-  background-color: #fff;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  display: flex;
+  justify-content: center;
+  background-color: #fff9eb;
+
+  //* container
   & > div {
-    width: 100%;
-    background-color: #fff9eb;
+    width: 1320px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    gap: 1rem;
 
-    //* container
+    //* 標題文字區
+    & > h2 {
+      font-weight: 700;
+      color: #212121;
+    }
+
+    //* 說明卡片
     & > div {
-      width: 1320px;
+      width: 100%;
       display: flex;
-      flex-direction: column;
       justify-content: center;
-      padding: 1.5rem 0;
-      gap: 1rem;
-
-      //* 標題文字區
-      & > h2 {
-        font-weight: 700;
-        color: #212121;
-      }
-
-      //* 說明卡片
-      & > div {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-      }
+      flex-wrap: wrap;
+      gap: 1.5rem;
     }
   }
 `;
