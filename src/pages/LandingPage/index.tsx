@@ -85,6 +85,12 @@ function LandingPage() {
     }
   }
 
+  function handleClick(id: number) {
+    navigate(`/home/index`, {
+      state: { languageId: languageList[id].LanguageId },
+    });
+  }
+
   useEffect(() => {
     getLanguageList();
   }, []);
@@ -120,7 +126,7 @@ function LandingPage() {
           <div>
             {languageList.map((item, index) =>
               index < 8 ? (
-                <LanguageCard key={index}>
+                <LanguageCard key={index} onClick={() => handleClick(index)}>
                   <h4>{item.Name}</h4>
                   <p>
                     {item.Count} <span>{t("language_posts")}</span>
