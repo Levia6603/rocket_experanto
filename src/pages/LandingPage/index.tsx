@@ -141,9 +141,10 @@ function LandingPage() {
             <iframe
               width="857"
               height="499"
-              src="https://youtu.be/EGgwwdxys7o"
-              title="Promotion Video"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              src="https://www.youtube.com/embed/EGgwwdxys7o?si=6WX0J02be3DYlIjM"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
               allowFullScreen
             ></iframe>
           </div>
