@@ -6,6 +6,7 @@ import pagesSlice from "./pages/pagesSlice";
 import profileStateSlice from "./profileState/profileState";
 import favoriteListSlice from "./favoriteList/favoriteListSlice";
 import i18nSlice from "./i18n/i18nSlice";
+import toastStateSlice from "./toastState/toastStateSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     profileState: profileStateSlice,
     favoriteList: favoriteListSlice,
     i18n: i18nSlice,
+    toast: toastStateSlice,
   },
 });
 

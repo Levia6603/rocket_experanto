@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import apiBase from "../../Api";
 import {
@@ -20,10 +21,10 @@ import Comments from "../../components/Comments";
 import star from "/profile_box_icons/star-yellow.svg";
 import like from "/profile_box_icons/heart.svg";
 import ApplySchedule from "../../components/ApplySchedule";
-import { Btn } from "../../styles/Btn";
 import Apply from "../../components/Apply";
-import { useNavigate, useParams } from "react-router-dom";
+import { Btn } from "../../styles/Btn";
 import { ProfileType } from "../../pages/ProfileIndex";
+import Toast from "../../components/Toast";
 
 export interface PostInterface {
   userName?: string;
