@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import apiBase from "../../Api";
-import { RootStateType } from "../../../redux";
 import {
   Wrapper,
   Landing,
@@ -37,8 +35,6 @@ type Language = {
 function LandingPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-
-  const lang = useSelector((state: RootStateType) => state.i18n.language);
 
   //* processes intro
   const processes: Process = [
@@ -96,8 +92,11 @@ function LandingPage() {
   }, []);
 
   useEffect(() => {
-    i18n.changeLanguage(lang);
-  }, [lang]);
+    const localLanguage = localStorage.getItem("language");
+    !localLanguage
+      ? i18n.changeLanguage("en")
+      : i18n.changeLanguage(localLanguage);
+  }, [i18n]);
 
   return (
     <Wrapper>

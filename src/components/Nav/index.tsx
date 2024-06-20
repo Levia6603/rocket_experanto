@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLanguage } from "../../../redux/i18n/i18nSlice";
 import { setCheckProfileState } from "../../../redux/checkProfile/checkProfileSlice";
 import { useTranslation } from "react-i18next";
-import { RootStateType } from "../../../redux";
 
 import {
   Section,
@@ -37,9 +35,12 @@ interface ProfileType {
 function Nav() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const isLoggedIn = localStorage.getItem("token") ? true : false;
+
+  const localLanguage = localStorage.getItem("language");
 
   const languages = ["English", "中文"];
-  const defaultValue = "English";
+  const defaultValue = localLanguage || "English";
   const [selectLanguage, setSelectLanguage] = useState(defaultValue);
   //* 發文前確是否已完成個人資料
   const [isCompleted, setIsCompleted] = useState({} as ProfileType);
@@ -47,16 +48,13 @@ function Nav() {
     setSelectLanguage(el);
   }
 
-  const isLoggedIn = localStorage.getItem("token") ? true : false;
-
   //* 切換語言 i18n
   function handleLanguage(lang: string) {
-    dispatch(setLanguage(lang));
+    window.localStorage.setItem("language", lang);
   }
 
   //* redux toolkit
   const dispatch = useDispatch();
-  const language = useSelector((state: RootStateType) => state.i18n.language);
 
   //* 發文前確認個人資料是否填寫完成
   async function checkProfile() {
@@ -65,20 +63,17 @@ function Nav() {
       Accept: "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     };
-    try {
-      await axios({
-        method: "GET",
-        url: apiBase.GET_CHECK_POST,
-        headers: headers,
+
+    await axios({
+      method: "GET",
+      url: apiBase.GET_CHECK_POST,
+      headers: headers,
+    })
+      .then((res) => {
+        setIsCompleted(res.data);
+        dispatch(setCheckProfileState(res.data));
       })
-        .then((res) => {
-          setIsCompleted(res.data);
-          dispatch(setCheckProfileState(res.data));
-        })
-        .catch((err) => console.log(err));
-    } catch (error) {
-      console.log(error);
-    }
+      .catch((err) => console.log(err));
   }
   //* 發文
   function handlePost() {
@@ -94,8 +89,14 @@ function Nav() {
   }
 
   useEffect(() => {
-    i18n.changeLanguage(language);
-  }, [language]);
+    !localLanguage
+      ? i18n.changeLanguage("en")
+      : i18n.changeLanguage(localLanguage);
+  }, [localLanguage, i18n]);
+
+  useEffect(() => {
+    selectLanguage && window.localStorage.setItem("language", selectLanguage);
+  }, [selectLanguage]);
 
   return (
     <>
@@ -155,7 +156,7 @@ function Nav() {
                 <LanguageSelector
                   size="short"
                   languageList={languages}
-                  currentValue={selectLanguage}
+                  currentValue={localLanguage || selectLanguage}
                   setValue={handleSelect}
                   onChange={handleLanguage(selectLanguage)}
                 />
@@ -170,7 +171,7 @@ function Nav() {
                 <LanguageSelector
                   size="short"
                   languageList={languages}
-                  currentValue={selectLanguage}
+                  currentValue={localLanguage || selectLanguage}
                   setValue={handleSelect}
                   onChange={handleLanguage(selectLanguage)}
                 />
