@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { Container, Photo, Menu } from "./profileStyle";
 import star from "/profile_box_icons/star-yellow.svg";
 import allPost from "/profile_box_icons/all-post.svg";
-import notification from "/profile_box_icons/bell.svg";
 import apply from "/profile_box_icons/clipboard-check.svg";
 import processing from "/profile_box_icons/friends.svg";
 import personal from "/profile_box_icons/person.svg";
@@ -32,15 +31,11 @@ function ProfileBox() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [profile, setProfile] = useState({} as ProfileType);
-
-  //* 把目前的功能選單長度狀態存到redux
   const showAll = useSelector(
     (state: RootStateType) => state.profileState.showAll
   );
-
-  //* 用登入狀態決定是否可以發文
   const [isLogin, setLogin] = useState(false);
-  //* 如果有 token 的話就可以看到發文按妞
+
   useEffect(() => {
     const isToken = localStorage.getItem("token");
     setLogin(isToken ? true : false);
@@ -53,20 +48,16 @@ function ProfileBox() {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     };
 
-    try {
-      const profile: ProfileType = await axios({
-        method: "GET",
-        url: apiBase.GET_PROFILE,
-        headers: headers,
+    const profile: ProfileType = await axios({
+      method: "GET",
+      url: apiBase.GET_PROFILE,
+      headers: headers,
+    })
+      .then((res) => {
+        return res.data;
       })
-        .then((res) => {
-          return res.data;
-        })
-        .catch((err) => console.log(err));
-      setProfile(profile);
-    } catch (error) {
-      console.error(error);
-    }
+      .catch((err) => console.log(err));
+    setProfile(profile);
   }
 
   useEffect(() => {
@@ -81,48 +72,44 @@ function ProfileBox() {
       url: "/home/index",
     },
     {
-      icon: notification,
-      name: "通知中心",
-      url: "/user/notifications",
-    },
-    {
-      icon: apply,
-      name: "申請與配對審核區",
-      url: "/user/matching",
-    },
-    {
-      icon: processing,
-      name: "已配對貼文交換區",
-      url: "/user/exchanging_list",
-    },
-    {
       icon: personal,
       name: "個人資訊",
       url: "/user/profile/index",
     },
     {
+      icon: processing,
+      name: "開始交換",
+      url: "/user/exchanging_list",
+    },
+    {
+      icon: apply,
+      name: "回覆請求",
+      url: "/user/matching",
+    },
+
+    {
       icon: posted,
-      name: "已發表貼文區",
+      name: "我的貼文",
       url: "",
     },
     {
       icon: like,
-      name: "貼文收藏區",
+      name: "收藏",
       url: "",
     },
     {
       icon: expired,
-      name: "已過期貼文",
+      name: "過期貼文",
       url: "",
     },
     {
       icon: waiting,
-      name: "貼文回覆等待區",
+      name: "等待大廳",
       url: "/user/waiting_list",
     },
     {
       icon: completed,
-      name: "交換完成區",
+      name: "查看評價",
       url: "/user/commenting",
     },
     {
