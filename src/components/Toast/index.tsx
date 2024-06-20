@@ -22,6 +22,9 @@ function Toast() {
           dispatch(toggleToast());
         }
       }}
+      onClick={() => {
+        dispatch(toggleToast());
+      }}
     >
       <div>
         <p>{text}</p>

@@ -133,6 +133,7 @@ function FullPost() {
       setApplyState(true);
     } else if (message === "無相關擅長語言，無法申請該貼文。") {
       dispatch(setToastText("無相關擅長語言，無法申請該貼文。"));
+      dispatch(toggleToast());
     }
   }
 
