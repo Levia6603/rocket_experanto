@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import apiBase from "../../Api";
 import {
@@ -25,6 +26,12 @@ import Apply from "../../components/Apply";
 import { Btn } from "../../styles/Btn";
 import { ProfileType } from "../../pages/ProfileIndex";
 import Toast from "../../components/Toast";
+
+import { RootStateType } from "../../../redux";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
 
 export interface PostInterface {
   userName?: string;
@@ -61,14 +68,16 @@ interface SelectTimeData {
 }
 
 function FullPost() {
+  const toastState = useSelector((state: RootStateType) => state.toast.toast);
   const [post, setPost] = useState({} as PostInterface);
   const [timeData, setTimeData] = useState<TimeData>({});
   const [tags, setTags] = useState(String);
   const [tagAry, setTagAry] = useState([] as string[]);
   const [selectTime, setSelectTime] = useState<SelectTimeData>({});
   const [applyState, setApplyState] = useState(false);
-  const navigate = useNavigate();
   const [profile, setProfile] = useState({} as ProfileType);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { id } = useParams();
 
@@ -106,6 +115,10 @@ function FullPost() {
     }
   }
   async function checkPermission(id: string) {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+      return;
+    }
     const headers = {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     };
@@ -119,7 +132,7 @@ function FullPost() {
     if (message === "可申請") {
       setApplyState(true);
     } else if (message === "無相關擅長語言，無法申請該貼文。") {
-      navigate("/user/profile/index");
+      dispatch(setToastText("無相關擅長語言，無法申請該貼文。"));
     }
   }
 
@@ -159,6 +172,7 @@ function FullPost() {
 
   return (
     <>
+      {toastState && <Toast />}
       {applyState && (
         <PopUp>
           <Apply

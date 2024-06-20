@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   toast: false,
+  text: "",
 };
 
 const toastStateSlice = createSlice({
@@ -11,8 +12,11 @@ const toastStateSlice = createSlice({
     toggleToast: (state) => {
       state.toast = !state.toast;
     },
+    setToastText: (state, action) => {
+      state.text = action.payload;
+    },
   },
 });
 
-export const { toggleToast } = toastStateSlice.actions;
+export const { toggleToast, setToastText } = toastStateSlice.actions;
 export default toastStateSlice.reducer;
