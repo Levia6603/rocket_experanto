@@ -273,8 +273,8 @@ export const CertificationCard = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  width: 184px;
-  height: 216px;
+  max-width: 184px;
+  max-height: 216px;
   padding: 1rem;
   border: 1px solid #5e5e5e;
   border-radius: 4px;
@@ -294,7 +294,7 @@ export const CertificationCard = styled.div`
     padding: 0.5rem;
     border: 1px solid #bdbdbd;
     border-radius: 4px;
-    & > input {
+    & > img {
       max-width: 152px;
       max-height: 152px;
       border: 0;

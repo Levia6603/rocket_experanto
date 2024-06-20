@@ -47,8 +47,6 @@ function HomeIndex() {
 
   // 依據頁數取得文章
   async function getPostListByPage(index: number) {
-    console.log("im in getPostListByPage");
-
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -82,7 +80,7 @@ function HomeIndex() {
       Accept: "application/json",
     };
     token ? (headers["Authorization"] = `Bearer ${token}`) : null;
-    
+
     try {
       const fetchedPostList = await axios({
         method: "GET",
@@ -96,13 +94,13 @@ function HomeIndex() {
       setPostList(fetchedPostList);
       dispatch(setPages(fetchedPostList.totalPages));
       setLoading(false);
-    } finally{
-      setLoading(false);}
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
     async function getPostList() {
-
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -158,8 +156,6 @@ function HomeIndex() {
     }
     const query = `languageId=${languageIdfromlanding}`;
     languageIdfromlanding ? getPostListByLanguage(1, query) : getPostList();
-
-    
   }, [dispatch]);
 
   useEffect(() => {

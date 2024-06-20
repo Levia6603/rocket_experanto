@@ -1,10 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import apiBase from "../../Api";
-import { RootStateType } from "../../../redux";
 import {
   Wrapper,
   Landing,
@@ -37,8 +35,6 @@ type Language = {
 function LandingPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-
-  const lang = useSelector((state: RootStateType) => state.i18n.language);
 
   //* processes intro
   const processes: Process = [
@@ -96,8 +92,11 @@ function LandingPage() {
   }, []);
 
   useEffect(() => {
-    i18n.changeLanguage(lang);
-  }, [lang]);
+    const localLanguage = localStorage.getItem("language");
+    !localLanguage
+      ? i18n.changeLanguage("en")
+      : i18n.changeLanguage(localLanguage);
+  }, [i18n]);
 
   return (
     <Wrapper>
@@ -147,7 +146,7 @@ function LandingPage() {
             <iframe
               width="857"
               height="499"
-              src="https://www.youtube.com/embed/EGgwwdxys7o?si=6WX0J02be3DYlIjM"
+              src="https://www.youtube.com/embed/IvxU3vzBAVw?si=iO41h9YHqutL7vCi?autoplay=1&mute=1&loop=1"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -158,23 +157,21 @@ function LandingPage() {
       </Video>
       <Processes>
         <div>
+          <h2>{t("process_title")}</h2>
           <div>
-            <h2>{t("process_title")}</h2>
-            <div>
-              {processes.map((item, index) => (
-                <ProcessCard key={index}>
+            {processes.map((item, index) => (
+              <ProcessCard key={index}>
+                <div>
+                  <img src={item.image} alt={item.description} />
+                </div>
+                <div>
                   <div>
-                    <img src={item.image} alt={item.description} />
+                    <p>{index + 1}</p>
                   </div>
-                  <div>
-                    <div>
-                      <p>{index + 1}</p>
-                    </div>
-                    <h5>{item.title}</h5>
-                  </div>
-                </ProcessCard>
-              ))}
-            </div>
+                  <h5>{item.title}</h5>
+                </div>
+              </ProcessCard>
+            ))}
           </div>
         </div>
       </Processes>

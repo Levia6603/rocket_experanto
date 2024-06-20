@@ -1,5 +1,9 @@
 import { styled } from "styled-components";
 
+type Active = {
+  $active?: boolean | undefined;
+};
+
 export const Container = styled.div`
   width: 306px;
   min-width: 306px;
@@ -81,45 +85,37 @@ export const Menu = styled.div`
   gap: 4px;
   width: 100%;
   background-color: white;
+
+  //* 選單
   & > ul {
     display: flex;
     flex-direction: column;
     gap: 4px;
     width: 100%;
-    & > li {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 12px 1rem;
-      cursor: pointer;
-      &:hover {
-        background-color: #616161;
-      }
-      & > img {
-        width: 18px;
-        height: 18px;
-      }
-    }
-    & > li:nth-child(2) {
-      & > div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        & > div {
-          width: 38px;
-          height: 20px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: #e0e0e0;
-          border-radius: 2rem;
-          & > p {
-            font-size: 10px;
-          }
-        }
-      }
-    }
+  }
+`;
+
+export const Item = styled.li<Active>`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 1rem;
+  background-color: ${({ $active }) => ($active ? "#f1f1f1" : "transparent")};
+
+  cursor: pointer;
+  &:hover {
+    box-shadow: 3px 3px 3px #000;
+
+    transition: all 0.3s;
+  }
+  &:active {
+    box-shadow: 0 0 0;
+    transition: all 0s;
+  }
+
+  & > img {
+    width: 18px;
+    height: 18px;
   }
 `;
