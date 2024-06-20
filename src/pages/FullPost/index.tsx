@@ -87,7 +87,6 @@ function FullPost() {
         .catch((err) => console.log(err));
       setPost(post);
       setTags(post.tags || "");
-      console.log(post);
 
       const availableTime: TimeData = post.availableHours;
       setTimeData(availableTime);
@@ -113,9 +112,13 @@ function FullPost() {
       .get(`${apiBase.GET_CHECK_PERMISSION}/${id}`, {
         headers,
       })
-      .then((res) => res.data.message);
+      .then((res) => res.data.message)
+      .catch((err) => err.response.data.Message);
+
     if (message === "可申請") {
       setApplyState(true);
+    } else if (message === "無相關擅長語言，無法申請該貼文。") {
+      navigate("/user/profile/index");
     }
   }
 
