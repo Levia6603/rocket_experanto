@@ -52,3 +52,7 @@ export async function getList(
   const list: apiList = await axios.get(apiUrl).then((res) => res.data.data);
   setList(list);
 }
+
+export const headers = {
+  Authorization: `Bearer ${localStorage.getItem("token")}`,
+};

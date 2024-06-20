@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { SimplifiedPostInterface } from "../../components/PostCard";
@@ -27,6 +27,8 @@ type Favorite = {
 
 function HomeIndex() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const languageIdfromlanding = location?.state?.languageId;
 
   const [loading, setLoading] = useState<boolean>(true);
   const [prevFavoriteList, setPrevFavoriteList] = useState<Favorite[]>([]);
@@ -45,6 +47,8 @@ function HomeIndex() {
 
   // 依據頁數取得文章
   async function getPostListByPage(index: number) {
+    console.log("im in getPostListByPage");
+
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -77,8 +81,8 @@ function HomeIndex() {
       "Content-Type": "application/json",
       Accept: "application/json",
     };
-
     token ? (headers["Authorization"] = `Bearer ${token}`) : null;
+    
     try {
       const fetchedPostList = await axios({
         method: "GET",
@@ -92,14 +96,13 @@ function HomeIndex() {
       setPostList(fetchedPostList);
       dispatch(setPages(fetchedPostList.totalPages));
       setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
+    } finally{
+      setLoading(false);}
   }
 
   useEffect(() => {
     async function getPostList() {
+
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -153,7 +156,10 @@ function HomeIndex() {
         console.log(error);
       }
     }
-    getPostList();
+    const query = `languageId=${languageIdfromlanding}`;
+    languageIdfromlanding ? getPostListByLanguage(1, query) : getPostList();
+
+    
   }, [dispatch]);
 
   useEffect(() => {
@@ -162,9 +168,7 @@ function HomeIndex() {
   }, [page]);
 
   useEffect(() => {
-    languageIds.length > 0
-      ? getPostListByLanguage(page, languageQuery)
-      : getPostListByPage(page);
+    languageIds.length > 0 && getPostListByLanguage(page, languageQuery);
   }, [languageIds, page, languageQuery]);
 
   useEffect(() => {

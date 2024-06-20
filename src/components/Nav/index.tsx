@@ -157,7 +157,7 @@ function Nav() {
                   languageList={languages}
                   currentValue={selectLanguage}
                   setValue={handleSelect}
-                  onChange={() => handleLanguage(selectLanguage)}
+                  onChange={handleLanguage(selectLanguage)}
                 />
               </li>
             </NavbarLoggedIn>
