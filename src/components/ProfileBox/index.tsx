@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Container, Photo, Menu } from "./profileStyle";
+import { Container, Photo, Menu, Item } from "./profileStyle";
 import star from "/profile_box_icons/star-yellow.svg";
 import allPost from "/profile_box_icons/all-post.svg";
 import apply from "/profile_box_icons/clipboard-check.svg";
@@ -35,6 +35,7 @@ function ProfileBox() {
     (state: RootStateType) => state.profileState.showAll
   );
   const [isLogin, setLogin] = useState(false);
+  const active = window.location.pathname;
 
   useEffect(() => {
     const isToken = localStorage.getItem("token");
@@ -162,8 +163,9 @@ function ProfileBox() {
           </Photo>
           <Menu>
             <ul>
-              {list.slice(0, listToShow).map((item) => (
-                <li
+              {list?.slice(0, listToShow).map((item) => (
+                <Item
+                  $active={active === item.url}
                   key={item.name}
                   onClick={() => {
                     item.url && navigate(item.url);
@@ -172,17 +174,17 @@ function ProfileBox() {
                 >
                   <img src={item.icon} alt="" />
                   <p>{item.name}</p>
-                </li>
+                </Item>
               ))}
               {!showAll && (
-                <li
+                <Item
                   onClick={() => {
                     dispatch(setShowAll());
                   }}
                 >
                   <img src={dropdown} alt="" />
                   <p>顯示全部</p>
-                </li>
+                </Item>
               )}
             </ul>
           </Menu>
