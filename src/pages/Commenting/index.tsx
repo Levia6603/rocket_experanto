@@ -15,6 +15,14 @@ import axios from "axios";
 import apiBase from "../../Api";
 import { useEffect, useState } from "react";
 import { Btn } from "../../styles/Btn";
+import { headers } from "../../Api";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
+import Toast from "../../components/Toast";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
 
 interface RemoteData {
   name: string;
@@ -52,13 +60,12 @@ function Commenting() {
     id: 0,
   });
   const [rate, setRate] = useState<RatingData>(defaultRate);
+  const toastState = useSelector((state: RootStateType) => state.toast.toast);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function getData() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
     try {
       const data = await axios
         .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
@@ -70,7 +77,6 @@ function Commenting() {
           }
           return res.data[0];
         });
-      console.log(data);
 
       setExchangeData({
         title: data.tittle,
@@ -96,17 +102,18 @@ function Commenting() {
     }
   }
 
-  async function Submit() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
+  async function submit() {
+    const rateData = { ...rate, ExchangeId: exchangeData.id };
     try {
       await axios
-        .post(`${apiBase.POST_RATING}`, rate, { headers })
+        .post(`${apiBase.POST_RATING}`, rateData, { headers })
         .then((res) => {
           if (res.data.message === "新增成功") {
-            alert("新增成功");
-            navigate("/home/index");
+            dispatch(toggleToast());
+            dispatch(setToastText("新增成功"));
+            setTimeout(() => {
+              navigate("/user/commenting");
+            }, 5000);
           }
         });
     } catch (err) {
@@ -121,6 +128,7 @@ function Commenting() {
   return (
     <>
       <Wrapper>
+        {toastState && <Toast />}
         <Container>
           <Title>填寫評價</Title>
           <div>
@@ -365,7 +373,7 @@ function Commenting() {
                     });
                   }}
                 ></textarea>
-                <Btn $style="primary" type="button" onClick={Submit}>
+                <Btn $style="primary" type="button" onClick={submit}>
                   送出評價
                 </Btn>
               </TextAreaWrapper>
