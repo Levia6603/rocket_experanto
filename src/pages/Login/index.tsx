@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import apiBase from "../../Api";
 import loginImg from "/login.svg";
-import logoFull from "/logo_full.png";
+import logoFull from "/logo_full.svg";
 import googleLogo from "/Google_logo.svg";
 import { Banner, Btn, Container, Logo, Wrapper } from "./loginStyle";
 
