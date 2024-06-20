@@ -102,7 +102,7 @@ function Nav() {
       <Section>
         <Container>
           <div>
-            <Logo onClick={() => navigate("/")}>
+            <Logo onClick={() => navigate("/home/index")}>
               <img src={logo} alt="experanto logo" />
             </Logo>
             <SearchBar>
