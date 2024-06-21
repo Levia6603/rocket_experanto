@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import apiBase from "../../Api";
@@ -35,6 +35,7 @@ type Language = {
 function LandingPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const videoRef = useRef<HTMLIFrameElement>(null);
 
   //* processes intro
   const processes: Process = [
@@ -91,12 +92,46 @@ function LandingPage() {
     getLanguageList();
   }, []);
 
+  //* i18n change language
   useEffect(() => {
     const localLanguage = localStorage.getItem("language");
     !localLanguage
       ? i18n.changeLanguage("en")
       : i18n.changeLanguage(localLanguage);
   }, [i18n]);
+
+  //* video auto play
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          videoRef.current &&
+            videoRef.current.contentWindow?.postMessage(
+              JSON.stringify({ event: "command", func: "playVideo" }),
+              "*"
+            );
+        } else {
+          videoRef.current &&
+            videoRef.current.contentWindow?.postMessage(
+              JSON.stringify({ event: "command", func: "pauseVideo" }),
+              "*"
+            );
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Wrapper>
@@ -144,9 +179,10 @@ function LandingPage() {
           </div>
           <div>
             <iframe
+              ref={videoRef}
               width="857"
               height="499"
-              src="https://www.youtube.com/embed/IvxU3vzBAVw?si=iO41h9YHqutL7vCi?autoplay=1&mute=1&loop=1"
+              src="https://www.youtube.com/embed/IvxU3vzBAVw?si=iO41h9YHqutL7vCi&enablejsapi=1&mute=1"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
