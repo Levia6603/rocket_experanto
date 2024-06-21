@@ -107,15 +107,13 @@ function LandingPage() {
         const [entry] = entries;
         if (entry.isIntersecting) {
           videoRef.current &&
-            videoRef.current.contentWindow &&
-            videoRef.current.contentWindow.postMessage(
+            videoRef.current.contentWindow?.postMessage(
               JSON.stringify({ event: "command", func: "playVideo" }),
               "*"
             );
         } else {
           videoRef.current &&
-            videoRef.current.contentWindow &&
-            videoRef.current.contentWindow.postMessage(
+            videoRef.current.contentWindow?.postMessage(
               JSON.stringify({ event: "command", func: "pauseVideo" }),
               "*"
             );
@@ -180,20 +178,11 @@ function LandingPage() {
             <p>{t("video_describe")}</p>
           </div>
           <div>
-            {/* <iframe
-              width="857"
-              height="499"
-              src="https://www.youtube.com/embed/IvxU3vzBAVw?si=iO41h9YHqutL7vCi?autoplay=1&mute=1&loop=1"
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe> */}
             <iframe
               ref={videoRef}
               width="857"
               height="499"
-              src="https://www.youtube.com/embed/IvxU3vzBAVw?enablejsapi=1"
+              src="https://www.youtube.com/embed/IvxU3vzBAVw?si=iO41h9YHqutL7vCi&enablejsapi=1&mute=1"
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
