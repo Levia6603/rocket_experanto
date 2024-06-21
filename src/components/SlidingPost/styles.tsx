@@ -6,7 +6,7 @@ interface WrapperProps {
 }
 
 export const Wrapper = styled.div<WrapperProps>`
-  width: fit-content;
+  width: 50%;
   height: 100vh;
   background-color: #fcfcfc;
   position: fixed;
