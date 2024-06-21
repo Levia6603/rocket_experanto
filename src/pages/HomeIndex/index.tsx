@@ -9,6 +9,7 @@ import apiBase from "../../Api";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
+import EmptyData from "../../components/EmptyData";
 
 export interface PostListInterface {
   Code?: number;
@@ -108,55 +109,48 @@ function HomeIndex() {
 
       token ? (headers["Authorization"] = `Bearer ${token}`) : null;
 
-      try {
-        await axios({
-          method: "GET",
-          url: token
-            ? `${apiBase.GET_POST_LIST_LOGIN}`
-            : `${apiBase.GET_POST_LIST}`,
-          headers: headers,
+      await axios({
+        method: "GET",
+        url: token
+          ? `${apiBase.GET_POST_LIST_LOGIN}`
+          : `${apiBase.GET_POST_LIST}`,
+        headers: headers,
+      })
+        .then((res) => {
+          //* 未登入
+          if (res.data.Status === false) {
+            throw new Error(res.data.Message);
+          }
+          setPostList(res.data);
+          dispatch(setPages(res.data.totalPages));
         })
-          .then((res) => {
-            if (res.data.Status === false) {
-              throw new Error(res.data.Message);
-            }
-            setPostList(res.data);
-            dispatch(setPages(res.data.totalPages));
-            setLoading(false);
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          //* 就算 token 過期還是會取得文章
+          const headers = {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          };
+
+          axios({
+            method: "GET",
+            url: `${apiBase.GET_POST_LIST}`,
+            headers: headers,
           })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {
-            const headers = {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            };
-            try {
-              axios({
-                method: "GET",
-                url: `${apiBase.GET_POST_LIST}`,
-                headers: headers,
-              })
-                .then((res) => {
-                  setPostList(res.data);
-                  dispatch(setPages(res.data.totalPages));
-                  setLoading(false);
-                })
-                .catch((err) => console.log(err));
-            } catch (error) {
-              console.error(error);
-              setLoading(false);
-            }
-            setLoading(false);
-          });
-      } catch (error) {
-        console.log(error);
-      }
+            .then((res) => {
+              setPostList(res.data);
+              dispatch(setPages(res.data.totalPages));
+            })
+            .catch((err) => console.log(err));
+          setLoading(false);
+        });
     }
+
     const query = `languageId=${languageIdfromlanding}`;
     languageIdfromlanding ? getPostListByLanguage(1, query) : getPostList();
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     page !== 1 && getPostListByPage(page);
@@ -177,33 +171,12 @@ function HomeIndex() {
   return (
     <>
       <PostCards>
-        {loading ? (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <h2 style={{ textAlign: "center", fontWeight: "900" }}>
-              讀取中...
-            </h2>
-          </div>
-        ) : postList?.list ? (
+        {loading && <div>讀取中...</div>}
+        {postList &&
           postList?.list?.map((post) => (
             <PostCard key={post.PostId} {...post} />
-          ))
-        ) : (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <h2 style={{ textAlign: "center", fontWeight: "900" }}>無文章</h2>
-          </div>
-        )}
+          ))}
+        {postList?.list && !postList.list.length && !loading && <EmptyData />}
       </PostCards>
       {postList?.list && <PageBar />}
     </>
