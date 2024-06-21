@@ -21,6 +21,7 @@ import VideoChat from "../pages/VideoChat";
 import TextChat from "../pages/textChat";
 import ExchangingList from "../pages/ExchangingList";
 import CommentList from "../pages/CommentList";
+import Rating from "../pages/Rating";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path: "commenting/:id",
         element: <Commenting />,
+      },
+      {
+        path: "rating/:id",
+        element: <Rating />,
       },
       {
         path: "matching",
