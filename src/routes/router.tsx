@@ -21,6 +21,7 @@ import VideoChat from "../pages/VideoChat";
 import TextChat from "../pages/textChat";
 import ExchangingList from "../pages/ExchangingList";
 import CommentList from "../pages/CommentList";
+import ErrorPage from "../pages/ErrorPage";
 import Rating from "../pages/Rating";
 
 export const router = createBrowserRouter([
@@ -105,5 +106,5 @@ export const router = createBrowserRouter([
   { path: "posting", element: <Posting /> },
   { path: "videocall", element: <VideoChat /> },
   { path: "message", element: <TextChat /> },
-  { path: "*", element: <div>Not Found</div> },
+  { path: "*", element: <ErrorPage /> },
 ]);
