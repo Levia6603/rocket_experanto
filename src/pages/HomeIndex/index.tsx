@@ -6,6 +6,7 @@ import { setPages } from "../../../redux/pages/pagesSlice";
 import { SimplifiedPostInterface } from "../../components/PostCard";
 import { RootStateType } from "../../../redux";
 import apiBase from "../../Api";
+import PostCardSkeleton from "../PostCardSkeleton";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
@@ -66,9 +67,9 @@ function HomeIndex() {
         .catch((err) => console.log(err));
       setPostList(fetchedPostList);
       dispatch(setPages(fetchedPostList.totalPages));
-      setLoading(false);
     } catch (error) {
       console.error(error);
+    } finally {
       setLoading(false);
     }
   }
@@ -94,7 +95,6 @@ function HomeIndex() {
         .catch((err) => console.log(err));
       setPostList(fetchedPostList);
       dispatch(setPages(fetchedPostList.totalPages));
-      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -143,7 +143,11 @@ function HomeIndex() {
               setPostList(res.data);
               dispatch(setPages(res.data.totalPages));
             })
-            .catch((err) => console.log(err));
+            .catch((err) => console.log(err))
+            .finally(() => {
+              setLoading(false);
+            });
+
           setLoading(false);
         });
     }
@@ -154,7 +158,6 @@ function HomeIndex() {
 
   useEffect(() => {
     page !== 1 && getPostListByPage(page);
-    setLoading(false);
   }, [page]);
 
   useEffect(() => {
@@ -171,11 +174,17 @@ function HomeIndex() {
   return (
     <>
       <PostCards>
-        {loading && <div>讀取中...</div>}
-        {postList &&
-          postList?.list?.map((post) => (
-            <PostCard key={post.PostId} {...post} />
-          ))}
+        {loading
+          ? Array.from({ length: 10 }).map((_, index) => {
+              return <PostCardSkeleton key={index} />;
+            })
+          : postList?.list?.map((post) => {
+              return <PostCard key={post.PostId} {...post} />;
+            })}
+        {/* {!loading &&
+          postList?.list?.map((post) => {
+            return <PostCard key={post.PostId} {...post} />;
+          })} */}
         {postList?.list && !postList.list.length && !loading && <EmptyData />}
       </PostCards>
       {postList?.list && <PageBar />}
