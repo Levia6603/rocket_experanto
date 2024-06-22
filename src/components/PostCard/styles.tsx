@@ -47,6 +47,8 @@ export const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
+  word-wrap: break-word;
   justify-content: center;
   width: 194px;
   gap: 0.75rem;
