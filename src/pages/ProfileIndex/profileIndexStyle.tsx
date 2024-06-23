@@ -1,5 +1,9 @@
 import { styled } from "styled-components";
 
+export const Container = styled.div`
+  max-width: 966px;
+`;
+
 export const Title = styled.div`
   margin-top: 2rem;
   & > h4 {
