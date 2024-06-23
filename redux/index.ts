@@ -7,6 +7,7 @@ import profileStateSlice from "./profileState/profileState";
 import favoriteListSlice from "./favoriteList/favoriteListSlice";
 import i18nSlice from "./i18n/i18nSlice";
 import toastStateSlice from "./toastState/toastStateSlice";
+import loadingStateSlice from "./loadingState/loadingState";
 
 const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ const store = configureStore({
     favoriteList: favoriteListSlice,
     i18n: i18nSlice,
     toast: toastStateSlice,
+    loading: loadingStateSlice,
   },
 });
 

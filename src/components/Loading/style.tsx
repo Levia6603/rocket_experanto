@@ -30,6 +30,7 @@ export const Wrapper = styled.section`
   position: fixed;
   left: 0;
   top: 0;
+  z-index: 5;
 `;
 
 export const Container = styled.div`
