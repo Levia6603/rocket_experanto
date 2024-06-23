@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootStateType } from "../../../redux";
-import apiBase, { getList } from "../../Api";
+import apiBase, { getList, headers } from "../../Api";
 import { apiList } from "../ProfileEdit";
 
 import {
@@ -31,6 +31,10 @@ import deleteBtn from "/delete.svg";
 import closeBtn from "/close.svg";
 import { Btn } from "../../styles/Btn";
 import { useNavigate } from "react-router-dom";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
 
 type Formvalues = {
   subject: string;
@@ -57,6 +61,7 @@ interface SetTimeData {
 
 function Posting() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   //* 從 redux toolkit 中叫出資料
   const checkProfileState = useSelector(
     (state: RootStateType) => state.checkProfile.checkProfileState
@@ -132,9 +137,6 @@ function Posting() {
   const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
 
   async function getUser() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
     const skills: SkillType = await axios
       .get(apiBase.GET_PROFILE, { headers })
       .then((res) => {
@@ -142,7 +144,7 @@ function Posting() {
         if (res.data.Message === "請重新登入") {
           alert("登入逾時，請重新登入");
           navigate("/login");
-          return [];
+          return;
         }
         return res.data.skills;
       });
@@ -980,9 +982,6 @@ function Posting() {
                 $style="primary"
                 type="button"
                 onClick={() => {
-                  const headers = {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  };
                   let timeData: SetTimeData = {};
                   Object.entries(selectTimeData)
                     .filter((arr) => arr[1].length > 0)
@@ -1019,7 +1018,8 @@ function Posting() {
                     .then((res) => {
                       const message = res.data.message;
                       if (message === "新增成功") {
-                        alert(message);
+                        dispatch(toggleToast());
+                        dispatch(setToastText(message));
                         navigate("/home/index");
                       } else if (message === "請重新登入") {
                         alert(message);

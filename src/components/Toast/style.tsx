@@ -34,6 +34,7 @@ export const Frame = styled.div<FrameProps>`
   left: 20px;
   top: 100px;
   overflow: hidden;
+  z-index: 5;
   width: 300px;
   height: 80px;
   border: 1px solid #c6c6c6;
@@ -52,5 +53,5 @@ export const ProcessBar = styled.div`
   height: 4px;
   padding: 0;
   background-color: #ffce26;
-  animation: ${countDown} 10s linear;
+  animation: ${countDown} 5s linear;
 `;
