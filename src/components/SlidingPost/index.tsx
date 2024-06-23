@@ -146,7 +146,7 @@ function SlidingPost() {
           </Header>
           <Calendar>
             <div>
-              <h6>每週可交換時段</h6>
+              <h5>每週可交換時段</h5>
             </div>
             <div>
               <ApplySchedule timeData={post?.availableHours} />
@@ -154,7 +154,7 @@ function SlidingPost() {
           </Calendar>
           <Needs>
             <div>
-              <h6>想交換的語言</h6>
+              <h5>想交換的語言</h5>
             </div>
             <div>
               <div>
@@ -169,7 +169,7 @@ function SlidingPost() {
           </Needs>
           <Plans>
             <div>
-              <h6>教學計畫</h6>
+              <h5>教學計畫</h5>
             </div>
             <div>
               <h6>教學語言：</h6>
@@ -188,7 +188,7 @@ function SlidingPost() {
           </Plans>
           <Certifications>
             <div>
-              <h6>證書</h6>
+              <h5>證書</h5>
             </div>
             <div>
               {post?.image?.map((image, index) => (
@@ -200,7 +200,7 @@ function SlidingPost() {
           </Certifications>
           <Tags>
             <div>
-              <h6># Tags</h6>
+              <h5># Tags</h5>
             </div>
             <div>
               {tags &&

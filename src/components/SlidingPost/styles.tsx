@@ -43,6 +43,14 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 2rem;
   gap: 2rem;
+  h5 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  h6 {
+    flex-shrink: 0;
+    width: 81px;
+  }
 `;
 
 //* 用戶資料

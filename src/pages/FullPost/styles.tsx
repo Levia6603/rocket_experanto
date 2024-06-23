@@ -11,11 +11,19 @@ export const Container = styled.div`
   flex-grow: 1;
   align-items: center;
   gap: 32px;
-  width: 100%;
+  max-width: 965px;
   padding: 32px;
   border: 1px solid #616161;
   border-radius: 4px;
   background-color: #fff;
+  h5 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  h6 {
+    flex-shrink: 0;
+    width: 80px;
+  }
 `;
 
 export const Header = styled.div`
@@ -23,7 +31,6 @@ export const Header = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1rem;
-
   & > div:nth-child(1) {
     & > img {
       width: 80px;
@@ -99,9 +106,6 @@ export const Calendar = styled.div`
   & > div:nth-child(1) {
     border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
-    & > h6 {
-      font-weight: bold;
-    }
   }
   & > div:nth-child(2) {
     padding-top: 0.75rem;
@@ -114,9 +118,6 @@ export const Needs = styled.div`
   & > div:nth-child(1) {
     border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
-    & > h6 {
-      font-weight: bold;
-    }
   }
   //* 詳細資訊
   & > div:nth-child(2) {
@@ -147,9 +148,6 @@ export const Plans = styled.div`
   & > div:nth-child(1) {
     border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
-    & > h6 {
-      font-weight: bold;
-    }
   }
   //* 內容
   & > div:nth-child(2) {
@@ -177,9 +175,6 @@ export const Certifications = styled.div`
   & > div:nth-child(1) {
     border-bottom: 2px solid #616161;
     padding-bottom: 0.5rem;
-    & > h6 {
-      font-weight: bold;
-    }
   }
   //* 證書區
   & > div:nth-child(2) {
@@ -214,9 +209,6 @@ export const Tags = styled.div`
   & > div:nth-child(1) {
     border-bottom: 1px solid #616161;
     padding-bottom: 0.5rem;
-    & > h6 {
-      font-weight: bold;
-    }
   }
   //* 標籤區
   & > div:nth-child(2) {
@@ -226,13 +218,14 @@ export const Tags = styled.div`
   }
 `;
 
-export const Tag = styled.div`
+export const Tag = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 0.25rem 0.5rem;
   border: 1px solid #616161;
   border-radius: 4px;
+  font-size: 14px;
 `;
 
 export const PostButton = styled(Button)`
