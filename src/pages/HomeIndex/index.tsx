@@ -11,6 +11,7 @@ import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
 import PageBar from "../../components/PageBar";
 import EmptyData from "../../components/EmptyData";
+import Toast from "../../components/Toast";
 
 export interface PostListInterface {
   Code?: number;
@@ -31,6 +32,7 @@ function HomeIndex() {
   const dispatch = useDispatch();
   const location = useLocation();
   const languageIdfromlanding = location?.state?.languageId;
+  const toastState = useSelector((state: RootStateType) => state.toast.toast);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [prevFavoriteList, setPrevFavoriteList] = useState<Favorite[]>([]);
@@ -174,6 +176,7 @@ function HomeIndex() {
   return (
     <>
       <PostCards>
+        {toastState && <Toast />}
         {loading
           ? Array.from({ length: 10 }).map((_, index) => {
               return <PostCardSkeleton key={index} />;

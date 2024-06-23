@@ -44,7 +44,7 @@ export interface PostInterface {
   learn?: { Id: number; Name: string; content: string }[];
   endDate?: string;
   availableHours?: any;
-  images?: string[];
+  image?: string[];
   isFavorite?: boolean | undefined;
   commentsCount: number;
 }
@@ -235,7 +235,7 @@ function FullPost() {
           </Info>
           <Calendar>
             <div>
-              <h6>每週有空的時段</h6>
+              <h5>每週有空的時段</h5>
             </div>
             <div>
               <ApplySchedule timeData={timeData} />
@@ -243,7 +243,7 @@ function FullPost() {
           </Calendar>
           <Needs>
             <div>
-              <h6>想交換的語言</h6>
+              <h5>想交換的語言</h5>
             </div>
             <div>
               <div>
@@ -260,7 +260,7 @@ function FullPost() {
           </Needs>
           <Plans>
             <div>
-              <h6>教學計畫</h6>
+              <h5>教學計畫</h5>
             </div>
             <div>
               <h6>教學語言：</h6>
@@ -279,26 +279,19 @@ function FullPost() {
           </Plans>
           <Certifications>
             <div>
-              <h6>語言證書檔案</h6>
+              <h5>語言證書檔案</h5>
             </div>
             <div>
-              {post?.images?.map((image, index) => (
-                <Certification key={index}>
-                  <img src={image} alt="no certification" />
-                  <h6>托福</h6>
+              {post.image?.map((el, i) => (
+                <Certification>
+                  <img key={i} src={el} alt="no certification" />
                 </Certification>
               ))}
-
-              <Certification>
-                {post.images?.map((el, i) => (
-                  <img key={i} src={el} alt="no certification" />
-                ))}
-              </Certification>
             </div>
           </Certifications>
           <Tags>
             <div>
-              <h6># Tags</h6>
+              <h5># Tags</h5>
             </div>
             <div>
               {tags &&

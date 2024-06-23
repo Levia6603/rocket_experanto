@@ -22,6 +22,7 @@ import TextChat from "../pages/textChat";
 import ExchangingList from "../pages/ExchangingList";
 import CommentList from "../pages/CommentList";
 import ErrorPage from "../pages/ErrorPage";
+import Rating from "../pages/Rating";
 import ScrollToTop from "../components/ScrollToTop";
 
 export const router = createBrowserRouter([
@@ -88,6 +89,10 @@ export const router = createBrowserRouter([
       {
         path: "commenting/:id",
         element: <Commenting />,
+      },
+      {
+        path: "rating/:id",
+        element: <Rating />,
       },
       {
         path: "matching",

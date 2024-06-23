@@ -135,8 +135,10 @@ export const Schedule = styled.div`
     ul {
       li {
         display: flex;
+        align-items: center;
         gap: 8px;
         width: 368px;
+        height: 42px;
         margin-bottom: 8px;
       }
     }

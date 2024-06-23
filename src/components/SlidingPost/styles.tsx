@@ -6,7 +6,7 @@ interface WrapperProps {
 }
 
 export const Wrapper = styled.div<WrapperProps>`
-  width: fit-content;
+  width: 50%;
   height: 100vh;
   background-color: #fcfcfc;
   position: fixed;
@@ -43,6 +43,14 @@ export const Container = styled.div`
   flex-direction: column;
   padding: 2rem;
   gap: 2rem;
+  h5 {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  h6 {
+    flex-shrink: 0;
+    width: 81px;
+  }
 `;
 
 //* 用戶資料
@@ -116,4 +124,22 @@ export const CloseBtn = styled(Button)`
   }
 `;
 
-export const Certifications = styled.div``;
+export const Certifications = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > div:nth-child(1) {
+    padding: 8px 0;
+    border-bottom: 2px solid #454545;
+    margin-bottom: 8px;
+    h6 {
+      font-weight: 700;
+    }
+  }
+  & > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+`;

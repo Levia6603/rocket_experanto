@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import apiBase from "../../Api";
+import { headers } from "../../Api";
 import { RootStateType } from "../../../redux";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import {
@@ -52,10 +53,6 @@ function SlidingPost() {
 
   //* 接回指定 Post
   async function getPost(id: number) {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
     try {
       setLoading(true); //* 設定 loading 狀態，當取得資料完成後會設定為 false
       const post: PostInterface = await axios({
@@ -65,6 +62,7 @@ function SlidingPost() {
       })
         .then((res) => res.data)
         .catch((err) => console.log(err));
+      console.log(post);
       setPost(post);
       setTags(post.tags || "");
     } catch (error) {
@@ -148,7 +146,7 @@ function SlidingPost() {
           </Header>
           <Calendar>
             <div>
-              <h6>每週可交換時段</h6>
+              <h5>每週可交換時段</h5>
             </div>
             <div>
               <ApplySchedule timeData={post?.availableHours} />
@@ -156,7 +154,7 @@ function SlidingPost() {
           </Calendar>
           <Needs>
             <div>
-              <h6>{"想交換的語言"}</h6>
+              <h5>想交換的語言</h5>
             </div>
             <div>
               <div>
@@ -171,7 +169,7 @@ function SlidingPost() {
           </Needs>
           <Plans>
             <div>
-              <h6>教學計畫</h6>
+              <h5>教學計畫</h5>
             </div>
             <div>
               <h6>教學語言：</h6>
@@ -190,20 +188,19 @@ function SlidingPost() {
           </Plans>
           <Certifications>
             <div>
-              <h6>證書</h6>
+              <h5>證書</h5>
             </div>
             <div>
-              {post?.images?.map((image, index) => (
+              {post?.image?.map((image, index) => (
                 <Certification key={index}>
                   <img src={image} alt="no certification" />
-                  <h6>托福</h6>
                 </Certification>
               ))}
             </div>
           </Certifications>
           <Tags>
             <div>
-              <h6># Tags</h6>
+              <h5># Tags</h5>
             </div>
             <div>
               {tags &&
