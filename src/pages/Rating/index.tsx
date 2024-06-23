@@ -92,7 +92,7 @@ function Rating() {
           <li>
             <h5>2. 對方的教學方式，你喜歡的程度?</h5>
             <Stars>
-              <img src={star} alt="" />
+              <img src={starOutline} alt="" />
               <img src={star} alt="" />
               <img src={star} alt="" />
               <img src={star} alt="" />
