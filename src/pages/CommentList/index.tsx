@@ -4,6 +4,8 @@ import axios from "axios";
 import apiBase from "../../Api";
 import { Btn } from "../../styles/Btn";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../../../redux/loadingState/loadingState";
 
 interface ExchangeData {
   exchangeId: number;
@@ -20,6 +22,7 @@ interface ExchangeData {
 function CommentList() {
   const [dataList, setDataList] = useState<ExchangeData[]>([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function getList() {
     const headers = {
@@ -76,7 +79,8 @@ function CommentList() {
                   <Btn
                     $style="outline"
                     onClick={() => {
-                      navigate(`${exchangeId}`);
+                      dispatch(setLoading(true));
+                      navigate(`/user/rating/${exchangeId}`);
                     }}
                   >
                     觀看內容及評價
