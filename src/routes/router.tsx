@@ -23,12 +23,18 @@ import ExchangingList from "../pages/ExchangingList";
 import CommentList from "../pages/CommentList";
 import ErrorPage from "../pages/ErrorPage";
 import Rating from "../pages/Rating";
+import ScrollToTop from "../components/ScrollToTop";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-    errorElement: <div>Error</div>,
+    element: (
+      <>
+        <ScrollToTop />
+        <App />
+      </>
+    ),
+    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
@@ -48,7 +54,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "/user",
-    element: <ProtectedRoute element={<Profile />} />,
+    element: (
+      <>
+        <ScrollToTop />
+        <ProtectedRoute element={<Profile />} />
+      </>
+    ),
     children: [
       { path: "", element: <Navigate to="profile/index" replace /> },
       {
@@ -96,7 +107,12 @@ export const router = createBrowserRouter([
   },
   {
     path: "/home",
-    element: <Home />,
+    element: (
+      <>
+        <ScrollToTop />
+        <Home />
+      </>
+    ),
     children: [
       { path: "", element: <Navigate to="index" replace /> },
       { path: "index", element: <HomeIndex /> },
