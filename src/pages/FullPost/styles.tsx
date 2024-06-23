@@ -190,28 +190,22 @@ export const Certifications = styled.div`
 `;
 
 export const Certification = styled.div`
-  width: 204px;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  overflow: hidden;
+  width: 130px;
+  height: 130px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
 
   //* 圖片
-  & > div {
-    border-radius: 4px;
-    overflow: hidden;
-    & > img {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-    }
+  img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
   }
   //* 文字
-  & > h6 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 12px;
-  }
 `;
 
 export const Tags = styled.div`

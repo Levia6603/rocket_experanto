@@ -116,4 +116,22 @@ export const CloseBtn = styled(Button)`
   }
 `;
 
-export const Certifications = styled.div``;
+export const Certifications = styled.div`
+  display: flex;
+  flex-direction: column;
+  & > div:nth-child(1) {
+    padding: 8px 0;
+    border-bottom: 2px solid #454545;
+    margin-bottom: 8px;
+    h6 {
+      font-weight: 700;
+    }
+  }
+  & > div:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+`;

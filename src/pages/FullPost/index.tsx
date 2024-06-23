@@ -44,7 +44,7 @@ export interface PostInterface {
   learn?: { Id: number; Name: string; content: string }[];
   endDate?: string;
   availableHours?: any;
-  images?: string[];
+  image?: string[];
   isFavorite?: boolean | undefined;
   commentsCount: number;
 }
@@ -282,18 +282,18 @@ function FullPost() {
               <h6>語言證書檔案</h6>
             </div>
             <div>
-              {post?.images?.map((image, index) => (
+              {post?.image?.map((image, index) => (
                 <Certification key={index}>
                   <img src={image} alt="no certification" />
                   <h6>托福</h6>
                 </Certification>
               ))}
 
-              <Certification>
-                {post.images?.map((el, i) => (
+              {post.image?.map((el, i) => (
+                <Certification>
                   <img key={i} src={el} alt="no certification" />
-                ))}
-              </Certification>
+                </Certification>
+              ))}
             </div>
           </Certifications>
           <Tags>
