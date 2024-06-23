@@ -12,9 +12,15 @@ import star from "/profile_box_icons/star-yellow.svg";
 import starOutline from "/profile_box_icons/star.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import apiBase from "../../Api";
+import apiBase, { headers } from "../../Api";
 import { useEffect, useState } from "react";
 import { Btn } from "../../styles/Btn";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../../../redux/loadingState/loadingState";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
 
 interface RemoteData {
   name: string;
@@ -54,64 +60,54 @@ function Commenting() {
   const [rate, setRate] = useState<RatingData>(defaultRate);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function getData() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
-    try {
-      const data = await axios
-        .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
-        .then((res) => {
-          if (res.data.Message === "請重新登入") {
-            alert("登入逾時，請重新登入");
-            navigate("/login");
-            return;
-          }
-          return res.data[0];
-        });
-      console.log(data);
-
-      setExchangeData({
-        title: data.tittle,
-        duration: data.duration,
-        id: data.exchangeId,
+    const data = await axios
+      .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
+      .then((res) => {
+        if (res.data.Message === "請重新登入") {
+          alert("登入逾時，請重新登入");
+          navigate("/login");
+          return;
+        }
+        return res.data[0];
       });
 
-      if (data.initiatorName === localStorage.getItem("name")) {
-        setRemoteData({
-          name: data.receiverName,
-          avatar: data.receiverAvatar,
-          plan: data.receiverToteach[0].plan,
-        });
-      } else {
-        setRemoteData({
-          name: data.initiatorName,
-          avatar: data.initiatorAvatar,
-          plan: data.initiatorToteach[0].plan,
-        });
-      }
-    } catch (err) {
-      console.log(err);
+    setExchangeData({
+      title: data.tittle,
+      duration: data.duration,
+      id: data.exchangeId,
+    });
+
+    if (data.initiatorName === localStorage.getItem("name")) {
+      setRemoteData({
+        name: data.receiverName,
+        avatar: data.receiverAvatar,
+        plan: data.receiverToteach[0].plan,
+      });
+    } else {
+      setRemoteData({
+        name: data.initiatorName,
+        avatar: data.initiatorAvatar,
+        plan: data.initiatorToteach[0].plan,
+      });
     }
   }
 
   async function Submit() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
-    try {
-      await axios
-        .post(`${apiBase.POST_RATING}`, rate, { headers })
-        .then((res) => {
-          if (res.data.message === "新增成功") {
-            alert("新增成功");
-            navigate("/home/index");
-          }
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(setLoading(true));
+    const data = { ...rate, ExchangeId: id };
+    await axios
+      .post(`${apiBase.POST_RATING}`, data, { headers })
+      .then((res) => {
+        dispatch(setLoading(false));
+        if (res.data.message === "新增成功") {
+          navigate("/home/index");
+          dispatch(toggleToast());
+          dispatch(setToastText("新增評價成功"));
+        }
+      });
   }
 
   useEffect(() => {
