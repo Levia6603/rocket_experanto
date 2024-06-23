@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-import apiBase from "../../Api";
+import apiBase, { headers } from "../../Api";
 import {
   BtnGroup,
   CardAlbum,
@@ -50,9 +50,6 @@ function Exchanging() {
   const navigate = useNavigate();
 
   async function getList() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
     const data = await axios
       .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
       .then((res) => res.data[0]);
@@ -100,9 +97,6 @@ function Exchanging() {
   }
 
   async function createRoom(type: string) {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
     const roomId = uuidv4().substring(0, 8);
     const data = { ExchangeId: id, RoomNumberGuid: roomId };
     const res = await axios
@@ -117,7 +111,6 @@ function Exchanging() {
         }
       })
       .catch((err) => err.response.data.RoomNumber);
-    console.log(res);
 
     window.open(`http://localhost:5173/${type}?roomid=${res}`, "_blank");
   }
