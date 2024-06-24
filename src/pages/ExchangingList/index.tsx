@@ -122,7 +122,7 @@ function ExchangingList() {
         <Cards>
           {loading ? (
             <div style={{ textAlign: "center" }}>{"載入中"}</div>
-          ) : exchangeList ? (
+          ) : exchangeList && exchangeList.length > 0 ? (
             exchangeList.map((obj, i) => {
               const { avatar, name, duration, title, id } = obj;
               return (
