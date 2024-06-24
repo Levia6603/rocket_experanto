@@ -282,7 +282,8 @@ function Matching() {
                 (application) => application.Status === true
               );
             return !shouldNotRender;
-          }).length !== 0 && <PageBar />}
+          }).length !== 0 ||
+            (data.Status === "ok" && <PageBar />)}
         </Container>
       </Wrapper>
     </>
