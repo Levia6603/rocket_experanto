@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
 import axios from "axios";
 import apiBase from "../../Api";
 import { setPages } from "../../../redux/pages/pagesSlice";
@@ -9,6 +10,7 @@ import { Btn } from "../../styles/Btn";
 import PageBar from "../../components/PageBar";
 import EmptyData from "../../components/EmptyData";
 import Loading from "../../components/Loading";
+import Toast from "../../components/Toast";
 
 interface ApiData {
   duration: string;
@@ -33,6 +35,8 @@ interface ExchangeData {
 function ExchangingList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const toastState = useSelector((state: RootStateType) => state.toast.toast);
 
   const [exchangeList, setExchangeList] = useState<ExchangeData[]>([]);
   const [pageStatus, setPageStatus] = useState({
@@ -118,6 +122,7 @@ function ExchangingList() {
 
   return (
     <Wrapper>
+      {toastState && <Toast />}
       <Container>
         <Title>{"交換列表"}</Title>
         <Cards>

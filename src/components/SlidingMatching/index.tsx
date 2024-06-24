@@ -20,6 +20,10 @@ import { Btn } from "../../styles/Btn";
 
 import close from "/close-lg.svg";
 import location from "/map-pin.svg";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
 
 type MatchingPost = {
   ApplicationId: number;
@@ -136,7 +140,6 @@ function SlidingMatching() {
       })
         .then((res) => {
           res.data.Status === false && isLogin();
-          console.log(res);
         })
         .catch((err) => console.log(err));
     } catch (error) {
@@ -152,7 +155,9 @@ function SlidingMatching() {
     e.stopPropagation();
     acceptExchange(post.ApplicationId);
     dispatch(setSlidingMatchingState());
-    navigate(`/user/exchanging/${post.ApplicationId}`);
+    dispatch(toggleToast());
+    dispatch(setToastText("配對成功，開始你們的教學吧！"));
+    navigate(`/user/exchanging_list`);
   };
 
   //* 拒絕交換

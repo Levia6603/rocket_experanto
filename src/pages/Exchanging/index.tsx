@@ -119,7 +119,10 @@ function Exchanging() {
       .catch((err) => err.response.data.RoomNumber);
     console.log(res);
 
-    window.open(`http://localhost:5173/${type}?roomid=${res}`, "_blank");
+    window.open(
+      `https://rocket-experanto.vercel.app/${type}?roomid=${res}`,
+      "_blank"
+    );
   }
 
   async function accomplishSingleGoal(id: number) {
