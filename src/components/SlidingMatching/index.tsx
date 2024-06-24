@@ -157,7 +157,7 @@ function SlidingMatching() {
     dispatch(setSlidingMatchingState());
     dispatch(toggleToast());
     dispatch(setToastText("配對成功，開始你們的教學吧！"));
-    navigate(`/user/exchanging_list`);
+    navigate(`/home/index`);
   };
 
   //* 拒絕交換
