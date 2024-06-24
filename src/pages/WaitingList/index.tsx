@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Wrapper, Container, Title, SortWrapper, List, Item } from "./styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
 import axios from "axios";
@@ -10,6 +11,7 @@ import EmptyData from "../../components/EmptyData";
 import { Btn } from "../../styles/Btn";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
 import Loading from "../../components/Loading";
+import Toast from "../../components/Toast";
 
 type WaitingListInterface = {
   ExchangesId: number;
@@ -33,6 +35,7 @@ type data = {
 };
 
 function WaitingList() {
+  const toastState = useSelector((state: RootStateType) => state.toast.toast);
   const dispatch = useDispatch();
   const [sort, setSort] = useState("由新到舊");
   const [loading, setLoading] = useState(true);
@@ -104,6 +107,7 @@ function WaitingList() {
 
   return (
     <>
+      {toastState && <Toast />}
       {loading ? (
         <Loading />
       ) : (
