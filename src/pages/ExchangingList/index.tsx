@@ -8,6 +8,7 @@ import { Title, Cards, Card, Wrapper, Container } from "./style";
 import { Btn } from "../../styles/Btn";
 import PageBar from "../../components/PageBar";
 import EmptyData from "../../components/EmptyData";
+import Loading from "../../components/Loading";
 
 interface ApiData {
   duration: string;
@@ -121,7 +122,7 @@ function ExchangingList() {
         <Title>{"交換列表"}</Title>
         <Cards>
           {loading ? (
-            <div style={{ textAlign: "center" }}>{"載入中"}</div>
+            <Loading />
           ) : exchangeList && exchangeList.length > 0 ? (
             exchangeList.map((obj, i) => {
               const { avatar, name, duration, title, id } = obj;
