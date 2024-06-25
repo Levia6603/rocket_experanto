@@ -35,6 +35,8 @@ import {
   setToastText,
   toggleToast,
 } from "../../../redux/toastState/toastStateSlice";
+import Loading from "../../components/Loading";
+import { setLoading } from "../../../redux/loadingState/loadingState";
 
 type Formvalues = {
   subject: string;
@@ -63,8 +65,8 @@ function Posting() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   //* 從 redux toolkit 中叫出資料
-  const checkProfileState = useSelector(
-    (state: RootStateType) => state.checkProfile.checkProfileState
+  const loadingState = useSelector(
+    (state: RootStateType) => state.loading.loading
   );
 
   const [title, setTitle] = useState("");
@@ -125,7 +127,7 @@ function Posting() {
   const [goalList, setGoalList] = useState<string[]>([]);
 
   //* 設定圖片
-  const image: string[] = checkProfileState?.image ?? [];
+  const [image, setImage] = useState<string[]>([]);
 
   //* react-hook-form 設定
   const {
@@ -137,22 +139,25 @@ function Posting() {
   const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
 
   async function getUser() {
-    const skills: SkillType = await axios
+    const data = await axios
       .get(apiBase.GET_PROFILE, { headers })
       .then((res) => {
-        console.log(res);
         if (res.data.Message === "請重新登入") {
           alert("登入逾時，請重新登入");
           navigate("/login");
           return;
         }
-        return res.data.skills;
+        return res.data;
       });
+    const images = data.image;
+    const skills: SkillType = data.skills;
     const skillList = skills.map((obj) => {
       const { language, languageId } = obj;
       return { Id: languageId, Name: language };
     });
     setFluentList(skillList);
+    setImage(images);
+    dispatch(setLoading(false));
   }
 
   //* 取得語言列表
@@ -161,12 +166,9 @@ function Posting() {
     getUser();
   }, []);
 
-  useEffect(() => {
-    console.log(selectTimeData);
-  }, [selectTimeData]);
-
   return (
     <>
+      {loadingState && <Loading />}
       <Wrapper>
         <Container>
           <Title>發表貼文</Title>
@@ -944,14 +946,28 @@ function Posting() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
+                      if (inputGoal) {
+                        const list = goalList;
+                        list.push(inputGoal);
+                        setGoalList(list);
+                        setInputGoal("");
+                      }
+                    }
+                  }}
+                />
+                <TagButton
+                  type="button"
+                  onClick={() => {
+                    if (inputGoal) {
                       const list = goalList;
                       list.push(inputGoal);
                       setGoalList(list);
                       setInputGoal("");
                     }
                   }}
-                />
-                <TagButton type="button">新增</TagButton>
+                >
+                  新增
+                </TagButton>
               </InputTag>
               <ul>
                 {goalList.map((el, i) => (
@@ -975,13 +991,20 @@ function Posting() {
               <CertificationsEdit image={image} />
             </CertificationsWrapper>
             <BtnGroup>
-              <Btn $style="outline" type="button">
+              <Btn
+                $style="outline"
+                type="button"
+                onClick={() => {
+                  navigate("/home/index");
+                }}
+              >
                 取消編輯
               </Btn>
               <Btn
                 $style="primary"
                 type="button"
                 onClick={() => {
+                  dispatch(setLoading(true));
                   let timeData: SetTimeData = {};
                   Object.entries(selectTimeData)
                     .filter((arr) => arr[1].length > 0)
@@ -1016,6 +1039,7 @@ function Posting() {
                   axios
                     .post(apiBase.POST_POST, data, { headers })
                     .then((res) => {
+                      dispatch(setLoading(false));
                       const message = res.data.message;
                       if (message === "新增成功") {
                         dispatch(toggleToast());
@@ -1025,6 +1049,9 @@ function Posting() {
                         alert(message);
                         navigate("/login");
                       }
+                    })
+                    .catch(() => {
+                      dispatch(setLoading(false));
                     });
                 }}
               >

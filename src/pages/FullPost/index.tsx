@@ -32,6 +32,7 @@ import {
   setToastText,
   toggleToast,
 } from "../../../redux/toastState/toastStateSlice";
+import Loading from "../../components/Loading";
 
 export interface PostInterface {
   userName?: string;
@@ -69,6 +70,9 @@ interface SelectTimeData {
 
 function FullPost() {
   const toastState = useSelector((state: RootStateType) => state.toast.toast);
+  const loadingState = useSelector(
+    (state: RootStateType) => state.loading.loading
+  );
   const [post, setPost] = useState({} as PostInterface);
   const [timeData, setTimeData] = useState<TimeData>({});
   const [tags, setTags] = useState(String);
@@ -173,6 +177,7 @@ function FullPost() {
 
   return (
     <>
+      {loadingState && <Loading />}
       {toastState && <Toast />}
       {applyState && (
         <PopUp>

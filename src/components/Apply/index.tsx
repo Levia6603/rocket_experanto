@@ -17,7 +17,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import apiBase from "../../Api";
 import { Btn } from "../../styles/Btn";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
+import { setLoading } from "../../../redux/loadingState/loadingState";
 
 type timeData = { start: string; end: string; select: boolean }[];
 
@@ -63,6 +69,9 @@ function Apply({
   const [certification, setCertification] = useState<string[]>([]);
   const [learnMotivation, setLearnMotivation] = useState("");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { id } = useParams();
 
   async function getUserData() {
@@ -85,8 +94,11 @@ function Apply({
       })
       .then((res) => res.data.message);
     if (message === "新增成功") {
-      alert("成功送出申請！");
+      dispatch(setLoading(false));
+      dispatch(toggleToast());
+      dispatch(setToastText("已送出申請"));
       setApplyState(false);
+      navigate("/user/waiting_list");
     }
   }
 
@@ -294,6 +306,7 @@ function Apply({
             $style="primary"
             type="button"
             onClick={() => {
+              dispatch(setLoading(true));
               let select: Data = {};
               Object.entries(selectTime).forEach((arr) => {
                 const [week, time] = arr;

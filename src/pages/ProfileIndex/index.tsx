@@ -1,25 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import {
-  User,
-  Button,
-  Box,
-  Board,
-  Achiev,
-  ProcessBar,
-} from "../Profile/profileStyle";
-import {
-  Title,
-  Cards,
-  Card,
-  CardItem,
-  CertificationsSection,
-  CertificationCard,
-} from "../ProfileIndex/profileIndexStyle";
-
 import axios from "axios";
-import apiBase from "../../Api";
-import badge from "/badge.png";
+import apiBase, { headers } from "../../Api";
+import {
+  Achiev,
+  Card,
+  Certification,
+  Container,
+  ProcessBar,
+  User,
+} from "./style";
+import { Btn } from "../../styles/Btn";
+import star from "/profile_box_icons/star-yellow.svg";
+import badge1 from "/achivement_1.svg";
+import badge2 from "/achivement_2.svg";
+import badge3 from "/achivement_3.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../../redux/loadingState/loadingState";
+import { RootStateType } from "../../../redux";
+import Loading from "../../components/Loading";
 
 export type ProfileType = {
   Code: number;
@@ -34,35 +33,46 @@ export type ProfileType = {
   location: string;
   locationsId: number;
   name: string;
-  skills: [{ language: string; languageId: number; goal: string[] }];
+  skills: { language: string; languageId: number; goal: string[] }[];
 };
 const ProfileIndex = () => {
+  const defauleProfile: ProfileType = {
+    Code: 0,
+    Status: "",
+    message: "",
+    ScoreCount: 0,
+    Score: 0,
+    avatar: "",
+    gender: "",
+    gendersId: 0,
+    image: [],
+    location: "",
+    locationsId: 0,
+    name: "",
+    skills: [],
+  };
+
   const navigate = useNavigate();
-  const [profile, setProfile] = useState({} as ProfileType);
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState(defauleProfile);
+  const loadingState = useSelector(
+    (state: RootStateType) => state.loading.loading
+  );
   //* 取得個人資料
   async function getProfile() {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
-
-    try {
-      const profile: ProfileType = await axios({
-        method: "GET",
-        url: apiBase.GET_PROFILE,
-        headers: headers,
+    dispatch(setLoading(true));
+    const profile = await axios
+      .get(apiBase.GET_PROFILE, {
+        headers,
       })
-        .then((res) => {
-          console.log(res.data);
-
-          return res.data;
-        })
-        .catch((err) => console.log(err));
-      setProfile(profile);
-    } catch (error) {
-      console.error(error);
+      .then((res) => res.data);
+    if (profile?.Message === "請重新登入") {
+      alert("登入逾時，請重新登入");
+      navigate("/login");
     }
+    profile.Status && setProfile(profile);
+
+    dispatch(setLoading(false));
   }
 
   useEffect(() => {
@@ -71,134 +81,117 @@ const ProfileIndex = () => {
 
   return (
     <>
-      <User>
-        <img src={profile?.avatar} alt="" />
-        <div>
-          <ul>
-            <li>
-              <h1>{profile?.name}</h1>
-            </li>
-            <li>
-              <Button
-                type="button"
-                onClick={() => navigate("/user/profile/edit")}
-              >
-                編輯
-              </Button>
-            </li>
-          </ul>
-          <ul>
-            <li>
-              <p>{profile?.gender}</p>
-              <h3>性別</h3>
-            </li>
-            <li>
-              <p>{profile?.location}</p>
-              <h3>所在城市</h3>
-            </li>
-            <li>
-              <p>
-                {profile?.Score} ({profile?.ScoreCount})
-              </p>
-              <h3>評價</h3>
-            </li>
-          </ul>
-        </div>
-      </User>
-      <Box>
-        <h2>個人成就</h2>
-        <hr />
-        <Board>
-          <Achiev>
-            <div>
-              <ul>
-                <li>
-                  <h4>Complete</h4>
-                  <p>Unranked</p>
-                </li>
-                <li>
-                  <p>Lv.0</p>
-                </li>
-              </ul>
-              <ProcessBar $percent={10}></ProcessBar>
-            </div>
-            <img src={badge} alt="" />
-          </Achiev>
-          <Achiev>
-            <div>
-              <ul>
-                <li>
-                  <h4>5 Star Review</h4>
-                  <p>Unranked</p>
-                </li>
-                <li>
-                  <p>Lv.0</p>
-                </li>
-              </ul>
-              <ProcessBar $percent={44}></ProcessBar>
-            </div>
-            <img src={badge} alt="" />
-          </Achiev>
-          <Achiev>
-            <div>
-              <ul>
-                <li>
-                  <h4>Post</h4>
-                  <p>Unranked</p>
-                </li>
-                <li>
-                  <p>Lv.0</p>
-                </li>
-              </ul>
-              <ProcessBar $percent={20}></ProcessBar>
-            </div>
-            <img src={badge} alt="" />
-          </Achiev>
-        </Board>
-      </Box>
-      <Box>
-        <Title>
-          <h4>我可以提供</h4>
-        </Title>
-        <Cards>
-          <ul>
-            {profile.skills?.map((skill, index) => (
-              <li key={index}>
-                <Card>
+      {loadingState && <Loading />}
+      {!loadingState && profile && (
+        <Container>
+          <User>
+            <img src={profile?.avatar} alt="" />
+            <ul>
+              <li>
+                <h3>{profile?.name}</h3>
+                <Btn
+                  $style="outline"
+                  type="button"
+                  onClick={() => {
+                    navigate("/user/profile/edit");
+                  }}
+                >
+                  編輯個人資料
+                </Btn>
+              </li>
+              <li>
+                <div>
+                  <h4>{profile?.gender}</h4>
+                  <p>性別</p>
+                </div>
+                <div>
+                  <h4>{profile?.location}</h4>
+                  <p>縣市區域</p>
+                </div>
+                <div>
+                  <h4>
+                    <img src={star} alt="" />
+                    {profile?.Score} ({profile?.ScoreCount})
+                  </h4>
+                  <p>評價</p>
+                </div>
+              </li>
+            </ul>
+          </User>
+          <h2>個人成就</h2>
+          <div>
+            <Achiev>
+              <div>
+                <ul>
+                  <li>
+                    <h4>貼文數</h4>
+                    <p>未排名</p>
+                  </li>
+                  <li>
+                    <p>Lv.0</p>
+                  </li>
+                </ul>
+                <ProcessBar $percent={10} />
+              </div>
+              <img src={badge1} alt="badge" />
+            </Achiev>
+            <Achiev>
+              <div>
+                <ul>
+                  <li>
+                    <h4>交換完成</h4>
+                    <p>未排名</p>
+                  </li>
+                  <li>
+                    <p>Lv.0</p>
+                  </li>
+                </ul>
+                <ProcessBar $percent={10} />
+              </div>
+              <img src={badge2} alt="badge" />
+            </Achiev>
+            <Achiev>
+              <div>
+                <ul>
+                  <li>
+                    <h4>5星好評</h4>
+                    <p>未排名</p>
+                  </li>
+                  <li>
+                    <p>Lv.0</p>
+                  </li>
+                </ul>
+                <ProcessBar $percent={10} />
+              </div>
+              <img src={badge3} alt="badge" />
+            </Achiev>
+          </div>
+          <h2>擅長語言</h2>
+          <div>
+            {profile.skills &&
+              profile?.skills.map((obj, i) => (
+                <Card key={i}>
                   <div>
-                    <h5>{skill.language}</h5>
+                    <h5>{obj.language}</h5>
                   </div>
-                  <div>
-                    {skill?.goal.map((item, index) => (
-                      <CardItem key={index}>
-                        <p>{index + 1} </p>
-                        <h6>{item}</h6>
-                      </CardItem>
+                  <ul>
+                    {obj?.goal.map((el, index) => (
+                      <li key={index}>
+                        {index + 1}. {el}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </Card>
-              </li>
+              ))}
+          </div>
+          <h2>語言證書檔案</h2>
+          <Certification>
+            {profile?.image.map((el, i) => (
+              <img key={i} src={el} alt="certification" />
             ))}
-          </ul>
-        </Cards>
-      </Box>
-
-      <Box>
-        <CertificationsSection>
-          <h4>資格證照</h4>
-          <ul>
-            {profile.image?.map((image, index) => (
-              <li key={index}>
-                <CertificationCard>
-                  <div>
-                    <img src={image} alt="證照" />
-                  </div>
-                </CertificationCard>
-              </li>
-            ))}
-          </ul>
-        </CertificationsSection>
-      </Box>
+          </Certification>
+        </Container>
+      )}
     </>
   );
 };

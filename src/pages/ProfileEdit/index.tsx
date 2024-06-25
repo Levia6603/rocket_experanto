@@ -18,9 +18,17 @@ import Select from "../../components/Select";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import apiBase from "../../Api";
+import apiBase, { headers } from "../../Api";
 import { getList } from "../../Api";
 import { Btn } from "../../styles/Btn";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../../redux/loadingState/loadingState";
+import {
+  setToastText,
+  toggleToast,
+} from "../../../redux/toastState/toastStateSlice";
+import { RootStateType } from "../../../redux";
+import Loading from "../../components/Loading";
 
 export type apiList = { Id: number; Name: string }[];
 type PlanList = { languageId: number; GoalsContent: string[] }[];
@@ -33,6 +41,9 @@ type FormData = {
 
 const ProfileEdit = () => {
   const avatar = localStorage.getItem("avatar");
+  const loadingState = useSelector(
+    (state: RootStateType) => state.loading.loading
+  );
   //* 語言清單
   const [languageList, setLanguageList] = useState<apiList>([]);
   //* 設定教學計劃列表
@@ -51,28 +62,24 @@ const ProfileEdit = () => {
   const [imageURLs, setImageURLs] = useState<string[] | null | void>([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //* 改為使用一支函式套用至所有取得列表的部分
 
   //* POST資料庫
   async function postData(formData: FormData) {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
     try {
       await axios({
         method: "POST",
         url: apiBase.POST_PROFILE,
         data: formData,
         headers: headers,
-      })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      console.log("Profile saved successfully");
-      console.log(formData);
-      navigate("/user/profile");
+      }).finally(() => {
+        dispatch(setLoading(false));
+      });
+      navigate("/home/index");
+      dispatch(toggleToast());
+      dispatch(setToastText("編輯成功"));
     } catch (error) {
       console.error("Error saving profile:", error);
     }
@@ -168,8 +175,6 @@ const ProfileEdit = () => {
         try {
           setFormData({ ...formData, imageURLs: imageURLs || [] });
           postData(formData);
-          console.log("Profile saved successfully");
-          console.log(formData);
           navigate("/user/profile");
         } catch (error) {
           console.error("Error saving profile:", error);
@@ -191,6 +196,7 @@ const ProfileEdit = () => {
 
   return (
     <>
+      {loadingState && <Loading />}
       <ProfileEditSection>
         <Form onSubmit={handleSubmit}>
           <Photo>
@@ -367,7 +373,6 @@ const ProfileEdit = () => {
                 "Uploading..."
               ) : (
                 <label>
-                  {/* <Btn $style="outline">新增檔案</Btn> */}
                   <AddCertBtn $color="" $backgroundColor="">
                     新增檔案
                   </AddCertBtn>
@@ -387,7 +392,13 @@ const ProfileEdit = () => {
             <Btn $style="disable" type="button">
               取消編輯
             </Btn>
-            <Btn $style="primary" type="submit">
+            <Btn
+              $style="primary"
+              type="submit"
+              onClick={() => {
+                dispatch(setLoading(true));
+              }}
+            >
               儲存變更
             </Btn>
           </div>

@@ -39,7 +39,7 @@ export const Card = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    width: 96px;
+    width: 144px;
     padding: 16px 8px;
     text-align: center;
     img {
@@ -59,6 +59,9 @@ export const Card = styled.div`
     justify-content: center;
     gap: 8px;
     padding: 8px;
+  }
+  li {
+    padding: 6px 12px;
   }
 `;
 

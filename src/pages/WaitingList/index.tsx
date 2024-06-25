@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Wrapper, Container, Title, SortWrapper, List, Item } from "./styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateType } from "../../../redux";
 import { setPages } from "../../../redux/pages/pagesSlice";
 import { setPostId } from "../../../redux/postId/postIdSlice";
 import axios from "axios";
@@ -9,6 +10,8 @@ import PageBar from "../../components/PageBar";
 import EmptyData from "../../components/EmptyData";
 import { Btn } from "../../styles/Btn";
 import { setSlidingPostState } from "../../../redux/slidingState/slidingSlice";
+import Loading from "../../components/Loading";
+import Toast from "../../components/Toast";
 
 type WaitingListInterface = {
   ExchangesId: number;
@@ -32,8 +35,10 @@ type data = {
 };
 
 function WaitingList() {
+  const toastState = useSelector((state: RootStateType) => state.toast.toast);
   const dispatch = useDispatch();
   const [sort, setSort] = useState("由新到舊");
+  const [loading, setLoading] = useState(true);
   const handleChange = (sort: string) => {
     setSort(sort);
   };
@@ -51,6 +56,8 @@ function WaitingList() {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       };
 
+      setLoading(true);
+
       try {
         await axios({
           method: "GET",
@@ -65,6 +72,8 @@ function WaitingList() {
           .catch((err) => console.log(err));
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
     getWaitingList();
@@ -98,56 +107,64 @@ function WaitingList() {
 
   return (
     <>
-      <Wrapper>
-        <Container>
-          <Title>等待回應貼文</Title>
-          <SortWrapper>
-            <p>時間排序</p>
-            <select value={sort} onChange={(e) => handleChange(e.target.value)}>
-              <option value="由新到舊">從新到舊</option>
-              <option value="由舊到新">從舊到新</option>
-            </select>
-          </SortWrapper>
-          <List>
-            {sortedList.length !== 0 ? (
-              sortedList?.map((item: WaitingListInterface, index: number) => {
-                return (
-                  <li key={index}>
-                    <Item>
-                      <div>
-                        <img src={item.PosterAvatar} alt="avatar" />
-                      </div>
-                      <div>
-                        <h4>{item.Title}</h4>
-                        <p>
-                          申請日期: <span>{item.AppliCreatedAt}</span>
-                        </p>
-                        <p>
-                          貼文有效期限: <span>{item.PostExpirationDate}</span>
-                        </p>
-                      </div>
-                      <div>
-                        <Btn $style="outline">取消申請</Btn>
-                        <Btn
-                          $style="outline"
-                          onClick={(e) => {
-                            handleShowDetails(e, item.PostId);
-                          }}
-                        >
-                          詳細內容
-                        </Btn>
-                      </div>
-                    </Item>
-                  </li>
-                );
-              })
-            ) : (
-              <EmptyData />
-            )}
-          </List>
-          {data.totalPages && <PageBar />}
-        </Container>
-      </Wrapper>
+      {toastState && <Toast />}
+      {loading ? (
+        <Loading />
+      ) : (
+        <Wrapper>
+          <Container>
+            <Title>等待回應貼文</Title>
+            <SortWrapper>
+              <p>時間排序</p>
+              <select
+                value={sort}
+                onChange={(e) => handleChange(e.target.value)}
+              >
+                <option value="由新到舊">從新到舊</option>
+                <option value="由舊到新">從舊到新</option>
+              </select>
+            </SortWrapper>
+            <List>
+              {sortedList.length !== 0 ? (
+                sortedList?.map((item: WaitingListInterface, index: number) => {
+                  return (
+                    <li key={index}>
+                      <Item>
+                        <div>
+                          <img src={item.PosterAvatar} alt="avatar" />
+                        </div>
+                        <div>
+                          <h4>{item.Title}</h4>
+                          <p>
+                            申請日期: <span>{item.AppliCreatedAt}</span>
+                          </p>
+                          <p>
+                            貼文有效期限: <span>{item.PostExpirationDate}</span>
+                          </p>
+                        </div>
+                        <div>
+                          <Btn $style="outline">取消申請</Btn>
+                          <Btn
+                            $style="outline"
+                            onClick={(e) => {
+                              handleShowDetails(e, item.PostId);
+                            }}
+                          >
+                            詳細內容
+                          </Btn>
+                        </div>
+                      </Item>
+                    </li>
+                  );
+                })
+              ) : (
+                <EmptyData />
+              )}
+            </List>
+            {data.Status === "ok" && <PageBar />}
+          </Container>
+        </Wrapper>
+      )}
     </>
   );
 }
