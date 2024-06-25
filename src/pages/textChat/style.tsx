@@ -98,10 +98,16 @@ const currentUser = css`
   p {
     background-color: #f1f1f1;
   }
+  a {
+    background-color: #ffce26;
+  }
 `;
 
 const remoteUser = css`
   p {
+    background-color: #ffce26;
+  }
+  a {
     background-color: #ffce26;
   }
 `;
@@ -113,6 +119,13 @@ export const Message = styled.li<MessageProps>`
     max-width: 650px;
     padding: 8px 12px;
     border-radius: 12px;
+  }
+  a {
+    max-width: 650px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    text-decoration: underline;
+    word-break: break-all;
   }
   img {
     width: 40px;

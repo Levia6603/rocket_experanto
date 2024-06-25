@@ -77,15 +77,14 @@ export const CallPage = styled.div`
   background-color: #000;
 `;
 
-export const Label = styled.div`
+export const Label = styled.button`
   position: absolute;
-  top: 30px;
-  left: 40px;
+  bottom: 27px;
+  right: 3px;
   z-index: 1;
+  border: 0;
+  background-color: transparent;
   cursor: pointer;
-  p {
-    color: #fff;
-  }
 `;
 
 const LocalUser = css`
@@ -107,8 +106,8 @@ const RemoteUser = css`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  max-height: 100vh;
 `;
 
 export const Video = styled.video<VideoProps>`
@@ -196,22 +195,50 @@ export const User = styled.div`
 `;
 
 const remote = css`
-  align-self: start;
-  background-color: #ffce26;
+  p {
+    align-self: start;
+    background-color: #ffce26;
+  }
+  a {
+    align-self: start;
+    background-color: #ffce26;
+  }
 `;
 
 const current = css`
-  align-self: flex-end;
-  background-color: #f1f1f1;
+  text-align: end;
+  p {
+    align-self: flex-end;
+    background-color: #f1f1f1;
+  }
+  a {
+    align-self: flex-end;
+    background-color: #f1f1f1;
+  }
 `;
 
 export const Message = styled.li<MessageProps>`
-  max-width: 280px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 14px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  font-weight: 700;
 
   ${({ $idenity }) => ($idenity ? current : remote)}
+  p {
+    max-width: 280px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  a {
+    max-width: 280px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    text-decoration: underline;
+    font-size: 14px;
+    word-break: break-all;
+  }
 `;
 
 export const InputGroup = styled.form`

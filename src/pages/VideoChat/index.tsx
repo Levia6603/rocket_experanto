@@ -32,6 +32,7 @@ import camera from "/camera-video.svg";
 import chatIcon from "/chat-text.svg";
 import sendIcon from "/sendIcon.svg";
 import hangupIcon from "/hangup.svg";
+import peopleIcon from "/profile_box_icons/people.svg";
 
 interface RefProps {
   srcObject: MediaStream;
@@ -42,12 +43,13 @@ type MessageList = { name: string; message: string }[];
 function VideoChat() {
   const url = new URLSearchParams(window.location.search);
   const chatId = url.get("roomid");
+  const callId = url.get("callid");
+
   const roomRef = child(dbRef, chatId || "rooms");
 
   const [callStart, setCallStart] = useState(false);
   const [current, setCurrent] = useState(true);
   const [roomId, setRoomId] = useState("");
-  const [enterText, setEnterText] = useState("");
   const [audioState, setAudioState] = useState(true);
   const [videoState, setVideoState] = useState(true);
   const [inputChat, setInputChat] = useState("");
@@ -82,6 +84,16 @@ function VideoChat() {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  function isValidUrl(string: string) {
+    try {
+      new URL(string);
+    } catch (_) {
+      return false;
+    }
+
+    return true;
   }
 
   async function createRoom() {
@@ -171,12 +183,6 @@ function VideoChat() {
     await updateDoc(roomRef, { answer });
   }
 
-  async function copyText() {
-    await navigator.clipboard.writeText(roomId).then(() => {
-      alert("copy!!");
-    });
-  }
-
   function micStateToggle() {
     const audioTracks = localRef.current?.srcObject.getAudioTracks();
     if (audioTracks && audioTracks.length > 0) {
@@ -235,8 +241,15 @@ function VideoChat() {
       {callStart ? (
         <Container>
           <CallPage>
-            <Label onClick={copyText}>
-              <p>{roomId}</p>
+            <Label
+              onClick={() => {
+                push(roomRef, {
+                  name: localStorage.getItem("name"),
+                  message: `${window.location.href}&callid=${roomId}`,
+                });
+              }}
+            >
+              <img src={peopleIcon} alt="add-people" />
             </Label>
             <Video
               ref={localRef as React.LegacyRef<HTMLVideoElement>}
@@ -281,7 +294,14 @@ function VideoChat() {
                       key={i}
                       $idenity={obj.name === localStorage.getItem("name")}
                     >
-                      {obj.message}
+                      {obj.name}
+                      {isValidUrl(obj.message) ? (
+                        <a href={obj.message} target="_blank">
+                          {obj.message}
+                        </a>
+                      ) : (
+                        <p>{obj.message}</p>
+                      )}
                     </Message>
                   ))}
                 </ul>
@@ -314,27 +334,19 @@ function VideoChat() {
       ) : (
         <EnterPage>
           <div>
-            <h2>Enter your room ID</h2>
-            <label>
-              <input
-                type="text"
-                value={enterText}
-                onChange={(e) => {
-                  setEnterText(e.target.value);
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  enterRoom(enterText);
-                }}
-              >
-                Enter
-              </button>
-            </label>
-            <p>or</p>
-            <button type="button" onClick={createRoom}>
-              Create Room
+            <h2>即將進入視訊頁面</h2>
+            <p>請確認麥克風和視訊鏡頭</p>
+            <button
+              type="button"
+              onClick={() => {
+                if (callId) {
+                  enterRoom(callId);
+                } else {
+                  createRoom();
+                }
+              }}
+            >
+              進入視訊通話
             </button>
           </div>
         </EnterPage>
