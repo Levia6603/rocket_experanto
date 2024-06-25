@@ -10,7 +10,7 @@ import {
   Wrapper,
 } from "./style";
 import axios from "axios";
-import apiBase from "../../Api";
+import apiBase, { headers } from "../../Api";
 import send from "/sendIcon.svg";
 import { child, onValue, push } from "firebase/database";
 import { dbRef } from "../../firebase/firebase";
@@ -45,9 +45,6 @@ function TextChat() {
   const roomref = child(dbRef, roomId || "room");
   //得到聊天室列表
   async function getChatList() {
-    const headers = {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
     try {
       const list: ChatList = await axios
         .get(apiBase.GET_CHATLIST, { headers })
@@ -77,6 +74,15 @@ function TextChat() {
   function sendMessage() {
     const data = { name: localStorage.getItem("name"), message };
     message && push(roomref, data);
+  }
+
+  function isValidUrl(string: string) {
+    try {
+      new URL(string);
+    } catch (_) {
+      return false;
+    }
+    return true;
   }
 
   useEffect(() => {
@@ -159,7 +165,11 @@ function TextChat() {
                           }
                           alt=""
                         />
-                        <p>{message}</p>
+                        {isValidUrl(message) ? (
+                          <a href={message}>{message}</a>
+                        ) : (
+                          <p>{message}</p>
+                        )}
                       </Message>
                     );
                   })}
