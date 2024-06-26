@@ -65,6 +65,13 @@ export const EnterPage = styled.div`
       transition: box-shadow 0s;
     }
   }
+  img {
+    width: 300px;
+  }
+  p {
+    font-size: 14px;
+    color: #ababab;
+  }
 `;
 
 export const CallPage = styled.div`
@@ -80,7 +87,7 @@ export const CallPage = styled.div`
 export const Label = styled.button`
   position: absolute;
   bottom: 27px;
-  right: 3px;
+  right: 30px;
   z-index: 1;
   border: 0;
   background-color: transparent;

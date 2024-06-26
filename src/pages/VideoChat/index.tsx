@@ -33,6 +33,7 @@ import chatIcon from "/chat-text.svg";
 import sendIcon from "/sendIcon.svg";
 import hangupIcon from "/hangup.svg";
 import peopleIcon from "/profile_box_icons/people.svg";
+import chatImg from "/chatImg.svg";
 
 interface RefProps {
   srcObject: MediaStream;
@@ -335,7 +336,8 @@ function VideoChat() {
         <EnterPage>
           <div>
             <h2>即將進入視訊頁面</h2>
-            <p>請確認麥克風和視訊鏡頭</p>
+            <p>請確認麥克風和鏡頭</p>
+            <img src={chatImg} alt="" />
             <button
               type="button"
               onClick={() => {
