@@ -59,8 +59,6 @@ const ProfileEdit = () => {
   const [selectedGender, setSelectedGender] = useState({ Id: 0, Name: "" });
 
   //* 設定照片
-  const [imageURLs, setImageURLs] = useState<string[] | null | void>([]);
-  const [formData, setFormData] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -68,21 +66,18 @@ const ProfileEdit = () => {
 
   //* POST資料庫
   async function postData(formData: FormData) {
-    try {
-      await axios({
-        method: "POST",
-        url: apiBase.POST_PROFILE,
-        data: formData,
-        headers: headers,
-      }).finally(() => {
+    await axios
+      .post(apiBase.POST_PROFILE, formData, { headers })
+      .then((res) => {
+        if (res.data.message) {
+          navigate("/home/index");
+          dispatch(toggleToast());
+          dispatch(setToastText("編輯成功"));
+        }
+      })
+      .finally(() => {
         dispatch(setLoading(false));
       });
-      navigate("/home/index");
-      dispatch(toggleToast());
-      dispatch(setToastText("編輯成功"));
-    } catch (error) {
-      console.error("Error saving profile:", error);
-    }
   }
 
   //* 打API
@@ -161,7 +156,6 @@ const ProfileEdit = () => {
           })
         );
 
-        setImageURLs(imageURLs); //* 使用useState把接回來的網址存起來，這樣即使是在外部也可以取用
         setImagePreviews([]);
         setIsLoading(false);
 
@@ -173,17 +167,12 @@ const ProfileEdit = () => {
         };
 
         try {
-          setFormData({ ...formData, imageURLs: imageURLs || [] });
           postData(formData);
-          navigate("/user/profile");
         } catch (error) {
           console.error("Error saving profile:", error);
         }
       }
-      console.log(imageURLs);
-      console.log(formData);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
