@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.section`
   padding: 36px 0;
-  background-color: #919191;
+  background-color: #303030;
 `;
 export const Container = styled.div`
   font-family: sans-serif;
