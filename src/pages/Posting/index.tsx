@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateType } from "../../../redux";
-import apiBase, { getList, headers } from "../../Api";
+import apiBase, { getList } from "../../Api";
 import { apiList } from "../ProfileEdit";
 
 import {
@@ -1008,6 +1008,9 @@ function Posting() {
                 type="button"
                 onClick={() => {
                   dispatch(setLoading(true));
+                  const headers = {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  };
                   let timeData: SetTimeData = {};
                   Object.entries(selectTimeData)
                     .filter((arr) => arr[1].length > 0)
