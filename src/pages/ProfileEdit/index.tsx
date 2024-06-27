@@ -18,7 +18,7 @@ import Select from "../../components/Select";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import apiBase, { headers } from "../../Api";
+import apiBase from "../../Api";
 import { getList } from "../../Api";
 import { Btn } from "../../styles/Btn";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,14 +66,22 @@ const ProfileEdit = () => {
 
   //* POST資料庫
   async function postData(formData: FormData) {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
     await axios
       .post(apiBase.POST_PROFILE, formData, { headers })
       .then((res) => {
+        console.log(res);
+
         if (res.data.message) {
           navigate("/home/index");
           dispatch(toggleToast());
           dispatch(setToastText("編輯成功"));
         }
+      })
+      .catch((err) => {
+        console.log(err);
       })
       .finally(() => {
         dispatch(setLoading(false));

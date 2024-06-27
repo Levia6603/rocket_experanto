@@ -19,7 +19,7 @@ import { Btn } from "../../styles/Btn";
 import logo from "/logo_full.svg";
 import bell from "/profile_box_icons/bell.svg";
 import global from "/global.svg";
-import apiBase, { headers } from "../../Api";
+import apiBase from "../../Api";
 import axios from "axios";
 import { setLoading } from "../../../redux/loadingState/loadingState";
 
@@ -59,6 +59,9 @@ function Nav() {
 
   //* 發文前確認個人資料是否填寫完成
   async function checkProfile() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
     await axios({
       method: "GET",
       url: apiBase.GET_CHECK_POST,

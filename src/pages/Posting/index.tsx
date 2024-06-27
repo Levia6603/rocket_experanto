@@ -139,6 +139,9 @@ function Posting() {
   const onSubmit: SubmitHandler<Formvalues> = (data) => console.log(data);
 
   async function getUser() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
     const data = await axios
       .get(apiBase.GET_PROFILE, { headers })
       .then((res) => {
