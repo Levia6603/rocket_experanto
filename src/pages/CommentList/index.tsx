@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "../../../redux/loadingState/loadingState";
 import { RootStateType } from "../../../redux";
 import Loading from "../../components/Loading";
+import EmptyData from "../../components/EmptyData";
 
 interface ExchangeData {
   exchangeId: number;
@@ -102,6 +103,7 @@ function CommentList() {
           </Container>
         </Wrapper>
       )}
+      {dataList.length === 0 && <EmptyData />}
     </>
   );
 }
