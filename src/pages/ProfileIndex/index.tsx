@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import apiBase, { headers } from "../../Api";
+import apiBase from "../../Api";
 import {
   Achiev,
   Card,
@@ -60,6 +60,9 @@ const ProfileIndex = () => {
   );
   //* 取得個人資料
   async function getProfile() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
     dispatch(setLoading(true));
     const profile = await axios
       .get(apiBase.GET_PROFILE, {

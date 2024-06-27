@@ -12,7 +12,7 @@ import star from "/profile_box_icons/star-yellow.svg";
 import starOutline from "/profile_box_icons/star.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import apiBase, { headers } from "../../Api";
+import apiBase from "../../Api";
 import { useEffect, useState } from "react";
 import { Btn } from "../../styles/Btn";
 import { useDispatch } from "react-redux";
@@ -63,6 +63,9 @@ function Commenting() {
   const dispatch = useDispatch();
 
   async function getData() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
     const data = await axios
       .get(`${apiBase.GET_CHANGE_DATA}/${id}`, { headers })
       .then((res) => {
@@ -96,6 +99,9 @@ function Commenting() {
   }
 
   async function Submit() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    };
     dispatch(setLoading(true));
     const data = { ...rate, ExchangeId: id };
     await axios
