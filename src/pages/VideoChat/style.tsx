@@ -65,6 +65,12 @@ export const EnterPage = styled.div`
       transition: box-shadow 0s;
     }
   }
+  img {
+    width: 300px;
+  }
+  p {
+    color: #919191;
+  }
 `;
 
 export const CallPage = styled.div`
