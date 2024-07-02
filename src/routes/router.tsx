@@ -24,6 +24,7 @@ import CommentList from "../pages/CommentList";
 import ErrorPage from "../pages/ErrorPage";
 import Rating from "../pages/Rating";
 import ScrollToTop from "../components/ScrollToTop";
+import PastPosts from "../pages/PastPosts";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +103,11 @@ export const router = createBrowserRouter([
       {
         path: "full_review/:id",
         element: <FullReview />,
+      },
+
+      {
+        path: "past_posts",
+        element: <PastPosts />,
       },
     ],
   },
