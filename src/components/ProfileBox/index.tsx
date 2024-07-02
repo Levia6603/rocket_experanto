@@ -96,7 +96,7 @@ function ProfileBox() {
     {
       icon: like,
       name: "收藏",
-      url: "",
+      url: "/user/favorites",
     },
     {
       icon: expired,

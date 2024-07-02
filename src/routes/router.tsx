@@ -25,6 +25,7 @@ import ErrorPage from "../pages/ErrorPage";
 import Rating from "../pages/Rating";
 import ScrollToTop from "../components/ScrollToTop";
 import PastPosts from "../pages/PastPosts";
+import Favorites from "../pages/Favorites";
 
 export const router = createBrowserRouter([
   {
@@ -108,6 +109,11 @@ export const router = createBrowserRouter([
       {
         path: "past_posts",
         element: <PastPosts />,
+      },
+
+      {
+        path: "favorites",
+        element: <Favorites />,
       },
     ],
   },
