@@ -41,6 +41,8 @@ const apiBase = {
   GET_RATING_LIST: `/api/ratingslist`,
   GET_RATING_DATA: `/api/ratings`,
   POST_RATING: `/api/ratings`,
+
+  GET_PAST_POSTS: `/api/posts/published`,
 };
 
 export default apiBase;

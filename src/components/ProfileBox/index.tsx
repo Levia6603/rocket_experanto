@@ -91,7 +91,7 @@ function ProfileBox() {
     {
       icon: posted,
       name: "我的貼文",
-      url: "",
+      url: "/user/past_posts",
     },
     {
       icon: like,
