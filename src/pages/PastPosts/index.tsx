@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootStateType } from "../../../redux";
 import { setLoading } from "../../../redux/loadingState/loadingState";
+import { setPages } from "../../../redux/pages/pagesSlice";
 import axios from "axios";
 import apiBase from "../../Api";
 import PageBar from "../../components/PageBar";
@@ -60,6 +61,7 @@ function PastPosts() {
           .catch((err) => console.log(err));
 
         setData(data);
+        dispatch(setPages(data.totalPages));
       } finally {
         dispatch(setLoading(false));
       }
@@ -89,58 +91,55 @@ function PastPosts() {
   return (
     <>
       {loadingState && <Loading />}
-      {!loadingState && data ? (
-        <Wrapper>
-          <Container>
-            <Title>已發表貼文</Title>
-            <SortWrapper>
-              <p>時間排序</p>
-              <select
-                value={sort}
-                onChange={(e) => handleChange(e.target.value)}
-              >
-                <option value="由新到舊">從新到舊</option>
-                <option value="由舊到新">從舊到新</option>
-              </select>
-            </SortWrapper>
-            <Cards>
-              {sortedList &&
-                sortedList?.map((post: Post) => (
-                  <Card key={post.Id}>
+
+      <Wrapper>
+        <Container>
+          <Title>已發表貼文</Title>
+          <SortWrapper>
+            <p>時間排序</p>
+            <select value={sort} onChange={(e) => handleChange(e.target.value)}>
+              <option value="由新到舊">從新到舊</option>
+              <option value="由舊到新">從舊到新</option>
+            </select>
+          </SortWrapper>
+          <Cards>
+            {data && data?.postsList?.length > 0 && !loadingState ? (
+              sortedList.map((post: Post) => (
+                <Card key={post.Id}>
+                  <div>
                     <div>
-                      <div>
-                        <img src={data.UserAvatar} alt="大頭貼" />
-                      </div>
+                      <img src={data.UserAvatar} alt="大頭貼" />
                     </div>
+                  </div>
+                  <div>
+                    <h4>{post.Title}</h4>
+                    <p>
+                      發表日期:
+                      <span>{post.CreatedAt}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <Btn
+                      $style={"outline"}
+                      onClick={() => {
+                        navigate(`/home/post/${post.Id}`);
+                      }}
+                    >
+                      詳細內容
+                    </Btn>
                     <div>
-                      <h4>{post.Title}</h4>
-                      <p>
-                        發表日期:
-                        <span>{post.CreatedAt}</span>
-                      </p>
+                      <img src={editPen} alt="edit" />
                     </div>
-                    <div>
-                      <Btn
-                        $style={"outline"}
-                        onClick={() => {
-                          navigate(`/home/post/${post.Id}`);
-                        }}
-                      >
-                        詳細內容
-                      </Btn>
-                      <div>
-                        <img src={editPen} alt="edit" />
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-            </Cards>
-          </Container>
-          <PageBar />
-        </Wrapper>
-      ) : (
-        <EmptyData />
-      )}
+                  </div>
+                </Card>
+              ))
+            ) : (
+              <EmptyData />
+            )}
+          </Cards>
+        </Container>
+        {data && data?.postsList?.length > 0 && !loadingState && <PageBar />}
+      </Wrapper>
     </>
   );
 }

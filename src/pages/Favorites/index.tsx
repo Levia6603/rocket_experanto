@@ -7,6 +7,7 @@ import { Container, Wrapper, Title, Cards, Card, CardWrapper } from "./styles";
 import EmptyData from "../../components/EmptyData";
 import Loading from "../../components/Loading";
 import { setLoading } from "../../../redux/loadingState/loadingState";
+import { setPages } from "../../../redux/pages/pagesSlice";
 import { setFavoriteList } from "../../../redux/favoriteList/favoriteListSlice";
 import { RootStateType } from "../../../redux";
 import PageBar from "../../components/PageBar";
@@ -104,6 +105,7 @@ function Favorites() {
         console.error(error);
       } finally {
         getFavoriteList();
+        dispatch(setPages(data.totalPages));
       }
     }
 
@@ -147,6 +149,7 @@ function Favorites() {
         .catch((err) => console.log(err));
       setData(data);
       dispatch(setFavoriteList(data.list));
+      dispatch(setPages(data.totalPages));
     } catch (err) {
       console.log(err);
     } finally {
@@ -161,56 +164,52 @@ function Favorites() {
   return (
     <>
       {loadingState && <Loading />}
-      {data && data.Status === "ok" && !loadingState ? (
-        <Wrapper>
-          <Container>
-            <Title>我的最愛</Title>
-            <SortWrapper>
-              <p>時間排序</p>
-              <select
-                value={sort}
-                onChange={(e) => handleChange(e.target.value)}
-              >
-                <option value="由新到舊">從新到舊</option>
-                <option value="由舊到新">從舊到新</option>
-              </select>
-            </SortWrapper>
 
-            <Cards>
-              {sortedList &&
-                sortedList.length > 0 &&
-                sortedList?.map((el) => (
-                  <CardWrapper key={el.postId} data-postid={el.postId}>
-                    <Card
-                      onClick={() => {
-                        navigate(`/home/post/${el.postId}`);
-                      }}
-                    >
-                      <div>
-                        <div onClick={handleFavorite}>
-                          <img src={pinkHeart} alt="收藏" />
-                        </div>
-                        <div>
-                          <img src={el.userAvatar} alt="post" />
-                        </div>
+      <Wrapper>
+        <Container>
+          <Title>我的最愛</Title>
+          <SortWrapper>
+            <p>時間排序</p>
+            <select value={sort} onChange={(e) => handleChange(e.target.value)}>
+              <option value="由新到舊">從新到舊</option>
+              <option value="由舊到新">從舊到新</option>
+            </select>
+          </SortWrapper>
+
+          <Cards>
+            {sortedList && sortedList.length > 0 ? (
+              sortedList?.map((el) => (
+                <CardWrapper key={el.postId} data-postid={el.postId}>
+                  <Card
+                    onClick={() => {
+                      navigate(`/home/post/${el.postId}`);
+                    }}
+                  >
+                    <div>
+                      <div onClick={handleFavorite}>
+                        <img src={pinkHeart} alt="收藏" />
                       </div>
                       <div>
-                        <h4>{el.postTitle}</h4>
-                        <p>發佈日期: {el.PostCreatetDate}</p>
+                        <img src={el.userAvatar} alt="post" />
                       </div>
-                      <div>
-                        <Btn $style={"outline"}>詳細資料</Btn>
-                      </div>
-                    </Card>
-                  </CardWrapper>
-                ))}
-            </Cards>
-          </Container>
-          <PageBar />
-        </Wrapper>
-      ) : (
-        <EmptyData />
-      )}
+                    </div>
+                    <div>
+                      <h4>{el.postTitle}</h4>
+                      <p>發佈日期: {el.PostCreatetDate}</p>
+                    </div>
+                    <div>
+                      <Btn $style={"outline"}>詳細資料</Btn>
+                    </div>
+                  </Card>
+                </CardWrapper>
+              ))
+            ) : (
+              <EmptyData />
+            )}
+          </Cards>
+        </Container>
+        {data && data.Status === "ok" && <PageBar />}
+      </Wrapper>
     </>
   );
 }

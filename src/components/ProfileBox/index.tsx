@@ -101,7 +101,7 @@ function ProfileBox() {
     {
       icon: expired,
       name: "過期貼文",
-      url: "",
+      url: "/user/expired_posts",
     },
     {
       icon: waiting,

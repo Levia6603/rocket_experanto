@@ -43,6 +43,7 @@ const apiBase = {
   POST_RATING: `/api/ratings`,
 
   GET_PAST_POSTS: `/api/posts/published`,
+  GET_EXPIRED_POSTS: `/api/posts/overdue`,
 };
 
 export default apiBase;

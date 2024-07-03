@@ -26,6 +26,7 @@ import Rating from "../pages/Rating";
 import ScrollToTop from "../components/ScrollToTop";
 import PastPosts from "../pages/PastPosts";
 import Favorites from "../pages/Favorites";
+import ExpiredPosts from "../pages/ExpiredPosts";
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +115,11 @@ export const router = createBrowserRouter([
       {
         path: "favorites",
         element: <Favorites />,
+      },
+
+      {
+        path: "expired_posts",
+        element: <ExpiredPosts />,
       },
     ],
   },
