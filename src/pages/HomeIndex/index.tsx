@@ -192,7 +192,11 @@ function HomeIndex() {
               $current={false}
               onClick={() => {
                 setCurrentPage((prev) => prev - 1);
-                getPostListByPage(currentPage - 1);
+                if (languageIds) {
+                  getPostListByLanguage(currentPage - 1, languageQuery);
+                } else {
+                  getPostListByPage(currentPage - 1);
+                }
               }}
             >
               上一頁
@@ -203,8 +207,12 @@ function HomeIndex() {
               key={page}
               $current={page === currentPage}
               onClick={() => {
-                getPostListByPage(page);
                 setCurrentPage(page);
+                if (languageIds) {
+                  getPostListByLanguage(currentPage, languageQuery);
+                } else {
+                  getPostListByPage(currentPage);
+                }
               }}
             >
               {page}
@@ -215,7 +223,11 @@ function HomeIndex() {
               $current={false}
               onClick={() => {
                 setCurrentPage((prev) => prev + 1);
-                getPostListByPage(currentPage + 1);
+                if (languageIds) {
+                  getPostListByLanguage(currentPage + 1, languageQuery);
+                } else {
+                  getPostListByPage(currentPage + 1);
+                }
               }}
             >
               下一頁
