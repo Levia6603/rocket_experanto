@@ -23,17 +23,19 @@ function PageBar() {
   };
   //* 上一頁
   const handlePrevious = () => {
-    if (presentPage < 1 || presentPage > pageAmount) {
+    if (presentPage <= 1) {
       return;
     } else {
+      setPresentPage(presentPage - 1);
       dispatch(setPage(presentPage - 1));
     }
   };
   //* 下一頁
   const handleNext = () => {
-    if (presentPage < 1 || presentPage > pageAmount) {
+    if (presentPage < 1 || presentPage >= pageAmount) {
       return;
     } else {
+      setPresentPage(presentPage + 1);
       dispatch(setPage(presentPage + 1));
     }
   };
