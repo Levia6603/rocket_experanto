@@ -9,9 +9,9 @@ import apiBase from "../../Api";
 import PostCardSkeleton from "../PostCardSkeleton";
 import PostCard from "../../components/PostCard";
 import { PostCards } from "../Home/styles";
-import PageBar from "../../components/PageBar";
 import EmptyData from "../../components/EmptyData";
 import Toast from "../../components/Toast";
+import { Page, PageButton } from "./styles";
 
 export interface PostListInterface {
   Code?: number;
@@ -39,9 +39,12 @@ function HomeIndex() {
   const [postList, setPostList] = useState<PostListInterface | null>(
     {} as PostListInterface
   );
+  const [currentPage, setCurrentPage] = useState(1);
   const token = localStorage.getItem("token");
 
-  const page = useSelector((state: RootStateType) => state.pages.page);
+  const totalPages = useSelector((state: RootStateType) => state.pages.pages);
+  const pagesArray = Array.from({ length: totalPages }, (_, i) => i + 1);
+
   const languageIds = useSelector(
     (state: RootStateType) => state.pages.languageIds
   );
@@ -159,17 +162,13 @@ function HomeIndex() {
   }, []);
 
   useEffect(() => {
-    page !== 1 && getPostListByPage(page);
-  }, [page]);
-
-  useEffect(() => {
-    languageIds.length > 0 && getPostListByLanguage(page, languageQuery);
-  }, [languageIds, page, languageQuery]);
+    languageIds.length > 0 && getPostListByLanguage(currentPage, languageQuery);
+  }, [languageIds, currentPage, languageQuery]);
 
   useEffect(() => {
     favoriteList["favoriteList"]?.length &&
       favoriteList["favoriteList"]?.length !== prevFavoriteList.length &&
-      getPostListByPage(page);
+      getPostListByPage(currentPage);
     setPrevFavoriteList(favoriteList["favoriteList"]);
   }, [favoriteList["favoriteList"]]);
 
@@ -184,13 +183,46 @@ function HomeIndex() {
           : postList?.list?.map((post) => {
               return <PostCard key={post.PostId} {...post} />;
             })}
-        {/* {!loading &&
-          postList?.list?.map((post) => {
-            return <PostCard key={post.PostId} {...post} />;
-          })} */}
         {postList?.list && !postList.list.length && !loading && <EmptyData />}
       </PostCards>
-      {postList?.list && <PageBar />}
+      {postList?.list && (
+        <Page>
+          {currentPage !== 1 && (
+            <PageButton
+              $current={false}
+              onClick={() => {
+                setCurrentPage((prev) => prev - 1);
+                getPostListByPage(currentPage - 1);
+              }}
+            >
+              上一頁
+            </PageButton>
+          )}
+          {pagesArray.map((page) => (
+            <PageButton
+              key={page}
+              $current={page === currentPage}
+              onClick={() => {
+                getPostListByPage(page);
+                setCurrentPage(page);
+              }}
+            >
+              {page}
+            </PageButton>
+          ))}
+          {totalPages !== currentPage && (
+            <PageButton
+              $current={false}
+              onClick={() => {
+                setCurrentPage((prev) => prev + 1);
+                getPostListByPage(currentPage + 1);
+              }}
+            >
+              下一頁
+            </PageButton>
+          )}
+        </Page>
+      )}
     </>
   );
 }
