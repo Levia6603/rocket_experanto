@@ -1,5 +1,15 @@
+import Nav from "./components/Nav";
+import Footer from "./components/Footer";
+import LandingPage from "./pages/LandingPage";
+
 function App() {
-  return <h1>Hello World</h1>;
+  return (
+    <>
+      <Nav />
+      <LandingPage />
+      <Footer />
+    </>
+  );
 }
 
 export default App;

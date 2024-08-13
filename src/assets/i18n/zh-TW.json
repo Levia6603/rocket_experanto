@@ -1,0 +1,27 @@
+{
+  "landing_title": "探索語言，連接世界",
+  "landing_describe": "互學打破語言障礙，打造無國界溝通平台，讓語言學習變得輕鬆有趣",
+  "landing_button": "立即前往",
+
+  "language_title": "熱門語言",
+  "language_describe": "探索世界上最受歡迎的語言",
+  "language_posts": "則貼文",
+
+  "video_title": "請欣賞我們的介紹影片",
+  "video_describe": "了解網站設計和概念",
+
+  "process_title": "如何使用",
+  "process_step_1": "註冊並填寫個人資訊及教學規劃",
+  "process_step_2": "搜尋並選擇交換的語言",
+  "process_step_3": "提交您的申請需求",
+  "process_step_4": "匹配成功！ 現在就可以開始交換了！",
+
+  "last_title": "準備好要加入語言交換的行列了嗎？",
+  "last_describe": "透過語言連結，拓展你的世界。",
+  "last_button": "現在就加入",
+
+  "nav_login": "登入",
+  "nav_signUp": "註冊",
+  "nav_search_placeholder": "尋找語言來建立與世界的連結",
+  "nav_post": "發文"
+}
