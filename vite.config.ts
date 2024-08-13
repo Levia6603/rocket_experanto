@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://4.213.74.16/", // 後端伺服器網址
+        target: "https://experanto.rocket-coding.com/", // 後端伺服器網址
         changeOrigin: true,
         rewrite: (path) => path,
         // rewrite: (path) => path.replace(/^\/api/, ""), // 將 /api 代碼去除，但這個專案不需要

@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "http://4.213.74.16/api/:path*"
+      "destination": "https://experanto.rocket-coding.com/api/:path*"
     },
     { "source": "/(.*)", "destination": "/" }
   ]
